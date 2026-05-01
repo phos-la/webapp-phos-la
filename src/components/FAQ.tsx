@@ -4,38 +4,33 @@ import { useState } from "react";
 
 const faqs = [
   {
-    q: "What should I bring?",
-    a: "Just come as you are. We recommend wearing comfortable, weather-appropriate clothes, bringing a water bottle, and perhaps a small journal. Everything else — tea, blankets, materials — is provided.",
+    q: "What is IV ketamine therapy?",
+    a: "IV ketamine blocks NMDA glutamate receptors, triggering rapid increases in BDNF (brain-derived neurotrophic factor) and new synaptic connections in the prefrontal cortex. Unlike SSRIs, which modulate serotonin over weeks, ketamine's antidepressant effect often appears within hours to days. A standard initial series is six infusions over two to three weeks.",
   },
   {
-    q: "Do I need experience with therapy or meditation?",
-    a: "No prior experience is needed. Sessions are designed for anyone who wants to slow down, regardless of background. We meet you exactly where you are.",
+    q: "Who is a candidate?",
+    a: "Adults with treatment-resistant depression, anxiety, PTSD, or chronic pain who haven't found adequate relief from conventional treatments. We use a pre-screening process. People are generally not candidates if they have schizophrenia, active psychosis, bipolar mania, uncontrolled cardiovascular disease or hypertension, or pregnancy. Your candidacy will be confirmed at your initial consultation.",
   },
   {
-    q: "What happens if the weather is bad?",
-    a: "Light rain is part of the experience — we have shelters and warm layers. For heavy weather we move work indoors to the cabin, or reschedule at no cost.",
+    q: "How many sessions will I need?",
+    a: "Most patients start with six infusions over two to three weeks. After that, your PA reviews your response and discusses maintenance timing based on how you're doing, not a preset schedule.",
   },
   {
-    q: "Is this therapy?",
-    a: "It's not clinical psychotherapy. It's somatic, nature-based work designed to support rest, integration, and reconnection. If you're in active treatment, we're happy to coordinate with your therapist.",
+    q: "What happens during an infusion?",
+    a: "Your PA meets with you first to confirm your protocol for the session. The infusion itself typically runs 40 to 60 minutes. You'll experience a transient dissociative state. Afterward, your PA checks in to discuss your experience and note any adjustments for your next visit. You'll need a driver to take you home.",
   },
   {
-    q: "Can I come with a friend or partner?",
-    a: "Yes — paired and small-group sessions are available. Just mention it when booking and we'll tailor the rhythm so both people feel held.",
+    q: "Does insurance cover IV ketamine?",
+    a: "IV ketamine for mood disorders is an off-label use and is not covered by most insurance plans. It's cash-pay. HSA and FSA funds are eligible. Spravato (esketamine nasal spray), the FDA-approved version for treatment-resistant depression, will be available at our clinic soon and is covered by many insurance plans.",
   },
   {
-    q: "How do I know which session is right for me?",
-    a: "Start with a free 15-minute call. We'll talk through what you're looking for and pick the format — core, overnight, or deep retreat — that meets you best.",
+    q: "What makes Phos different from other LA clinics?",
+    a: "At most clinics, you'll see a nurse during your infusions and a physician only periodically. Here, a licensed PA meets with you before and after every single infusion, actively adjusting your dosing, duration, and supportive therapies each visit. Led by Dr. Christa Riley, board-certified anesthesiologist and military veteran, with the highest published success rate in the LA market.",
   },
 ];
 
 const FaqIcon = () => (
-  <svg
-    className="faq-icon"
-    viewBox="0 0 24 24"
-    fill="none"
-    aria-hidden="true"
-  >
+  <svg className="faq-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
     <path
       d="M4 20 C 4 11, 11 4, 20 4 C 20 13, 13 20, 4 20 Z"
       stroke="currentColor"
@@ -63,7 +58,7 @@ export default function FAQ() {
       <div className="section-inner">
         <div className="section-head">
           <span className="label-pill">FAQ</span>
-          <h2 className="section-title">Questions You Might Have</h2>
+          <h2 className="section-title">Questions you might have</h2>
         </div>
         <div className="faq-list">
           {faqs.map((faq, i) => (

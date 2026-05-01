@@ -32,19 +32,19 @@ export default function Hero() {
       <div className="hero-inner">
         <span className="hero-pill" aria-label="Availability">
           <span className="hero-pill-dot" aria-hidden="true" />
-          Six spots open for May intake
+          Accepting new patients in Westwood
         </span>
 
         <h1 className="hero-headline">
-          A different
+          Your protocol
           <br />
-          kind of clearing.
+          evolves with you.
         </h1>
 
         <p className="hero-sub">
-          Ketamine&#8209;assisted therapy in a private Los Angeles practice
-          &mdash; six sessions over three weeks, one clinician, guided from the
-          first breath to integration.
+          IV ketamine therapy in a private Los Angeles practice &mdash; a licensed
+          provider evaluates your response <em>before and after every infusion</em>,
+          adjusting your treatment in real time.
         </p>
 
         <a className="hero-cta" href="#consult">
@@ -84,13 +84,15 @@ export default function Hero() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <h2 className="hero-image-headline">What is Forest Therapy?</h2>
+              <h2 className="hero-image-headline">
+                The only LA clinic in the room after every infusion.
+              </h2>
               <p className="hero-image-body">
-                Forest Therapy is a gentle, body-based healing approach that
-                helps you reconnect with yourself through touch, breath, and
-                presence. Each session supports your nervous system in finding
-                regulation and release &mdash; combining somatic techniques,
-                intuitive guidance, and the natural rhythms of the forest.
+                Most clinics hand you off to a nurse and check in periodically.
+                At Phos, your PA is there before and after every session,
+                adjusting your dosing, duration, and supportive therapies based
+                on how you&apos;re actually responding. Led by Dr. Christa Riley,
+                board-certified anesthesiologist and military veteran.
               </p>
             </div>
           </figure>

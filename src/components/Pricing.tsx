@@ -21,28 +21,32 @@ export default function Pricing() {
       <div className="section-inner">
         <div className="section-head">
           <span className="label-pill">Pricing</span>
-          <h2 className="section-title">Packages &amp; Pricing</h2>
+          <h2 className="section-title">Transparent pricing</h2>
+          <p className="section-sub">
+            Every session includes PA consultation before and after, plus any
+            supportive therapies adjusted to your protocol. No surprise line items.
+          </p>
         </div>
 
         <div className="pricing-grid">
-          {/* Core Session */}
+          {/* Single Session */}
           <article className="price-card">
-            <h3 className="price-name">Core Session</h3>
-            <p className="price-desc">A gentle one-day experience in the forest</p>
+            <h3 className="price-name">Single Infusion</h3>
+            <p className="price-desc">One standalone IV ketamine session with full clinical support</p>
             <div className="price-included">
               <p className="price-included-label">What&apos;s included:</p>
               <ul>
-                <li><LeafIcon />Intention-setting by email</li>
-                <li><LeafIcon />120 min session</li>
-                <li><LeafIcon />Silent tea &amp; reflection</li>
-                <li><LeafIcon />Integration follow-up</li>
+                <li><LeafIcon />Pre-infusion PA consultation</li>
+                <li><LeafIcon />IV ketamine administration</li>
+                <li><LeafIcon />Supportive therapies as needed</li>
+                <li><LeafIcon />Post-infusion PA check-in</li>
               </ul>
             </div>
-            <p className="price-amount">$220</p>
-            <a className="price-cta" href="#book-core">Book Core Session</a>
+            <p className="price-amount">$650</p>
+            <a className="price-cta" href="#consult">Book a consultation</a>
           </article>
 
-          {/* Forest Night — featured */}
+          {/* Membership Series — featured */}
           <article className="price-card is-featured">
             <svg
               className="price-card-leaves"
@@ -59,43 +63,41 @@ export default function Pricing() {
               <path d="M55 42 C 54 32, 50 28, 44 26" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
               <path d="M44 26 C 38 24, 30 26, 26 30 C 32 34, 40 34, 46 30" fill="#a8c089" stroke="currentColor" strokeWidth="1" />
             </svg>
-            <span className="price-badge">Popular</span>
-            <h3 className="price-name">Forest Night</h3>
+            <span className="price-badge">Best value</span>
+            <h3 className="price-name">Membership Rate</h3>
             <p className="price-desc">
-              Arrive in the morning, receive a full session, and stay the night
-              to let it land fully.
+              Lowest published IV ketamine rate in Los Angeles, based on our patient outcomes.
             </p>
             <div className="price-included">
               <p className="price-included-label">What&apos;s included:</p>
               <ul>
-                <li><LeafIcon />Everything from core</li>
-                <li><LeafIcon />Private overnight stay</li>
-                <li><LeafIcon />Dinner &amp; breakfast</li>
-                <li><LeafIcon />Morning practice</li>
+                <li><LeafIcon />Everything in single infusion</li>
+                <li><LeafIcon />Protocol adjustments every visit</li>
+                <li><LeafIcon />NAD+, magnesium, Zofran as needed</li>
+                <li><LeafIcon />Integration follow-up</li>
               </ul>
             </div>
-            <p className="price-amount">$480</p>
-            <a className="price-cta" href="#book-night">Book Forest Night</a>
+            <p className="price-amount">$400<span style={{ fontSize: 16, fontWeight: 400, color: "var(--fg-muted)" }}>/session</span></p>
+            <a className="price-cta" href="#consult">Ask about membership</a>
           </article>
 
-          {/* Deep Retreat */}
+          {/* At-Home */}
           <article className="price-card">
-            <h3 className="price-name">Deep Retreat</h3>
+            <h3 className="price-name">At-Home Program</h3>
             <p className="price-desc">
-              A 2&ndash;5 day solo or small-group retreat to soften, reset, and
-              reconnect fully.
+              Telehealth-based ketamine therapy for eligible existing patients, managed by your PA.
             </p>
             <div className="price-included">
               <p className="price-included-label">What&apos;s included:</p>
               <ul>
-                <li><LeafIcon />Daily sessions</li>
-                <li><LeafIcon />Forest rituals &amp; rest</li>
-                <li><LeafIcon />Meals &amp; private stay</li>
-                <li><LeafIcon />Pre + post support</li>
+                <li><LeafIcon />Initial video evaluation</li>
+                <li><LeafIcon />Prescription up to 3 months</li>
+                <li><LeafIcon />3-refill self-evaluation check-in</li>
+                <li><LeafIcon />6-month re-evaluation visit</li>
               </ul>
             </div>
-            <p className="price-amount">Contact me</p>
-            <a className="price-cta" href="#schedule-call">Schedule Call</a>
+            <p className="price-amount">Starting at $65<span style={{ fontSize: 16, fontWeight: 400, color: "var(--fg-muted)" }}>/mo</span></p>
+            <a className="price-cta" href="#consult">Ask about eligibility</a>
           </article>
         </div>
 
@@ -111,13 +113,13 @@ export default function Pricing() {
               />
             </svg>
             <span>
-              If you are unsure which suits you best, book a free 15-minute
-              consultation call with me. I&apos;ll walk you through all your
-              questions.
+              Not sure where to start? A free 15-minute call with our team will
+              walk you through candidacy, options, and what to expect before you
+              commit to anything.
             </span>
           </div>
-          <a className="price-callout-cta" href="#consult-15">
-            Book a 15-minute call
+          <a className="price-callout-cta" href="tel:4242784241">
+            (424) 278-4241
           </a>
         </div>
       </div>
