@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const row1Images = [
-  "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1511497584788-876760111969?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1486520299386-6d106b22014b?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=600&q=80&auto=format&fit=crop",
+  'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1511497584788-876760111969?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1486520299386-6d106b22014b?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1473773508845-188df298d2d1?w=600&q=80&auto=format&fit=crop',
 ];
 
 const row2Images = [
-  "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80&auto=format&fit=crop&sat=-25",
-  "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1504198266287-1659872e6590?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80&auto=format&fit=crop&sat=-15",
-  "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&q=80&auto=format&fit=crop&sat=-10",
-  "https://images.unsplash.com/photo-1486520299386-6d106b22014b?w=600&q=80&auto=format&fit=crop&sat=-10",
-  "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop&sat=-10",
+  'https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=600&q=80&auto=format&fit=crop&sat=-25',
+  'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1504198266287-1659872e6590?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&q=80&auto=format&fit=crop',
+  'https://images.unsplash.com/photo-1448375240586-882707db888b?w=600&q=80&auto=format&fit=crop&sat=-15',
+  'https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&q=80&auto=format&fit=crop&sat=-10',
+  'https://images.unsplash.com/photo-1486520299386-6d106b22014b?w=600&q=80&auto=format&fit=crop&sat=-10',
+  'https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop&sat=-10',
 ];
 
 export default function Glimpses() {
@@ -61,7 +61,7 @@ export default function Glimpses() {
       raf = 0;
       const r = wrap.getBoundingClientRect();
       const vh = window.innerHeight;
-      const footer = document.querySelector(".site-footer");
+      const footer = document.querySelector('.site-footer');
       const tail = footer ? (footer as HTMLElement).offsetHeight : 0;
       const span = vh + wrap.offsetHeight + tail;
       const p = Math.max(0, Math.min(1, (vh - r.top) / span));
@@ -69,7 +69,7 @@ export default function Glimpses() {
 
       rows.forEach((row, i) => {
         if (!row) return;
-        const dir = row.dataset.dir === "right" ? 1 : -1;
+        const dir = row.dataset.dir === 'right' ? 1 : -1;
         const ambient = scrollY * 0.18 * dir;
         const t = (p - 0.5) * 2;
         const burst = t * dir * RANGE;
@@ -83,7 +83,7 @@ export default function Glimpses() {
       });
     };
 
-    window.addEventListener("load", () => {
+    window.addEventListener('load', () => {
       measure();
       update();
     });
@@ -94,13 +94,13 @@ export default function Glimpses() {
       if (!raf) raf = requestAnimationFrame(update);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
     update();
 
     return () => {
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
     };
   }, []);
 

@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ci:
+    name: Typecheck + Lint + Format + Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: bun install
+
+      - name: Typecheck
+        working-directory: frontend
+        run: bun run typecheck
+
+      - name: Lint
+        working-directory: frontend
+        run: bun run lint
+
+      - name: Format check
+        working-directory: frontend
+        run: bun run format
+
+      - name: Knip
+        working-directory: frontend
+        run: bun run knip
+
+      - name: Build
+        working-directory: frontend
+        run: bun run build
