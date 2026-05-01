@@ -1,0 +1,10 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/javascript-node:20-bookworm
+    volumes:
+      - ..:/workspace:cached
+      - ~/.aws:/root/.aws:ro
+      - ~/.config/gh:/root/.config/gh:ro
+    command: sleep infinity
+    environment:
+      - NODE_ENV=development

@@ -7,18 +7,16 @@ export default function ProviderCard() {
             <span className="bio-label">Medical Director</span>
             <h2 className="bio-headline">Meet Dr. Riley</h2>
             <p className="bio-body">
-              Dr. Christa Riley is a board-certified anesthesiologist and
-              military veteran who served in Afghanistan. Her experience
-              performing nerve blocks and anesthesia on wounded service members
-              shaped a firsthand understanding of trauma, resilience, and the
-              lasting effects of high-stress on the body and mind. She brings
-              that perspective to every patient at Phos.
+              Dr. Christa Riley is a board-certified anesthesiologist and military veteran who
+              served in Afghanistan. Her experience performing nerve blocks and anesthesia on
+              wounded service members shaped a firsthand understanding of trauma, resilience, and
+              the lasting effects of high-stress on the body and mind. She brings that perspective
+              to every patient at Phos.
             </p>
           </div>
           <p className="bio-quote">
-            Healing isn&apos;t one-size-fits-all. Your protocol should reflect
-            how you&apos;re actually responding, not what worked for someone
-            else.
+            Healing isn&apos;t one-size-fits-all. Your protocol should reflect how you&apos;re
+            actually responding, not what worked for someone else.
           </p>
         </div>
         <div className="bio-portrait">
