@@ -1,24 +1,24 @@
 const posts = [
   {
-    img: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80&auto=format&fit=crop",
-    alt: "Sunlight through pine trees",
-    title: "Light through trees",
-    body: "A quiet walk through morning light. The forest breathing with you - slow, soft, alive.",
-    href: "#blog-1",
+    img: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80&auto=format&fit=crop',
+    alt: 'Sunlight through pine trees',
+    title: 'Light through trees',
+    body: 'A quiet walk through morning light. The forest breathing with you - slow, soft, alive.',
+    href: '#blog-1',
   },
   {
-    img: "https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80&auto=format&fit=crop",
-    alt: "Hands giving a healing touch",
-    title: "Hands and presence",
+    img: 'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80&auto=format&fit=crop',
+    alt: 'Hands giving a healing touch',
+    title: 'Hands and presence',
     body: "Inside a session: soft touch, and the safety to feel what's ready to unfold.",
-    href: "#blog-2",
+    href: '#blog-2',
   },
   {
-    img: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80&auto=format&fit=crop",
-    alt: "Forest at twilight",
-    title: "Night in the Wild",
-    body: "How the forest shifts at night and what it teaches us about stillness.",
-    href: "#blog-3",
+    img: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80&auto=format&fit=crop',
+    alt: 'Forest at twilight',
+    title: 'Night in the Wild',
+    body: 'How the forest shifts at night and what it teaches us about stillness.',
+    href: '#blog-3',
   },
 ];
 

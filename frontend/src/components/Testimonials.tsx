@@ -1,27 +1,27 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const testimonials = [
   {
     quote:
-      "It felt like time slowed down. I left feeling lighter, clearer, and more in touch with what matters.",
-    name: "Mona S.",
+      'It felt like time slowed down. I left feeling lighter, clearer, and more in touch with what matters.',
+    name: 'Mona S.',
   },
   {
     quote:
-      "Every part of the retreat felt intentional — from the silence to the tea. It gave me space to breathe and reset.",
-    name: "Sophia Lee",
+      'Every part of the retreat felt intentional — from the silence to the tea. It gave me space to breathe and reset.',
+    name: 'Sophia Lee',
   },
   {
     quote:
       "It wasn't just a retreat. It was a return — to nature, to stillness, to myself. I'm carrying that feeling with me.",
-    name: "Olivia S.",
+    name: 'Olivia S.',
   },
   {
     quote:
       "I didn't expect something so powerful. The forest session helped me pause and truly reconnect.",
-    name: "David R.",
+    name: 'David R.',
   },
 ];
 
@@ -42,11 +42,9 @@ export default function Testimonials() {
     if (!originals.length) return;
 
     const firstClone = originals[0].cloneNode(true) as HTMLElement;
-    const lastClone = originals[originals.length - 1].cloneNode(
-      true
-    ) as HTMLElement;
-    firstClone.setAttribute("aria-hidden", "true");
-    lastClone.setAttribute("aria-hidden", "true");
+    const lastClone = originals[originals.length - 1].cloneNode(true) as HTMLElement;
+    firstClone.setAttribute('aria-hidden', 'true');
+    lastClone.setAttribute('aria-hidden', 'true');
     track.appendChild(firstClone);
     track.insertBefore(lastClone, originals[0]);
 
@@ -60,11 +58,11 @@ export default function Testimonials() {
     };
 
     const apply = (animate: boolean) => {
-      track.classList.toggle("is-snapping", !animate);
+      track.classList.toggle('is-snapping', !animate);
       track.style.transform = `translateX(${-indexRef.current * stepWidth()}px)`;
       if (!animate) {
         void track.offsetWidth;
-        track.classList.remove("is-snapping");
+        track.classList.remove('is-snapping');
       }
     };
 
@@ -76,7 +74,7 @@ export default function Testimonials() {
     };
 
     const onTransitionEnd = (e: TransitionEvent) => {
-      if (e.propertyName !== "transform") return;
+      if (e.propertyName !== 'transform') return;
       if (indexRef.current === N + 1) {
         indexRef.current = 1;
         apply(false);
@@ -89,15 +87,15 @@ export default function Testimonials() {
 
     const onResize = () => apply(false);
 
-    track.addEventListener("transitionend", onTransitionEnd);
-    prev.addEventListener("click", () => advance(-1));
-    next.addEventListener("click", () => advance(1));
-    window.addEventListener("resize", onResize);
+    track.addEventListener('transitionend', onTransitionEnd);
+    prev.addEventListener('click', () => advance(-1));
+    next.addEventListener('click', () => advance(1));
+    window.addEventListener('resize', onResize);
     apply(false);
 
     return () => {
-      track.removeEventListener("transitionend", onTransitionEnd);
-      window.removeEventListener("resize", onResize);
+      track.removeEventListener('transitionend', onTransitionEnd);
+      window.removeEventListener('resize', onResize);
     };
   }, []);
 
@@ -108,8 +106,7 @@ export default function Testimonials() {
           <span className="label-pill">Testimonials</span>
           <h2 className="section-title">What Clients Are Saying</h2>
           <p className="section-sub">
-            Real words from people who experienced deep rest, clarity, and
-            reconnection.
+            Real words from people who experienced deep rest, clarity, and reconnection.
           </p>
         </div>
       </div>

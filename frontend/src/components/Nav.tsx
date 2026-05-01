@@ -1,33 +1,16 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 const LogoMark = () => (
-  <svg
-    className="nav-logo-mark"
-    viewBox="0 0 200 200"
-    fill="none"
-    aria-hidden="true"
-  >
+  <svg className="nav-logo-mark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
     <circle cx="100" cy="100" r="90" stroke="#80BCAC" strokeWidth="3" />
-    <g
-      stroke="#A8C8BC"
-      strokeWidth="3"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <g stroke="#A8C8BC" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M22 92 L36 80 L48 86 L60 74 L72 86 L82 82 L92 92" />
       <path d="M108 92 L120 78 L132 86 L146 76 L160 86 L172 80 L182 90" />
       <path d="M44 110 L62 92 L74 100 L88 80 L100 60 L114 78 L126 92 L140 84 L156 100" />
     </g>
-    <g
-      stroke="#B88C50"
-      strokeWidth="3"
-      fill="none"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
+    <g stroke="#B88C50" strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round">
       <path d="M100 142 C 92 124, 92 108, 100 92 C 108 108, 108 124, 100 142 Z" />
       <path d="M100 142 C 86 128, 80 112, 84 96 C 96 108, 102 124, 100 142 Z" />
       <path d="M100 142 C 114 128, 120 112, 116 96 C 104 108, 98 124, 100 142 Z" />
@@ -55,15 +38,15 @@ export default function Nav() {
 
     const handleScroll = () => {
       if (window.scrollY > 20) {
-        nav.classList.add("is-scrolled");
+        nav.classList.add('is-scrolled');
       } else {
-        nav.classList.remove("is-scrolled");
+        nav.classList.remove('is-scrolled');
       }
     };
 
     handleScroll();
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   return (
