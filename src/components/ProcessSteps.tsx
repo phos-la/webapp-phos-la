@@ -5,23 +5,23 @@ import { useEffect, useRef } from "react";
 const steps = [
   {
     num: "1",
-    title: "Discovery Call",
-    body: "A short conversation to get to know each other, feel into the connection, and see if this experience is the right fit for you at this moment.",
+    title: "Screening call",
+    body: "A short consultation to understand your history, walk through candidacy, and answer your questions. If you're a fit, we'll get you scheduled. If not, we'll tell you honestly and point you in the right direction.",
   },
   {
     num: "2",
-    title: "Preparation",
-    body: "Before your session or retreat, we'll stay in touch by email. You'll receive simple guidance to help you slow down, prepare your body, and set intention.",
+    title: "PA evaluation",
+    body: "Before your first infusion, your PA reviews your medical history, current medications, and goals. This is where your protocol is set, including dosing, session duration, and any supportive therapies like NAD+ or magnesium.",
   },
   {
     num: "3",
-    title: "The session",
-    body: "Held in a peaceful forest space, each session blends touch, breath, and presence — guided by your body's rhythm and what naturally wants to unfold.",
+    title: "Your infusions",
+    body: "Six sessions over two to three weeks, administered in our Westwood clinic under medical supervision. Your PA checks in before and after every infusion, adjusting your protocol based on how you're responding, not a fixed template.",
   },
   {
     num: "4",
-    title: "Integration",
-    body: "After your session, you'll have time to rest and reflect. You're welcome to stay in the forest overnight to let the experience settle into your body and heart.",
+    title: "Integration support",
+    body: "After your series, your PA discusses your outcomes and next steps. Whether that's maintenance sessions, connecting with a therapist, or both, you leave with a clear plan rather than a handoff.",
   },
 ];
 
@@ -41,7 +41,6 @@ export default function ProcessSteps() {
     if (!stage) return;
 
     const cards = cardsRef.current;
-
     const clamp01 = (n: number) => Math.max(0, Math.min(1, n));
 
     const update = () => {
@@ -75,8 +74,8 @@ export default function ProcessSteps() {
         <div className="pinned-pin">
           <div className="section-inner">
             <div className="section-head">
-              <span className="label-pill">How we&apos;ll work together</span>
-              <h2 className="section-title">From intention to healing</h2>
+              <span className="label-pill">What to expect</span>
+              <h2 className="section-title">From first call to integration</h2>
             </div>
 
             <div className="steps" id="processSteps">
