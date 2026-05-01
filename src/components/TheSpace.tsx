@@ -1,17 +1,17 @@
 export default function TheSpace() {
   return (
-    <section className="space-section" data-screen-label="08 The Space">
+    <section className="space-section" data-screen-label="08 The Clinic">
       <div className="space-cards">
         <div className="space-card space-text">
-          <h2 className="space-headline">Deep in the nature</h2>
+          <h2 className="space-headline">Private, calm, Westwood</h2>
           <p className="space-body">
-            Nestled in the woods near Asheville, this forest cabin is surrounded
-            by trees, silence, and simplicity. The space is warm and grounding -
-            designed to support nervous system rest and deep reconnection through
-            nature. Whether you&apos;re here for a private session or staying
-            overnight, the forest gently invites you back to yourself.
+            Our clinic is on the third floor of 1762 Westwood Blvd, a quiet
+            suite designed for medical privacy and patient comfort. No waiting
+            room full of strangers. No sterile hospital feel. Just a calm,
+            unhurried space where you can arrive, settle in, and focus entirely
+            on your session.
           </p>
-          <a className="space-link" href="#location">
+          <a className="space-link" href="https://maps.google.com/?q=1762+Westwood+Blvd+Suite+320+Los+Angeles+CA+90024" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path
                 d="M12 21 C 6 14, 5 9, 8.5 6 C 12 3, 14 6, 14 6 C 14 6, 17 9, 14 13 C 12 16, 12 21, 12 21 Z"
@@ -30,13 +30,13 @@ export default function TheSpace() {
                 fill="none"
               />
             </svg>
-            See the location
+            1762 Westwood Blvd, Ste 320
             <span aria-hidden="true">&rarr;</span>
           </a>
           <div className="space-chips">
-            <span className="space-chip">No disruptions</span>
-            <span className="space-chip">Surrounded by deep woods</span>
-            <span className="space-chip">Total privacy</span>
+            <span className="space-chip">Private suite</span>
+            <span className="space-chip">Medical-grade monitoring</span>
+            <span className="space-chip">Near UCLA</span>
           </div>
         </div>
 
@@ -44,16 +44,16 @@ export default function TheSpace() {
           <div className="space-photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1400&q=80&auto=format&fit=crop"
-              alt="Warm cabin interior with large window"
+              src="https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1400&q=80&auto=format&fit=crop"
+              alt="Calm private clinical suite"
               loading="lazy"
             />
           </div>
           <div className="space-photo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=1400&q=80&auto=format&fit=crop"
-              alt="Misty forest at dawn"
+              src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1400&q=80&auto=format&fit=crop"
+              alt="Medical professional with patient"
               loading="lazy"
             />
           </div>
