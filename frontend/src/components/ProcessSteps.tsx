@@ -2,7 +2,19 @@
 
 import { useEffect, useRef } from 'react';
 
-const steps = [
+export interface ProcessStep {
+  num: string;
+  title: string;
+  body: string;
+}
+
+export interface ProcessSectionData {
+  label?: string;
+  heading?: string;
+  steps?: ProcessStep[];
+}
+
+const DEFAULT_STEPS: ProcessStep[] = [
   {
     num: '1',
     title: 'Screening call',
@@ -25,6 +37,12 @@ const steps = [
   },
 ];
 
+const DEFAULTS: Required<ProcessSectionData> = {
+  label: 'What to expect',
+  heading: 'From first call to integration',
+  steps: DEFAULT_STEPS,
+};
+
 const STEP_WINDOWS: [number, number][] = [
   [0.06, 0.26],
   [0.26, 0.46],
@@ -32,7 +50,10 @@ const STEP_WINDOWS: [number, number][] = [
   [0.66, 0.86],
 ];
 
-export default function ProcessSteps() {
+export default function ProcessSteps({ data }: { data?: ProcessSectionData }) {
+  const d = { ...DEFAULTS, ...data };
+  const steps = d.steps?.length ? d.steps : DEFAULT_STEPS;
+
   const stageRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLElement | null)[]>([]);
 
@@ -71,8 +92,8 @@ export default function ProcessSteps() {
         <div className="pinned-pin">
           <div className="section-inner">
             <div className="section-head">
-              <span className="label-pill">What to expect</span>
-              <h2 className="section-title">From first call to integration</h2>
+              <span className="label-pill">{d.label}</span>
+              <h2 className="section-title">{d.heading}</h2>
             </div>
 
             <div className="steps" id="processSteps">
