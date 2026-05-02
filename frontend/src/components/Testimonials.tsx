@@ -2,7 +2,20 @@
 
 import { useEffect, useRef } from 'react';
 
-const testimonials = [
+export interface TestimonialItem {
+  _id?: string;
+  quote: string;
+  name: string;
+}
+
+export interface TestimonialsSectionData {
+  label?: string;
+  heading?: string;
+  subheading?: string;
+  items?: TestimonialItem[];
+}
+
+const DEFAULT_ITEMS: TestimonialItem[] = [
   {
     quote:
       'It felt like time slowed down. I left feeling lighter, clearer, and more in touch with what matters.',
@@ -25,7 +38,18 @@ const testimonials = [
   },
 ];
 
-export default function Testimonials() {
+const DEFAULTS = {
+  label: 'Testimonials',
+  heading: 'What Clients Are Saying',
+  subheading: 'Real words from people who experienced deep rest, clarity, and reconnection.',
+};
+
+export default function Testimonials({ data }: { data?: TestimonialsSectionData }) {
+  const label = data?.label ?? DEFAULTS.label;
+  const heading = data?.heading ?? DEFAULTS.heading;
+  const subheading = data?.subheading ?? DEFAULTS.subheading;
+  const testimonials = data?.items?.length ? data.items : DEFAULT_ITEMS;
+
   const trackRef = useRef<HTMLDivElement>(null);
   const prevRef = useRef<HTMLButtonElement>(null);
   const nextRef = useRef<HTMLButtonElement>(null);
@@ -103,11 +127,9 @@ export default function Testimonials() {
     <section className="section" data-screen-label="10 Testimonials">
       <div className="section-inner">
         <div className="section-head">
-          <span className="label-pill">Testimonials</span>
-          <h2 className="section-title">What Clients Are Saying</h2>
-          <p className="section-sub">
-            Real words from people who experienced deep rest, clarity, and reconnection.
-          </p>
+          <span className="label-pill">{label}</span>
+          <h2 className="section-title">{heading}</h2>
+          <p className="section-sub">{subheading}</p>
         </div>
       </div>
 
@@ -115,7 +137,7 @@ export default function Testimonials() {
         <div className="testimonial-rail">
           <div className="testimonial-track" id="testimonialTrack" ref={trackRef}>
             {testimonials.map((t) => (
-              <article className="testimonial-card" key={t.name}>
+              <article className="testimonial-card" key={t._id ?? t.name}>
                 <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
                 <p className="testimonial-name">{t.name}</p>
               </article>

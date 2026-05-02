@@ -16,15 +16,34 @@ const inter = Inter({
   display: 'swap',
 });
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://phos.la';
+const TITLE = 'Phos Wellness — IV Ketamine Clinic Los Angeles';
+const DESCRIPTION =
+  'IV ketamine therapy in a private Westwood practice. A licensed PA evaluates your response before and after every infusion, adjusting your protocol in real time. $400/session membership rate.';
+
 export const metadata: Metadata = {
-  title: 'PHOS Wellness — Ketamine Healing Clinic of Los Angeles',
-  description:
-    'Ketamine-assisted therapy in a private Los Angeles practice. Six sessions over three weeks, one clinician, guided from the first breath to integration.',
+  metadataBase: new URL(SITE_URL),
+  title: TITLE,
+  description: DESCRIPTION,
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
-    title: 'PHOS Wellness — Ketamine Healing Clinic of Los Angeles',
-    description:
-      'Ketamine-assisted therapy in a private Los Angeles practice. Six sessions over three weeks, one clinician, guided from the first breath to integration.',
+    title: TITLE,
+    description: DESCRIPTION,
+    url: SITE_URL,
+    siteName: 'Phos Wellness',
     type: 'website',
+    locale: 'en_US',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: TITLE,
+    description: DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
