@@ -11,12 +11,18 @@
     "lint": "oxlint -c oxlint.json --tsconfig tsconfig.json",
     "lint:fix": "oxlint -c oxlint.json --tsconfig tsconfig.json --fix",
     "knip": "knip",
-    "typecheck": "tsgo --noEmit"
+    "typecheck": "tsgo --noEmit",
+    "seed": "SANITY_API_TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2-) bun run scripts/seed-sanity.ts",
+    "seed:images": "SANITY_API_TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2-) bun run scripts/seed-sanity-images.ts"
   },
   "dependencies": {
+    "@sanity/client": "^7.22.0",
+    "@sanity/image-url": "^2.1.1",
     "next": "16.2.4",
+    "next-sanity": "^12.4.0",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sanity": "^5.23.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
