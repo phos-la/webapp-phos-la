@@ -1,16 +1,21 @@
 import { ImageResponse } from 'next/og';
-import { readFile } from 'node:fs/promises';
-import { join } from 'node:path';
 
-export const runtime = 'nodejs';
+export const runtime = 'edge';
 export const alt = 'Phos Wellness — Ketamine Healing Clinic of Los Angeles';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function Image() {
-  const fontData = await readFile(
-    join(process.cwd(), 'public/fonts/CormorantGaramond-VariableFont_wght.ttf'),
-  );
+  // Satori (next/og) requires static-weight fonts, not variable fonts.
+  // Fetch Cormorant Garamond at specific weights from Google Fonts CDN.
+  const [fontRegular, fontSemiBold] = await Promise.all([
+    fetch(
+      'https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_v86GnM.ttf',
+    ).then((r) => r.arrayBuffer()),
+    fetch(
+      'https://fonts.gstatic.com/s/cormorantgaramond/v21/co3umX5slCNuHLi8bLeY9MK7whWMhyjypVO7abI26QOD_iE9GnM.ttf',
+    ).then((r) => r.arrayBuffer()),
+  ]);
 
   return new ImageResponse(
     <div
@@ -143,8 +148,15 @@ export default async function Image() {
       fonts: [
         {
           name: 'Cormorant',
-          data: fontData,
+          data: fontRegular,
           style: 'normal',
+          weight: 400,
+        },
+        {
+          name: 'Cormorant',
+          data: fontSemiBold,
+          style: 'normal',
+          weight: 600,
         },
       ],
     },
