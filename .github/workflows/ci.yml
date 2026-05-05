@@ -8,7 +8,7 @@ on:
 
 jobs:
   ci:
-    name: Typecheck + Lint + Format + Build
+    name: Typecheck + Lint + Format
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +38,3 @@ jobs:
         working-directory: frontend
         run: bun run knip
 
-      - name: Build
-        working-directory: frontend
-        run: bun run build

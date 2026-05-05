@@ -4,7 +4,7 @@ import { schemaTypes } from './src/lib/sanity/schemas';
 import { structure } from './src/lib/sanity/structure';
 
 export default defineConfig({
-  projectId: '1shyjz84',
+  projectId: 'yfse28ye',
   dataset: 'production',
   title: 'Phos Wellness',
   basePath: '/studio',
