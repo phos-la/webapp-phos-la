@@ -75,7 +75,7 @@ export default function Nav() {
           </a>
         </div>
 
-        <a className="nav-cta" href="#consult">
+        <a className="nav-cta" href="/book">
           Book a consultation
         </a>
       </nav>
