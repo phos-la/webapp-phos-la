@@ -4,13 +4,11 @@ import { useEffect, useState } from 'react';
 import Nav from '@/components/Nav';
 
 // JotForm intake forms.
-// The returning + at-home tabs both use the same intake form for now —
-// the JotForm thank-you redirect URL determines whether the patient lands
-// on /book/thanks?type=returning or /book/thanks?type=athome. If those need
-// to diverge, create a third intake form and swap JOTFORM_ATHOME below.
+// Each tab has its own intake form. JotForm thank-you redirect URLs should
+// be configured to land on /book/thanks?type=new|returning|athome.
 const JOTFORM_NEW = 'https://form.jotform.com/261265432029150';
 const JOTFORM_RETURNING = 'https://form.jotform.com/261265681381157';
-const JOTFORM_ATHOME = 'https://form.jotform.com/261265681381157';
+const JOTFORM_ATHOME = 'https://form.jotform.com/261267150831049';
 
 const COOKIE_NAME = 'phos_returning';
 
@@ -35,7 +33,7 @@ const TAB_CONFIG: Record<Tab, { label: string; accent: string; jotform: string; 
     cta: 'Continue as returning patient →',
   },
   athome: {
-    label: 'Returning · At-Home',
+    label: 'At-Home',
     accent: '#0f766e',
     jotform: JOTFORM_ATHOME,
     cta: 'Continue with at-home visit →',
