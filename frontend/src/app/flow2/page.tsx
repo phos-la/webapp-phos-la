@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 
 // React Flow uses browser APIs — load client-side only
-const IntakeFlowDiagram = dynamic(() => import('@/components/flow/IntakeFlowDiagram'), {
+const CookieFlowDiagram = dynamic(() => import('@/components/flow/CookieFlowDiagram'), {
   ssr: false,
   loading: () => (
     <div
@@ -21,6 +21,6 @@ const IntakeFlowDiagram = dynamic(() => import('@/components/flow/IntakeFlowDiag
   ),
 });
 
-export default function FlowPage() {
-  return <IntakeFlowDiagram />;
+export default function Flow2Page() {
+  return <CookieFlowDiagram />;
 }

@@ -20,34 +20,34 @@ import '@xyflow/react/dist/style.css';
 
 // ─── Brand tokens ────────────────────────────────────────────────────────────
 const C = {
-  teal:         '#358c7a',
-  tealDark:     '#2a7062',
-  tealLight:    '#e8f4f1',
-  aqua:         '#80bcac',
-  navy:         '#1e3a48',
-  amber:        '#b88c50',
-  amberLight:   '#f9f2e8',
-  cream:        '#ede8dc',
-  purple:       '#6b46c1',
-  purpleLight:  '#f3f0ff',
-  purpleDark:   '#553c9a',
-  red:          '#c53030',
-  redLight:     '#fff5f5',
-  green:        '#276749',
-  greenLight:   '#f0fff4',
-  blue:         '#2b6cb0',
-  blueLight:    '#ebf8ff',
+  teal: '#358c7a',
+  tealDark: '#2a7062',
+  tealLight: '#e8f4f1',
+  aqua: '#80bcac',
+  navy: '#1e3a48',
+  amber: '#b88c50',
+  amberLight: '#f9f2e8',
+  cream: '#ede8dc',
+  purple: '#6b46c1',
+  purpleLight: '#f3f0ff',
+  purpleDark: '#553c9a',
+  red: '#c53030',
+  redLight: '#fff5f5',
+  green: '#276749',
+  greenLight: '#f0fff4',
+  blue: '#2b6cb0',
+  blueLight: '#ebf8ff',
   // IV Spa colour
-  spa:          '#38a169',
-  spaLight:     '#e6ffed',
-  spaDark:      '#276749',
-  white:        '#ffffff',
-  gray50:       '#f9fafb',
-  gray100:      '#f3f4f6',
-  gray400:      '#9ca3af',
-  gray600:      '#4b5563',
-  gray700:      '#374151',
-  gray800:      '#1f2937',
+  spa: '#38a169',
+  spaLight: '#e6ffed',
+  spaDark: '#276749',
+  white: '#ffffff',
+  gray50: '#f9fafb',
+  gray100: '#f3f4f6',
+  gray400: '#9ca3af',
+  gray600: '#4b5563',
+  gray700: '#374151',
+  gray800: '#1f2937',
 };
 
 // ─── Shared node styles ───────────────────────────────────────────────────────
@@ -77,32 +77,76 @@ const bodyStyle: React.CSSProperties = {
 // ─── Custom node: Site Bar ────────────────────────────────────────────────────
 function SiteNode({ data }: NodeProps) {
   return (
-    <div style={{ ...nodeBase, background: C.teal, padding: '14px 20px', width: 1280, border: `2px solid ${C.tealDark}` }}>
+    <div
+      style={{
+        ...nodeBase,
+        background: C.teal,
+        padding: '14px 20px',
+        width: 1280,
+        border: `2px solid ${C.tealDark}`,
+      }}
+    >
       {/* Handles aligned with form column centres */}
       <Handle type="source" position={Position.Bottom} id="left" style={{ left: '20%' }} />
       <Handle type="source" position={Position.Bottom} id="book" style={{ left: '53%' }} />
-      <Handle type="source" position={Position.Bottom} id="spa"  style={{ left: '71%' }} />
+      <Handle type="source" position={Position.Bottom} id="spa" style={{ left: '71%' }} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <div style={{ color: C.white, fontWeight: 800, fontSize: 16, letterSpacing: '-0.02em' }}>phos.la</div>
-          <div style={{ color: C.aqua, fontSize: 10, marginTop: 2 }}>Vercel · zero PHI stored or processed</div>
+          <div style={{ color: C.white, fontWeight: 800, fontSize: 16, letterSpacing: '-0.02em' }}>
+            phos.la
+          </div>
+          <div style={{ color: C.aqua, fontSize: 10, marginTop: 2 }}>
+            Vercel · zero PHI stored or processed
+          </div>
         </div>
-        <div style={{ background: 'rgba(255,255,255,0.12)', borderRadius: 8, padding: '6px 14px', textAlign: 'center' }}>
+        <div
+          style={{
+            background: 'rgba(255,255,255,0.12)',
+            borderRadius: 8,
+            padding: '6px 14px',
+            textAlign: 'center',
+          }}
+        >
           <div style={{ color: C.white, fontSize: 11, fontWeight: 600 }}>/pricing</div>
-          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 9, marginTop: 1 }}>Real page · no form</div>
+          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 9, marginTop: 1 }}>
+            Real page · no form
+          </div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <div style={{ background: C.white, borderRadius: 8, padding: '6px 14px', textAlign: 'center' }}>
+          <div
+            style={{
+              background: C.white,
+              borderRadius: 8,
+              padding: '6px 14px',
+              textAlign: 'center',
+            }}
+          >
             <div style={{ color: C.teal, fontSize: 11, fontWeight: 700 }}>New Patient</div>
             <div style={{ color: C.teal, fontSize: 9, marginTop: 1 }}>First consultation →</div>
           </div>
-          <div style={{ background: C.white, borderRadius: 8, padding: '6px 14px', textAlign: 'center' }}>
+          <div
+            style={{
+              background: C.white,
+              borderRadius: 8,
+              padding: '6px 14px',
+              textAlign: 'center',
+            }}
+          >
             <div style={{ color: C.purple, fontSize: 11, fontWeight: 700 }}>Book a Session</div>
             <div style={{ color: C.purple, fontSize: 9, marginTop: 1 }}>New or returning →</div>
           </div>
-          <div style={{ background: C.white, borderRadius: 8, padding: '6px 14px', textAlign: 'center' }}>
+          <div
+            style={{
+              background: C.white,
+              borderRadius: 8,
+              padding: '6px 14px',
+              textAlign: 'center',
+            }}
+          >
             <div style={{ color: C.spa, fontSize: 11, fontWeight: 700 }}>IV Spa & Wellness</div>
-            <div style={{ color: C.spa, fontSize: 9, marginTop: 1 }}>NAD+ · Myers · Glutathione →</div>
+            <div style={{ color: C.spa, fontSize: 9, marginTop: 1 }}>
+              NAD+ · Myers · Glutathione →
+            </div>
           </div>
         </div>
       </div>
@@ -118,11 +162,23 @@ function FormNode({ data }: NodeProps) {
       <Handle type="target" position={Position.Top} />
       <div style={headerStyle(d.color)}>
         <div>{d.title}</div>
-        <div style={{ fontWeight: 400, fontSize: 10, opacity: 0.85, marginTop: 2 }}>{d.subtitle}</div>
+        <div style={{ fontWeight: 400, fontSize: 10, opacity: 0.85, marginTop: 2 }}>
+          {d.subtitle}
+        </div>
       </div>
       <div style={bodyStyle}>
         {d.fields.map((f: string, i: number) => (
-          <div key={i} style={{ color: f.startsWith('·') ? C.gray400 : C.gray700, fontSize: 10, lineHeight: '1.6', paddingLeft: f.startsWith('·') ? 6 : 0 }}>{f}</div>
+          <div
+            key={i}
+            style={{
+              color: f.startsWith('·') ? C.gray400 : C.gray700,
+              fontSize: 10,
+              lineHeight: '1.6',
+              paddingLeft: f.startsWith('·') ? 6 : 0,
+            }}
+          >
+            {f}
+          </div>
         ))}
       </div>
       <Handle type="source" position={Position.Bottom} />
@@ -138,13 +194,37 @@ function LookupNode({ data }: NodeProps) {
       <Handle type="target" position={Position.Top} />
       <div style={headerStyle(C.purple)}>
         <div>{d.title}</div>
-        <div style={{ fontWeight: 400, fontSize: 10, opacity: 0.85, marginTop: 2 }}>{d.subtitle}</div>
+        <div style={{ fontWeight: 400, fontSize: 10, opacity: 0.85, marginTop: 2 }}>
+          {d.subtitle}
+        </div>
       </div>
       <div style={bodyStyle}>
         <div style={{ color: C.gray700, fontSize: 10, lineHeight: '1.7' }}>{d.note}</div>
         <div style={{ marginTop: 8, display: 'flex', gap: 6 }}>
-          <span style={{ background: C.greenLight, color: C.green, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 20 }}>FOUND → returning form</span>
-          <span style={{ background: C.redLight, color: C.red, fontSize: 9, fontWeight: 700, padding: '2px 8px', borderRadius: 20 }}>NOT FOUND → new patient</span>
+          <span
+            style={{
+              background: C.greenLight,
+              color: C.green,
+              fontSize: 9,
+              fontWeight: 700,
+              padding: '2px 8px',
+              borderRadius: 20,
+            }}
+          >
+            FOUND → returning form
+          </span>
+          <span
+            style={{
+              background: C.redLight,
+              color: C.red,
+              fontSize: 9,
+              fontWeight: 700,
+              padding: '2px 8px',
+              borderRadius: 20,
+            }}
+          >
+            NOT FOUND → new patient
+          </span>
         </div>
       </div>
       <Handle type="source" position={Position.Bottom} id="found" style={{ left: '30%' }} />
@@ -158,45 +238,85 @@ function KeragonNode({ data }: NodeProps) {
   const d = data as { workflowA: string[]; workflowB: string[]; workflowC: string[] };
   return (
     <div style={{ ...nodeBase, border: `2px solid ${C.amber}`, width: 1000 }}>
-      <Handle type="target" position={Position.Top} id="left"   style={{ left: '17%' }} />
+      <Handle type="target" position={Position.Top} id="left" style={{ left: '17%' }} />
       <Handle type="target" position={Position.Top} id="center" style={{ left: '50%' }} />
-      <Handle type="target" position={Position.Top} id="right"  style={{ left: '83%' }} />
+      <Handle type="target" position={Position.Top} id="right" style={{ left: '83%' }} />
       <div style={headerStyle(C.amber)}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span>KERAGON — HIPAA Integration Bridge</span>
           <div style={{ display: 'flex', gap: 6 }}>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>$269/mo</span>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>SOC2 Type II</span>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>BAA signed</span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              $269/mo
+            </span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              SOC2 Type II
+            </span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              BAA signed
+            </span>
           </div>
         </div>
         <div style={{ fontWeight: 400, fontSize: 10, opacity: 0.85, marginTop: 2 }}>
-          Receives JotForm webhooks · Maps fields · Manages DrChrono OAuth2 · Retries on failure · Audit logs every run
+          Receives JotForm webhooks · Maps fields · Manages DrChrono OAuth2 · Retries on failure ·
+          Audit logs every run
         </div>
       </div>
       <div style={{ ...bodyStyle, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
         <div style={{ background: C.amberLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.amber, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>Workflow A — New Patient</div>
+          <div style={{ color: C.amber, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            Workflow A — New Patient
+          </div>
           {d.workflowA.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
         <div style={{ background: C.amberLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.amber, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>Workflow B — Returning Patient</div>
+          <div style={{ color: C.amber, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            Workflow B — Returning Patient
+          </div>
           {d.workflowB.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
         <div style={{ background: C.spaLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>Workflow C — IV Spa</div>
+          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            Workflow C — IV Spa
+          </div>
           {d.workflowC.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} id="left"   style={{ left: '17%' }} />
+      <Handle type="source" position={Position.Bottom} id="left" style={{ left: '17%' }} />
       <Handle type="source" position={Position.Bottom} id="center" style={{ left: '50%' }} />
-      <Handle type="source" position={Position.Bottom} id="right"  style={{ left: '83%' }} />
+      <Handle type="source" position={Position.Bottom} id="right" style={{ left: '83%' }} />
     </div>
   );
 }
@@ -206,38 +326,59 @@ function DrChronoNode({ data }: NodeProps) {
   const d = data as { resultA: string[]; resultB: string[]; resultC: string[] };
   return (
     <div style={{ ...nodeBase, border: `2px solid ${C.blue}`, width: 1000 }}>
-      <Handle type="target" position={Position.Top} id="left"   style={{ left: '17%' }} />
+      <Handle type="target" position={Position.Top} id="left" style={{ left: '17%' }} />
       <Handle type="target" position={Position.Top} id="center" style={{ left: '50%' }} />
-      <Handle type="target" position={Position.Top} id="right"  style={{ left: '83%' }} />
+      <Handle type="target" position={Position.Top} id="right" style={{ left: '83%' }} />
       <div style={headerStyle(C.blue)}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span>DrChrono — EHR, System of Record</span>
-          <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>BAA signed</span>
+          <span
+            style={{
+              background: 'rgba(255,255,255,0.2)',
+              fontSize: 9,
+              padding: '2px 6px',
+              borderRadius: 10,
+            }}
+          >
+            BAA signed
+          </span>
         </div>
       </div>
       <div style={{ ...bodyStyle, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
         <div style={{ background: C.blueLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.blue, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>New Patient Chart Created</div>
+          <div style={{ color: C.blue, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            New Patient Chart Created
+          </div>
           {d.resultA.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
         <div style={{ background: C.blueLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.blue, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>Appointment Added to Chart</div>
+          <div style={{ color: C.blue, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            Appointment Added to Chart
+          </div>
           {d.resultB.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
         <div style={{ background: C.spaLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>IV Spa Appointment</div>
+          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 4 }}>
+            IV Spa Appointment
+          </div>
           {d.resultC.map((line: string, i: number) => (
-            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>{line}</div>
+            <div key={i} style={{ color: C.gray600, fontSize: 9, lineHeight: '1.6' }}>
+              {line}
+            </div>
           ))}
         </div>
       </div>
-      <Handle type="source" position={Position.Bottom} id="left"   style={{ left: '17%' }} />
+      <Handle type="source" position={Position.Bottom} id="left" style={{ left: '17%' }} />
       <Handle type="source" position={Position.Bottom} id="center" style={{ left: '50%' }} />
-      <Handle type="source" position={Position.Bottom} id="right"  style={{ left: '83%' }} />
+      <Handle type="source" position={Position.Bottom} id="right" style={{ left: '83%' }} />
     </div>
   );
 }
@@ -247,30 +388,63 @@ function StripeNode({ data }: NodeProps) {
   const d = data as { paymentA: string; paymentB: string; paymentC: string };
   return (
     <div style={{ ...nodeBase, border: `2px solid #635bff`, width: 1000 }}>
-      <Handle type="target" position={Position.Top} id="left"   style={{ left: '17%' }} />
+      <Handle type="target" position={Position.Top} id="left" style={{ left: '17%' }} />
       <Handle type="target" position={Position.Top} id="center" style={{ left: '50%' }} />
-      <Handle type="target" position={Position.Top} id="right"  style={{ left: '83%' }} />
+      <Handle type="target" position={Position.Top} id="right" style={{ left: '83%' }} />
       <div style={headerStyle('#635bff')}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span>Stripe — Payments</span>
           <div style={{ display: 'flex', gap: 6 }}>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>PCI compliant</span>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>BAA signed</span>
-            <span style={{ background: 'rgba(255,255,255,0.2)', fontSize: 9, padding: '2px 6px', borderRadius: 10 }}>no CC in JotForm</span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              PCI compliant
+            </span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              BAA signed
+            </span>
+            <span
+              style={{
+                background: 'rgba(255,255,255,0.2)',
+                fontSize: 9,
+                padding: '2px 6px',
+                borderRadius: 10,
+              }}
+            >
+              no CC in JotForm
+            </span>
           </div>
         </div>
       </div>
       <div style={{ ...bodyStyle, display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 10 }}>
         <div style={{ background: '#f5f3ff', borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: '#635bff', fontWeight: 700, fontSize: 10, marginBottom: 2 }}>New Ketamine Patient — Deposit</div>
+          <div style={{ color: '#635bff', fontWeight: 700, fontSize: 10, marginBottom: 2 }}>
+            New Ketamine Patient — Deposit
+          </div>
           <div style={{ color: C.gray600, fontSize: 9 }}>{d.paymentA}</div>
         </div>
         <div style={{ background: '#f5f3ff', borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: '#635bff', fontWeight: 700, fontSize: 10, marginBottom: 2 }}>Returning — Session + At-Home Sub</div>
+          <div style={{ color: '#635bff', fontWeight: 700, fontSize: 10, marginBottom: 2 }}>
+            Returning — Session + At-Home Sub
+          </div>
           <div style={{ color: C.gray600, fontSize: 9 }}>{d.paymentB}</div>
         </div>
         <div style={{ background: C.spaLight, borderRadius: 8, padding: '8px 10px' }}>
-          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 2 }}>IV Spa — Session Payment</div>
+          <div style={{ color: C.spa, fontWeight: 700, fontSize: 10, marginBottom: 2 }}>
+            IV Spa — Session Payment
+          </div>
           <div style={{ color: C.gray600, fontSize: 9 }}>{d.paymentC}</div>
         </div>
       </div>
@@ -280,12 +454,12 @@ function StripeNode({ data }: NodeProps) {
 
 // ─── Node types registry ──────────────────────────────────────────────────────
 const nodeTypes = {
-  site:     SiteNode,
-  form:     FormNode,
-  lookup:   LookupNode,
-  keragon:  KeragonNode,
+  site: SiteNode,
+  form: FormNode,
+  lookup: LookupNode,
+  keragon: KeragonNode,
   drchrono: DrChronoNode,
-  stripe:   StripeNode,
+  stripe: StripeNode,
 };
 
 // ─── Initial nodes ────────────────────────────────────────────────────────────
@@ -384,7 +558,7 @@ const initialNodes: Node[] = [
       ],
       workflowB: [
         'GET /api/patients?search={email} → find patient_id',
-        'POST /api/appointments → on Katie\'s schedule',
+        "POST /api/appointments → on Katie's schedule",
         'If not found → alert Katie, do NOT create partial record',
       ],
       workflowC: [
@@ -406,7 +580,7 @@ const initialNodes: Node[] = [
         'OnPatient access granted if configured.',
       ],
       resultB: [
-        'Appointment on Katie\'s schedule.',
+        "Appointment on Katie's schedule.",
         'Prior PA notes, adjunct history, meds accessible.',
         'No re-entry. No duplicate chart risk. Ever.',
       ],
@@ -424,8 +598,10 @@ const initialNodes: Node[] = [
     position: { x: 80, y: 1160 },
     data: {
       paymentA: 'JotForm thank-you → Stripe Payment Link · Deposit amount TBD ($100–$200)',
-      paymentB: 'Session rate $400 member · At-home subscription $65/mo via Stripe Billing · Customer Portal for card mgmt',
-      paymentC: 'Full session rate upfront (no deposit model) · Per-service pricing: NAD+, Myers, Glutathione · Stripe Payment Link on JotForm thank-you',
+      paymentB:
+        'Session rate $400 member · At-home subscription $65/mo via Stripe Billing · Customer Portal for card mgmt',
+      paymentC:
+        'Full session rate upfront (no deposit model) · Per-service pricing: NAD+, Myers, Glutathione · Stripe Payment Link on JotForm thank-you',
     },
   },
 ];
