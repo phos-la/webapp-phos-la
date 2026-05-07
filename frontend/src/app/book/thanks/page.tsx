@@ -135,6 +135,50 @@ async function redirectToCheckout(priceId: string): Promise<string | null> {
   return data.url ?? null;
 }
 
+// ─── Type config ──────────────────────────────────────────────────────────────
+
+type FlowType = 'new' | 'returning' | 'athome';
+
+const FLOW_CONFIG: Record<
+  FlowType,
+  {
+    accentColor: string;
+    heading: string;
+    subheading: string;
+    eyebrow: string;
+    pickerLabel: string | null;
+  }
+> = {
+  new: {
+    accentColor: 'var(--brand-teal)',
+    heading: "You're all set.",
+    subheading:
+      'Katie will review your intake before your first visit. One last step — a deposit holds your appointment slot.',
+    eyebrow: 'Hold your appointment',
+    pickerLabel: null,
+  },
+  returning: {
+    accentColor: '#6b46c1',
+    heading: 'See you soon.',
+    subheading: "We've got your note. One last step — choose your in-clinic session below.",
+    eyebrow: 'In-clinic services',
+    pickerLabel: 'Select your session',
+  },
+  athome: {
+    accentColor: '#0f766e',
+    heading: 'Welcome back.',
+    subheading: "We've got your note. One last step — choose your at-home video visit below.",
+    eyebrow: 'At-home services',
+    pickerLabel: 'Select your visit type',
+  },
+};
+
+function parseFlowType(raw: string | null): FlowType {
+  if (raw === 'returning') return 'returning';
+  if (raw === 'athome') return 'athome';
+  return 'new';
+}
+
 // ─── Service picker row ───────────────────────────────────────────────────────
 
 type Price = { id: string; label: string; amount: number; description: string };
@@ -142,10 +186,12 @@ type Price = { id: string; label: string; amount: number; description: string };
 function PriceRow({
   price,
   selected,
+  accentColor,
   onSelect,
 }: {
   price: Price;
   selected: boolean;
+  accentColor: string;
   onSelect: () => void;
 }) {
   return (
@@ -158,7 +204,7 @@ function PriceRow({
         width: '100%',
         padding: '14px 16px',
         background: selected ? 'rgba(30,58,72,0.05)' : 'transparent',
-        border: selected ? '1.5px solid var(--brand-teal)' : '1.5px solid #ede8dc',
+        border: selected ? `1.5px solid ${accentColor}` : '1.5px solid #ede8dc',
         borderRadius: 10,
         cursor: 'pointer',
         textAlign: 'left',
@@ -166,7 +212,6 @@ function PriceRow({
         transition: 'border-color 0.15s, background 0.15s',
       }}
     >
-      {/* Radio dot */}
       <span
         style={{
           flexShrink: 0,
@@ -174,8 +219,8 @@ function PriceRow({
           width: 16,
           height: 16,
           borderRadius: '50%',
-          border: `2px solid ${selected ? 'var(--brand-teal)' : '#d1d5db'}`,
-          background: selected ? 'var(--brand-teal)' : 'transparent',
+          border: `2px solid ${selected ? accentColor : '#d1d5db'}`,
+          background: selected ? accentColor : 'transparent',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -235,19 +280,17 @@ function PriceRow({
   );
 }
 
-// ─── Section tab ──────────────────────────────────────────────────────────────
-
-type Tab = 'clinic' | 'athome';
-
-// ─── Inner component (needs useSearchParams inside Suspense) ──────────────────
+// ─── Inner component ──────────────────────────────────────────────────────────
 
 function ThanksContent() {
   const params = useSearchParams();
-  const type = params.get('type'); // 'new' | 'returning'
-  const isNew = type !== 'returning';
+  const flow = parseFlowType(params.get('type'));
+  const config = FLOW_CONFIG[flow];
 
-  const [activeTab, setActiveTab] = useState<Tab>('clinic');
-  const [selectedId, setSelectedId] = useState<string>(IN_CLINIC_PRICES[0].id);
+  // Pick the right price list for the flow
+  const prices: Price[] =
+    flow === 'returning' ? IN_CLINIC_PRICES : flow === 'athome' ? AT_HOME_PRICES : [];
+  const [selectedId, setSelectedId] = useState<string>(prices[0]?.id ?? NEW_PATIENT_PRICE.id);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -255,11 +298,11 @@ function ThanksContent() {
     setCookie(COOKIE_NAME, COOKIE_DAYS);
   }, []);
 
-  // Keep selected ID in sync when switching tabs
+  // Reset selection if the flow type changes mid-session
   useEffect(() => {
-    if (activeTab === 'clinic') setSelectedId(IN_CLINIC_PRICES[0].id);
-    else setSelectedId(AT_HOME_PRICES[0].id);
-  }, [activeTab]);
+    setSelectedId(prices[0]?.id ?? NEW_PATIENT_PRICE.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [flow]);
 
   const handleCheckout = async (priceId: string) => {
     setLoading(true);
@@ -272,8 +315,6 @@ function ThanksContent() {
       setLoading(false);
     }
   };
-
-  const currentPrices = activeTab === 'clinic' ? IN_CLINIC_PRICES : AT_HOME_PRICES;
 
   return (
     <>
@@ -296,7 +337,7 @@ function ThanksContent() {
             width: 64,
             height: 64,
             borderRadius: '50%',
-            background: isNew ? 'var(--brand-teal)' : '#6b46c1',
+            background: config.accentColor,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -329,7 +370,7 @@ function ThanksContent() {
               marginBottom: 16,
             }}
           >
-            {isNew ? "You're all set." : 'See you soon.'}
+            {config.heading}
           </h1>
           <p
             style={{
@@ -339,9 +380,7 @@ function ThanksContent() {
               lineHeight: 1.7,
             }}
           >
-            {isNew
-              ? 'Katie will review your intake before your first visit. One last step — a deposit holds your appointment slot.'
-              : "We've got your note. One last step — complete your session payment below."}
+            {config.subheading}
           </p>
         </div>
 
@@ -352,12 +391,12 @@ function ThanksContent() {
             borderRadius: 20,
             boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
             width: '100%',
-            maxWidth: isNew ? 440 : 560,
+            maxWidth: flow === 'new' ? 440 : 560,
             overflow: 'hidden',
           }}
         >
           {/* ── New patient: single deposit ─────────────────────────────────── */}
-          {isNew && (
+          {flow === 'new' && (
             <div style={{ padding: '32px 36px', textAlign: 'center' }}>
               <p
                 style={{
@@ -370,7 +409,7 @@ function ThanksContent() {
                   marginBottom: 12,
                 }}
               >
-                Hold your appointment
+                {config.eyebrow}
               </p>
               <p
                 style={{
@@ -442,114 +481,83 @@ function ThanksContent() {
             </div>
           )}
 
-          {/* ── Returning patient: service picker ──────────────────────────── */}
-          {!isNew && (
-            <>
-              {/* Tab bar */}
-              <div
+          {/* ── Returning or At-Home: dedicated service picker ─────────────── */}
+          {flow !== 'new' && (
+            <div style={{ padding: '32px 28px 28px' }}>
+              <p
                 style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  borderBottom: '1px solid #ede8dc',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 11,
+                  fontWeight: 600,
+                  letterSpacing: '0.16em',
+                  textTransform: 'uppercase',
+                  color: 'var(--brand-amber)',
+                  marginBottom: 16,
+                  textAlign: 'center',
                 }}
               >
-                {(['clinic', 'athome'] as Tab[]).map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    style={{
-                      padding: '16px 0',
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: 13,
-                      fontWeight: 600,
-                      letterSpacing: '0.04em',
-                      background: activeTab === tab ? 'var(--brand-navy)' : '#f9f7f4',
-                      color: activeTab === tab ? '#fff' : '#9ca3af',
-                      border: 0,
-                      cursor: 'pointer',
-                      transition: 'background 0.2s, color 0.2s',
-                    }}
-                  >
-                    {tab === 'clinic' ? 'In-Clinic' : 'At-Home'}
-                  </button>
-                ))}
-              </div>
+                {config.pickerLabel}
+              </p>
 
-              {/* Price list */}
-              <div style={{ padding: '24px 28px 28px' }}>
+              {prices.map((price) => (
+                <PriceRow
+                  key={price.id}
+                  price={price}
+                  selected={selectedId === price.id}
+                  accentColor={config.accentColor}
+                  onSelect={() => setSelectedId(price.id)}
+                />
+              ))}
+
+              {error && (
                 <p
                   style={{
                     fontFamily: 'var(--font-sans)',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    letterSpacing: '0.16em',
-                    textTransform: 'uppercase',
-                    color: 'var(--brand-amber)',
-                    marginBottom: 16,
+                    fontSize: 13,
+                    color: '#dc2626',
+                    marginBottom: 12,
+                    marginTop: 4,
                   }}
                 >
-                  {activeTab === 'clinic' ? 'Select your session' : 'Select your visit type'}
+                  {error}
                 </p>
+              )}
 
-                {currentPrices.map((price) => (
-                  <PriceRow
-                    key={price.id}
-                    price={price}
-                    selected={selectedId === price.id}
-                    onSelect={() => setSelectedId(price.id)}
-                  />
-                ))}
-
-                {error && (
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-sans)',
-                      fontSize: 13,
-                      color: '#dc2626',
-                      marginBottom: 12,
-                      marginTop: 4,
-                    }}
-                  >
-                    {error}
-                  </p>
-                )}
-
-                <button
-                  onClick={() => handleCheckout(selectedId)}
-                  disabled={loading}
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '14px 0',
-                    background: loading ? '#9ca3af' : '#6b46c1',
-                    color: '#fff',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    textAlign: 'center',
-                    border: 'none',
-                    borderRadius: 10,
-                    cursor: loading ? 'not-allowed' : 'pointer',
-                    marginTop: 16,
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  {loading ? 'Redirecting…' : 'Continue to payment →'}
-                </button>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 11,
-                    color: '#9ca3af',
-                    marginTop: 12,
-                    textAlign: 'center',
-                  }}
-                >
-                  Secure payment via Stripe · PCI compliant
-                </p>
-              </div>
-            </>
+              <button
+                onClick={() => handleCheckout(selectedId)}
+                disabled={loading}
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '14px 0',
+                  background: loading ? '#9ca3af' : config.accentColor,
+                  color: '#fff',
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: '0.03em',
+                  textAlign: 'center',
+                  border: 'none',
+                  borderRadius: 10,
+                  cursor: loading ? 'not-allowed' : 'pointer',
+                  marginTop: 16,
+                  transition: 'background 0.2s',
+                }}
+              >
+                {loading ? 'Redirecting…' : 'Continue to payment →'}
+              </button>
+              <p
+                style={{
+                  fontFamily: 'var(--font-sans)',
+                  fontSize: 11,
+                  color: '#9ca3af',
+                  marginTop: 12,
+                  textAlign: 'center',
+                }}
+              >
+                Secure payment via Stripe · PCI compliant
+              </p>
+            </div>
           )}
         </div>
 
