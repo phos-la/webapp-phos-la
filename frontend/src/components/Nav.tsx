@@ -52,7 +52,7 @@ export default function Nav() {
   return (
     <div className="nav-wrap" role="presentation">
       <nav className="nav-pill" ref={navRef} id="navBar" aria-label="Primary">
-        <a className="nav-logo" href="#" aria-label="PHOS Wellness — home">
+        <a className="nav-logo" href="/" aria-label="PHOS Wellness — home">
           <LogoMark />
           <span className="nav-logo-text">
             <span className="nav-logo-word">PHOS</span>

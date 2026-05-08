@@ -3,8 +3,13 @@
 import { useEffect, useState } from 'react';
 import Nav from '@/components/Nav';
 
+// JotForm intake forms.
+// Each tab has its own intake form. JotForm thank-you redirect URLs should
+// be configured to land on /book/thanks?type=new|returning|athome.
 const JOTFORM_NEW = 'https://form.jotform.com/261265432029150';
 const JOTFORM_RETURNING = 'https://form.jotform.com/261265681381157';
+const JOTFORM_ATHOME = 'https://form.jotform.com/261267150831049';
+
 const COOKIE_NAME = 'phos_returning';
 
 function readCookie(name: string): boolean {
@@ -12,16 +17,52 @@ function readCookie(name: string): boolean {
   return document.cookie.split('; ').some((c) => c.startsWith(`${name}=`));
 }
 
+type Tab = 'new' | 'clinic' | 'athome';
+
+const TAB_CONFIG: Record<Tab, { label: string; accent: string; jotform: string; cta: string }> = {
+  new: {
+    label: 'New Patient',
+    accent: 'var(--brand-teal)',
+    jotform: JOTFORM_NEW,
+    cta: 'Begin new patient intake →',
+  },
+  clinic: {
+    label: 'Returning · In-Clinic',
+    accent: '#6b46c1',
+    jotform: JOTFORM_RETURNING,
+    cta: 'Continue as returning patient →',
+  },
+  athome: {
+    label: 'At-Home',
+    accent: '#0f766e',
+    jotform: JOTFORM_ATHOME,
+    cta: 'Continue with at-home visit →',
+  },
+};
+
 export default function BookPage() {
-  const [isReturning, setIsReturning] = useState(false);
+  const [activeTab, setActiveTab] = useState<Tab>('new');
   const [ready, setReady] = useState(false);
+  const [isLocal, setIsLocal] = useState(false);
 
   useEffect(() => {
-    setIsReturning(readCookie(COOKIE_NAME));
+    if (readCookie(COOKIE_NAME)) {
+      setActiveTab('clinic');
+    }
+    setIsLocal(
+      typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'),
+    );
     setReady(true);
   }, []);
 
-  const activeTab = isReturning ? 'returning' : 'new';
+  const config = TAB_CONFIG[activeTab];
+
+  // On localhost, append ?env=local so the JotForm hidden "env" field gets
+  // prefilled with "local" (JotForm prefills any field whose name matches a
+  // URL query param). The JotForm condition checks IF env contains "local"
+  // and redirects to localhost instead of phos.la.
+  const jotformHref = isLocal ? `${config.jotform}?env=local` : config.jotform;
 
   return (
     <>
@@ -63,7 +104,7 @@ export default function BookPage() {
               marginBottom: 16,
             }}
           >
-            {ready && isReturning ? 'Welcome back.' : 'Start your journey.'}
+            {ready && activeTab !== 'new' ? 'Welcome back.' : 'Start your journey.'}
           </h1>
           <p
             style={{
@@ -73,7 +114,7 @@ export default function BookPage() {
               lineHeight: 1.6,
             }}
           >
-            {ready && isReturning
+            {ready && activeTab !== 'new'
               ? "Your intake is on file. Just let us know why you're coming in."
               : 'Tell us a bit about yourself so Katie can prepare for your visit.'}
           </p>
@@ -87,56 +128,47 @@ export default function BookPage() {
             boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
             overflow: 'hidden',
             width: '100%',
-            maxWidth: 520,
+            maxWidth: 600,
           }}
         >
-          {/* Tab bar */}
+          {/* Tab bar — three columns */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
+              gridTemplateColumns: '1fr 1fr 1fr',
               borderBottom: '1px solid #ede8dc',
             }}
           >
-            <button
-              onClick={() => setIsReturning(false)}
-              style={{
-                padding: '16px 0',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                background: activeTab === 'new' ? 'var(--brand-teal)' : '#f9f7f4',
-                color: activeTab === 'new' ? '#fff' : '#9ca3af',
-                border: 0,
-                cursor: 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-              }}
-            >
-              New Patient
-            </button>
-            <button
-              onClick={() => setIsReturning(true)}
-              style={{
-                padding: '16px 0',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 13,
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                background: activeTab === 'returning' ? '#6b46c1' : '#f9f7f4',
-                color: activeTab === 'returning' ? '#fff' : '#9ca3af',
-                border: 0,
-                cursor: 'pointer',
-                transition: 'background 0.2s, color 0.2s',
-              }}
-            >
-              Returning Patient
-            </button>
+            {(Object.keys(TAB_CONFIG) as Tab[]).map((tab) => {
+              const t = TAB_CONFIG[tab];
+              const isActive = activeTab === tab;
+              return (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  style={{
+                    padding: '16px 8px',
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 12,
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    background: isActive ? t.accent : '#f9f7f4',
+                    color: isActive ? '#fff' : '#9ca3af',
+                    border: 0,
+                    cursor: 'pointer',
+                    transition: 'background 0.2s, color 0.2s',
+                    lineHeight: 1.3,
+                  }}
+                >
+                  {t.label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Tab body */}
           <div style={{ padding: '32px 36px 36px' }}>
-            {activeTab === 'new' ? (
+            {activeTab === 'new' && (
               <>
                 <h2
                   style={{
@@ -175,30 +207,10 @@ export default function BookPage() {
                   <li>Gender</li>
                   <li>Electronic signature</li>
                 </ul>
-                <a
-                  href={JOTFORM_NEW}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '14px 0',
-                    background: 'var(--brand-teal)',
-                    color: '#fff',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    borderRadius: 10,
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  Begin new patient intake →
-                </a>
               </>
-            ) : (
+            )}
+
+            {activeTab === 'clinic' && (
               <>
                 <h2
                   style={{
@@ -209,7 +221,7 @@ export default function BookPage() {
                     marginBottom: 12,
                   }}
                 >
-                  Book a session
+                  Book an in-clinic session
                 </h2>
                 <p
                   style={{
@@ -233,33 +245,75 @@ export default function BookPage() {
                     marginBottom: 28,
                   }}
                 >
-                  <li>Email address</li>
-                  <li>Reason for visit</li>
+                  <li>60 min, 90 min, 2-, 3-, 4-hour infusions</li>
+                  <li>Booster sessions and 6 / 12-pack memberships</li>
                 </ul>
-                <a
-                  href={JOTFORM_RETURNING}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    padding: '14px 0',
-                    background: '#6b46c1',
-                    color: '#fff',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    borderRadius: 10,
-                    transition: 'background 0.2s',
-                  }}
-                >
-                  Continue as returning patient →
-                </a>
               </>
             )}
+
+            {activeTab === 'athome' && (
+              <>
+                <h2
+                  style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: 22,
+                    fontWeight: 400,
+                    color: 'var(--brand-navy)',
+                    marginBottom: 12,
+                  }}
+                >
+                  Schedule an at-home video visit
+                </h2>
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 14,
+                    color: '#4a5568',
+                    lineHeight: 1.7,
+                    marginBottom: 8,
+                  }}
+                >
+                  Quick — just your email and a note on why you're coming in. Your full intake is
+                  already on file.
+                </p>
+                <ul
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 13,
+                    color: '#6b7280',
+                    lineHeight: 1.8,
+                    paddingLeft: 18,
+                    marginBottom: 28,
+                  }}
+                >
+                  <li>1st, 2nd, 3rd video consultations</li>
+                  <li>6-month follow-up and prescription changes</li>
+                </ul>
+              </>
+            )}
+
+            <a
+              href={jotformHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '14px 0',
+                background: config.accent,
+                color: '#fff',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 14,
+                fontWeight: 600,
+                letterSpacing: '0.03em',
+                textAlign: 'center',
+                textDecoration: 'none',
+                borderRadius: 10,
+                transition: 'background 0.2s',
+              }}
+            >
+              {config.cta}
+            </a>
           </div>
         </div>
 
