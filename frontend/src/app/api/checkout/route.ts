@@ -1,7 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+// Lazy-init: instantiating Stripe at module load fails during `next build`
+// when STRIPE_SECRET_KEY isn't present in the build environment.
+let stripeClient: Stripe | null = null;
+function getStripe(): Stripe {
+  if (!stripeClient) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) throw new Error('STRIPE_SECRET_KEY not configured');
+    stripeClient = new Stripe(key);
+  }
+  return stripeClient;
+}
 
 // Allowlist of sandbox price IDs — prevents arbitrary price ID injection.
 // Update this map when connecting the live Stripe account.
@@ -46,7 +56,7 @@ export async function POST(req: NextRequest) {
   const origin = req.headers.get('origin') ?? 'https://phos.la';
 
   try {
-    const session = await stripe.checkout.sessions.create({
+    const session = await getStripe().checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/book/thanks/success?session_id={CHECKOUT_SESSION_ID}`,
