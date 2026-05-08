@@ -43,15 +43,26 @@ const TAB_CONFIG: Record<Tab, { label: string; accent: string; jotform: string; 
 export default function BookPage() {
   const [activeTab, setActiveTab] = useState<Tab>('new');
   const [ready, setReady] = useState(false);
+  const [isLocal, setIsLocal] = useState(false);
 
   useEffect(() => {
     if (readCookie(COOKIE_NAME)) {
       setActiveTab('clinic');
     }
+    setIsLocal(
+      typeof window !== 'undefined' &&
+        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'),
+    );
     setReady(true);
   }, []);
 
   const config = TAB_CONFIG[activeTab];
+
+  // On localhost, append ?env=local so the JotForm hidden "env" field gets
+  // prefilled with "local" (JotForm prefills any field whose name matches a
+  // URL query param). The JotForm condition checks IF env contains "local"
+  // and redirects to localhost instead of phos.la.
+  const jotformHref = isLocal ? `${config.jotform}?env=local` : config.jotform;
 
   return (
     <>
@@ -282,7 +293,7 @@ export default function BookPage() {
             )}
 
             <a
-              href={config.jotform}
+              href={jotformHref}
               target="_blank"
               rel="noopener noreferrer"
               style={{
