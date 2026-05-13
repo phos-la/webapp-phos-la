@@ -53,7 +53,12 @@ export default function Nav({ data }: { data?: NavData }) {
   const items = data?.items?.length ? data.items : DEFAULT_ITEMS;
   const ctaLabel = data?.ctaLabel ?? 'Book a consultation';
   const ctaHref = data?.ctaHref ?? '/book';
-  const logoUrl = data?.logo ? urlFor(data.logo as never).width(120).height(120).url() : null;
+  const logoUrl = data?.logo
+    ? urlFor(data.logo as never)
+        .width(120)
+        .height(120)
+        .url()
+    : null;
   const logoAlt = data?.logoAlt ?? `${brandTitle} ${brandSubtitle}`;
 
   return (

@@ -53,7 +53,12 @@ const PhosLogoMark = ({ size = 72 }: { size?: number }) => (
 
 export default function Footer({ data }: { data?: FooterSectionData }) {
   const d = { ...DEFAULTS, ...data };
-  const logoUrl = data?.logo ? urlFor(data.logo as never).width(144).height(144).url() : null;
+  const logoUrl = data?.logo
+    ? urlFor(data.logo as never)
+        .width(144)
+        .height(144)
+        .url()
+    : null;
   const logoAlt = data?.logoAlt ?? d.businessName;
 
   return (

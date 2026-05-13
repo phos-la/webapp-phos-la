@@ -126,7 +126,5 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.divider(),
-      S.listItem()
-        .title('Blog Posts')
-        .child(S.documentTypeList('blogPost').title('Blog Posts')),
+      S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
     ]);
