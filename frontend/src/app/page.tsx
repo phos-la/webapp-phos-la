@@ -28,9 +28,13 @@ import BlogGrid from '@/components/BlogGrid';
 import Glimpses from '@/components/Glimpses';
 import Footer from '@/components/Footer';
 
+// Fallback in case the Sanity webhook ever fails to fire; publish events
+// normally invalidate the 'sanity' tag instantly via /api/revalidate.
+export const revalidate = 300;
+
 const sanityFetch = (query: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  client.fetch<any>(query, {}, { next: { tags: ['sanity'] } });
+  client.fetch<any>(query, {}, { next: { tags: ['sanity'], revalidate: 300 } });
 
 export default async function Page() {
   const [
