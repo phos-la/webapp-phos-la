@@ -1,9 +1,9 @@
 import { defineField, defineType } from 'sanity';
 
-export const pricingTierType = defineType({
-  name: 'pricingTier',
+export const pricingTierItemType = defineType({
+  name: 'pricingTierItem',
   title: 'Pricing Tier',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({
       name: 'name',
@@ -32,31 +32,34 @@ export const pricingTierType = defineType({
       of: [{ type: 'string' }],
     }),
     defineField({ name: 'ctaLabel', title: 'CTA Button Label', type: 'string' }),
-    defineField({
-      name: 'order',
-      title: 'Order',
-      type: 'number',
-      description: 'Lower numbers appear first',
-    }),
   ],
-  orderings: [
-    {
-      title: 'Manual Order',
-      name: 'manualOrder',
-      by: [{ field: 'order', direction: 'asc' }],
-    },
-  ],
+  preview: {
+    select: { title: 'name', subtitle: 'price' },
+  },
 });
 
 export const pricingCalloutType = defineType({
   name: 'pricingCallout',
-  title: 'Pricing Callout',
+  title: 'Pricing Section',
   type: 'document',
   fields: [
     defineField({ name: 'label', title: 'Eyebrow Label', type: 'string' }),
     defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
     defineField({ name: 'subheading', title: 'Section Subheading', type: 'text', rows: 2 }),
-    defineField({ name: 'calloutText', title: 'Callout Text', type: 'text', rows: 2 }),
-    defineField({ name: 'calloutPhone', title: 'Callout Phone Number', type: 'string' }),
+    defineField({
+      name: 'tiers',
+      title: 'Pricing Tiers',
+      description: 'The tiers shown on the home page Pricing section. Drag to reorder.',
+      type: 'array',
+      of: [{ type: 'pricingTierItem' }],
+    }),
+    defineField({
+      name: 'calloutText',
+      title: 'Footer Callout Text',
+      description: 'The "Not sure where to start?" message below the tiers.',
+      type: 'text',
+      rows: 2,
+    }),
+    defineField({ name: 'calloutPhone', title: 'Footer Callout Phone Number', type: 'string' }),
   ],
 });

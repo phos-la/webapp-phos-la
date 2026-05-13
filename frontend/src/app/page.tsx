@@ -6,16 +6,13 @@ import {
   providerSectionQuery,
   processSectionQuery,
   clinicSectionQuery,
-  pricingCalloutQuery,
-  pricingTiersQuery,
+  pricingSectionQuery,
   testimonialsSectionQuery,
-  testimonialsQuery,
   faqSectionQuery,
-  faqsQuery,
   blogSectionQuery,
-  blogPostsQuery,
   glimpsesSectionQuery,
   footerSectionQuery,
+  navSectionQuery,
 } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
@@ -31,48 +28,44 @@ import BlogGrid from '@/components/BlogGrid';
 import Glimpses from '@/components/Glimpses';
 import Footer from '@/components/Footer';
 
-export const revalidate = 60;
+const sanityFetch = (query: string) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  client.fetch<any>(query, {}, { next: { tags: ['sanity'] } });
 
 export default async function Page() {
   const [
+    navData,
     heroData,
     servicesData,
     conditionsData,
     providerData,
     processData,
     clinicData,
-    pricingCallout,
-    pricingTiers,
-    testimonialsSection,
-    testimonialItems,
-    faqSection,
-    faqItems,
-    blogSection,
-    blogPosts,
+    pricingData,
+    testimonialsData,
+    faqData,
+    blogData,
     glimpsesData,
     footerData,
   ] = await Promise.all([
-    client.fetch(heroSectionQuery),
-    client.fetch(servicesSectionQuery),
-    client.fetch(conditionsSectionQuery),
-    client.fetch(providerSectionQuery),
-    client.fetch(processSectionQuery),
-    client.fetch(clinicSectionQuery),
-    client.fetch(pricingCalloutQuery),
-    client.fetch(pricingTiersQuery),
-    client.fetch(testimonialsSectionQuery),
-    client.fetch(testimonialsQuery),
-    client.fetch(faqSectionQuery),
-    client.fetch(faqsQuery),
-    client.fetch(blogSectionQuery),
-    client.fetch(blogPostsQuery),
-    client.fetch(glimpsesSectionQuery),
-    client.fetch(footerSectionQuery),
+    sanityFetch(navSectionQuery),
+    sanityFetch(heroSectionQuery),
+    sanityFetch(servicesSectionQuery),
+    sanityFetch(conditionsSectionQuery),
+    sanityFetch(providerSectionQuery),
+    sanityFetch(processSectionQuery),
+    sanityFetch(clinicSectionQuery),
+    sanityFetch(pricingSectionQuery),
+    sanityFetch(testimonialsSectionQuery),
+    sanityFetch(faqSectionQuery),
+    sanityFetch(blogSectionQuery),
+    sanityFetch(glimpsesSectionQuery),
+    sanityFetch(footerSectionQuery),
   ]);
 
   return (
     <>
-      <Nav />
+      <Nav data={navData} />
       <main>
         <Hero data={heroData} />
         <ServiceCards data={servicesData} />
@@ -80,10 +73,15 @@ export default async function Page() {
         <ProviderCard data={providerData} />
         <ProcessSteps data={processData} />
         <TheSpace data={clinicData} />
-        <Pricing data={{ callout: pricingCallout, tiers: pricingTiers }} />
-        <Testimonials data={{ ...testimonialsSection, items: testimonialItems }} />
-        <FAQ data={{ ...faqSection, items: faqItems }} />
-        <BlogGrid data={{ ...blogSection, posts: blogPosts }} />
+        <Pricing
+          data={{
+            callout: pricingData,
+            tiers: pricingData?.tiers ?? [],
+          }}
+        />
+        <Testimonials data={{ ...testimonialsData, items: testimonialsData?.items ?? [] }} />
+        <FAQ data={{ ...faqData, items: faqData?.items ?? [] }} />
+        <BlogGrid data={{ ...blogData, posts: blogData?.posts ?? [] }} />
         <Glimpses data={glimpsesData} />
       </main>
       <Footer data={footerData} />

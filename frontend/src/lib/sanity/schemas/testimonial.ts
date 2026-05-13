@@ -1,9 +1,9 @@
 import { defineField, defineType } from 'sanity';
 
-export const testimonialType = defineType({
-  name: 'testimonial',
+export const testimonialItemType = defineType({
+  name: 'testimonialItem',
   title: 'Testimonial',
-  type: 'document',
+  type: 'object',
   fields: [
     defineField({
       name: 'quote',
@@ -18,20 +18,10 @@ export const testimonialType = defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'order',
-      title: 'Order',
-      type: 'number',
-      description: 'Lower numbers appear first',
-    }),
   ],
-  orderings: [
-    {
-      title: 'Manual Order',
-      name: 'manualOrder',
-      by: [{ field: 'order', direction: 'asc' }],
-    },
-  ],
+  preview: {
+    select: { title: 'name', subtitle: 'quote' },
+  },
 });
 
 export const testimonialsSectionType = defineType({
@@ -42,5 +32,12 @@ export const testimonialsSectionType = defineType({
     defineField({ name: 'label', title: 'Eyebrow Label', type: 'string' }),
     defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
     defineField({ name: 'subheading', title: 'Section Subheading', type: 'text', rows: 2 }),
+    defineField({
+      name: 'items',
+      title: 'Testimonials',
+      description: 'Drag to reorder.',
+      type: 'array',
+      of: [{ type: 'testimonialItem' }],
+    }),
   ],
 });

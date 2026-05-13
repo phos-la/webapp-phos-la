@@ -21,20 +21,10 @@ export const blogPostType = defineType({
     }),
     defineField({ name: 'body', title: 'Excerpt / Body', type: 'text', rows: 3 }),
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
-    defineField({
-      name: 'order',
-      title: 'Order',
-      type: 'number',
-      description: 'Lower numbers appear first',
-    }),
   ],
-  orderings: [
-    {
-      title: 'Manual Order',
-      name: 'manualOrder',
-      by: [{ field: 'order', direction: 'asc' }],
-    },
-  ],
+  preview: {
+    select: { title: 'title', media: 'image' },
+  },
 });
 
 export const blogSectionType = defineType({
@@ -44,5 +34,13 @@ export const blogSectionType = defineType({
   fields: [
     defineField({ name: 'label', title: 'Eyebrow Label', type: 'string' }),
     defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
+    defineField({
+      name: 'posts',
+      title: 'Posts Shown on Home Page',
+      description:
+        'Pick which Blog Posts appear on the home page. Drag to reorder. Edit a post by clicking it.',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'blogPost' }] }],
+    }),
   ],
 });
