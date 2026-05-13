@@ -5,6 +5,31 @@ export const structure: StructureResolver = (S) =>
     .title('Content')
     .items([
       S.listItem()
+        .title('Site')
+        .child(
+          S.list()
+            .title('Site')
+            .items([
+              S.listItem()
+                .title('Navigation')
+                .child(
+                  S.document()
+                    .title('Navigation')
+                    .schemaType('navSection')
+                    .documentId('navSection-singleton'),
+                ),
+              S.listItem()
+                .title('Footer')
+                .child(
+                  S.document()
+                    .title('Footer')
+                    .schemaType('footerSection')
+                    .documentId('footerSection-singleton'),
+                ),
+            ]),
+        ),
+      S.divider(),
+      S.listItem()
         .title('Home Page')
         .child(
           S.list()
@@ -19,7 +44,7 @@ export const structure: StructureResolver = (S) =>
                     .documentId('heroSection-singleton'),
                 ),
               S.listItem()
-                .title('2. Services')
+                .title('2. Three ways to heal')
                 .child(
                   S.document()
                     .title('Services')
@@ -27,7 +52,7 @@ export const structure: StructureResolver = (S) =>
                     .documentId('servicesSection-singleton'),
                 ),
               S.listItem()
-                .title('3. Conditions')
+                .title('3. Conditions we treat')
                 .child(
                   S.document()
                     .title('Conditions')
@@ -35,15 +60,15 @@ export const structure: StructureResolver = (S) =>
                     .documentId('conditionsSection-singleton'),
                 ),
               S.listItem()
-                .title('4. Provider (Dr. Riley)')
+                .title('4. Meet Dr. Riley')
                 .child(
                   S.document()
-                    .title('Provider (Dr. Riley)')
+                    .title('Provider')
                     .schemaType('providerSection')
                     .documentId('providerSection-singleton'),
                 ),
               S.listItem()
-                .title('5. Process Steps')
+                .title('5. From first call to integration')
                 .child(
                   S.document()
                     .title('Process Steps')
@@ -51,7 +76,7 @@ export const structure: StructureResolver = (S) =>
                     .documentId('processSection-singleton'),
                 ),
               S.listItem()
-                .title('6. The Clinic (The Space)')
+                .title('6. Private, calm, Westwood')
                 .child(
                   S.document()
                     .title('The Clinic')
@@ -59,97 +84,47 @@ export const structure: StructureResolver = (S) =>
                     .documentId('clinicSection-singleton'),
                 ),
               S.listItem()
-                .title('7. Pricing')
+                .title('7. Transparent pricing')
                 .child(
-                  S.list()
+                  S.document()
                     .title('Pricing')
-                    .items([
-                      S.listItem()
-                        .title('Section Header & Callout')
-                        .child(
-                          S.document()
-                            .title('Pricing Section Header')
-                            .schemaType('pricingCallout')
-                            .documentId('pricingCallout-singleton'),
-                        ),
-                      S.listItem()
-                        .title('Pricing Tiers')
-                        .child(S.documentTypeList('pricingTier').title('Pricing Tiers')),
-                    ]),
+                    .schemaType('pricingCallout')
+                    .documentId('pricingCallout-singleton'),
                 ),
               S.listItem()
-                .title('8. Testimonials')
+                .title('8. What Clients Are Saying')
                 .child(
-                  S.list()
+                  S.document()
                     .title('Testimonials')
-                    .items([
-                      S.listItem()
-                        .title('Section Header')
-                        .child(
-                          S.document()
-                            .title('Testimonials Section Header')
-                            .schemaType('testimonialsSection')
-                            .documentId('testimonialsSection-singleton'),
-                        ),
-                      S.listItem()
-                        .title('Testimonials')
-                        .child(S.documentTypeList('testimonial').title('Testimonials')),
-                    ]),
+                    .schemaType('testimonialsSection')
+                    .documentId('testimonialsSection-singleton'),
                 ),
               S.listItem()
-                .title('9. FAQ')
+                .title('9. Questions you might have')
                 .child(
-                  S.list()
+                  S.document()
                     .title('FAQ')
-                    .items([
-                      S.listItem()
-                        .title('Section Header')
-                        .child(
-                          S.document()
-                            .title('FAQ Section Header')
-                            .schemaType('faqSection')
-                            .documentId('faqSection-singleton'),
-                        ),
-                      S.listItem()
-                        .title('FAQ Items')
-                        .child(S.documentTypeList('faq').title('FAQ Items')),
-                    ]),
+                    .schemaType('faqSection')
+                    .documentId('faqSection-singleton'),
                 ),
               S.listItem()
-                .title('10. Blog')
+                .title('10. Forest Stories')
                 .child(
-                  S.list()
-                    .title('Blog')
-                    .items([
-                      S.listItem()
-                        .title('Section Header')
-                        .child(
-                          S.document()
-                            .title('Blog Section Header')
-                            .schemaType('blogSection')
-                            .documentId('blogSection-singleton'),
-                        ),
-                      S.listItem()
-                        .title('Blog Posts')
-                        .child(S.documentTypeList('blogPost').title('Blog Posts')),
-                    ]),
+                  S.document()
+                    .title('Blog Section')
+                    .schemaType('blogSection')
+                    .documentId('blogSection-singleton'),
                 ),
               S.listItem()
-                .title('11. Glimpses (Instagram)')
+                .title('11. Glimpses of the Journey')
                 .child(
                   S.document()
                     .title('Glimpses (Instagram)')
                     .schemaType('glimpsesSection')
                     .documentId('glimpsesSection-singleton'),
                 ),
-              S.listItem()
-                .title('12. Footer')
-                .child(
-                  S.document()
-                    .title('Footer')
-                    .schemaType('footerSection')
-                    .documentId('footerSection-singleton'),
-                ),
             ]),
         ),
+      S.divider(),
+      S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
     ]);

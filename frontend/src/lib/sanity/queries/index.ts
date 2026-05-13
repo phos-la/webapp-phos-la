@@ -47,60 +47,56 @@ export const clinicSectionQuery = groq`*[_type == "clinicSection"][0] {
   photo2
 }`;
 
-export const pricingCalloutQuery = groq`*[_type == "pricingCallout"][0] {
+export const pricingSectionQuery = groq`*[_type == "pricingCallout"][0] {
   label,
   heading,
   subheading,
   calloutText,
-  calloutPhone
-}`;
-
-export const pricingTiersQuery = groq`*[_type == "pricingTier"] | order(order asc) {
-  _id,
-  name,
-  description,
-  price,
-  unit,
-  featured,
-  features,
-  ctaLabel
+  calloutPhone,
+  tiers[] {
+    "_id": _key,
+    name,
+    description,
+    price,
+    unit,
+    featured,
+    features,
+    ctaLabel
+  }
 }`;
 
 export const testimonialsSectionQuery = groq`*[_type == "testimonialsSection"][0] {
   label,
   heading,
-  subheading
-}`;
-
-export const testimonialsQuery = groq`*[_type == "testimonial"] | order(order asc) {
-  _id,
-  quote,
-  name
+  subheading,
+  items[] {
+    "_id": _key,
+    quote,
+    name
+  }
 }`;
 
 export const faqSectionQuery = groq`*[_type == "faqSection"][0] {
   label,
-  heading
-}`;
-
-export const faqsQuery = groq`*[_type == "faq"] | order(order asc) {
-  _id,
-  question,
-  answer
+  heading,
+  items[] {
+    "_id": _key,
+    question,
+    answer
+  }
 }`;
 
 export const blogSectionQuery = groq`*[_type == "blogSection"][0] {
   label,
-  heading
-}`;
-
-export const blogPostsQuery = groq`*[_type == "blogPost"] | order(order asc) {
-  _id,
-  image,
-  imageAlt,
-  title,
-  body,
-  slug
+  heading,
+  "posts": posts[]-> {
+    _id,
+    image,
+    imageAlt,
+    title,
+    body,
+    slug
+  }
 }`;
 
 export const glimpsesSectionQuery = groq`*[_type == "glimpsesSection"][0] {
@@ -114,6 +110,8 @@ export const glimpsesSectionQuery = groq`*[_type == "glimpsesSection"][0] {
 }`;
 
 export const footerSectionQuery = groq`*[_type == "footerSection"][0] {
+  logo,
+  logoAlt,
   businessName,
   address,
   phone,
@@ -121,4 +119,14 @@ export const footerSectionQuery = groq`*[_type == "footerSection"][0] {
   instagramUrl,
   facebookUrl,
   disclaimer
+}`;
+
+export const navSectionQuery = groq`*[_type == "navSection"][0] {
+  brandTitle,
+  brandSubtitle,
+  logo,
+  logoAlt,
+  items[] { label, href },
+  ctaLabel,
+  ctaHref
 }`;

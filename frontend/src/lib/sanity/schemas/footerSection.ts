@@ -5,6 +5,14 @@ export const footerSectionType = defineType({
   title: 'Footer',
   type: 'document',
   fields: [
+    defineField({
+      name: 'logo',
+      title: 'Logo Image',
+      description: 'Optional. Shown above the address block in the footer.',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({ name: 'logoAlt', title: 'Logo Alt Text', type: 'string' }),
     defineField({ name: 'businessName', title: 'Business Name', type: 'string' }),
     defineField({ name: 'address', title: 'Address', type: 'string' }),
     defineField({ name: 'phone', title: 'Phone Number', type: 'string' }),

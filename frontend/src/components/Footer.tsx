@@ -1,4 +1,9 @@
+import Image from 'next/image';
+import { urlFor } from '@/lib/sanity/image';
+
 export interface FooterSectionData {
+  logo?: unknown;
+  logoAlt?: string;
   businessName?: string;
   address?: string;
   phone?: string;
@@ -8,7 +13,7 @@ export interface FooterSectionData {
   disclaimer?: string;
 }
 
-const DEFAULTS: Required<FooterSectionData> = {
+const DEFAULTS: Omit<Required<FooterSectionData>, 'logo' | 'logoAlt'> = {
   businessName: 'Phos Wellness',
   address: '1762 Westwood Blvd, Ste 320, Los Angeles, CA 90024',
   phone: '(424) 278-4241',
@@ -48,12 +53,23 @@ const PhosLogoMark = ({ size = 72 }: { size?: number }) => (
 
 export default function Footer({ data }: { data?: FooterSectionData }) {
   const d = { ...DEFAULTS, ...data };
+  const logoUrl = data?.logo
+    ? urlFor(data.logo as never)
+        .width(144)
+        .height(144)
+        .url()
+    : null;
+  const logoAlt = data?.logoAlt ?? d.businessName;
 
   return (
     <footer className="site-footer" data-screen-label="14 Footer">
       <div className="footer-row">
         <div className="footer-col">
-          <PhosLogoMark size={72} />
+          {logoUrl ? (
+            <Image src={logoUrl} alt={logoAlt} width={72} height={72} />
+          ) : (
+            <PhosLogoMark size={72} />
+          )}
           <p className="footer-line">
             <strong>{d.businessName}</strong> &nbsp;&mdash;&nbsp; {d.address}
           </p>

@@ -1,6 +1,24 @@
-'use client';
+import Image from 'next/image';
+import { urlFor } from '@/lib/sanity/image';
+import NavScrollEffect from './NavScrollEffect';
 
-import { useEffect, useRef } from 'react';
+type NavItem = { label?: string; href?: string };
+type NavData = {
+  brandTitle?: string;
+  brandSubtitle?: string;
+  logo?: unknown;
+  logoAlt?: string;
+  items?: NavItem[];
+  ctaLabel?: string;
+  ctaHref?: string;
+} | null;
+
+const DEFAULT_ITEMS: NavItem[] = [
+  { label: 'Practice', href: '#practice' },
+  { label: 'Treatments', href: '#treatments' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+];
 
 const LogoMark = () => (
   <svg className="nav-logo-mark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
@@ -29,54 +47,58 @@ const LogoMark = () => (
   </svg>
 );
 
-export default function Nav() {
-  const navRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const nav = navRef.current;
-    if (!nav) return;
-
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        nav.classList.add('is-scrolled');
-      } else {
-        nav.classList.remove('is-scrolled');
-      }
-    };
-
-    handleScroll();
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+export default function Nav({ data }: { data?: NavData }) {
+  const brandTitle = data?.brandTitle ?? 'PHOS';
+  const brandSubtitle = data?.brandSubtitle ?? 'And Wellness';
+  const items = data?.items?.length ? data.items : DEFAULT_ITEMS;
+  const ctaLabel = data?.ctaLabel ?? 'Book a consultation';
+  const ctaHref = data?.ctaHref ?? '/book';
+  const logoUrl = data?.logo
+    ? urlFor(data.logo as never)
+        .width(120)
+        .height(120)
+        .url()
+    : null;
+  const logoAlt = data?.logoAlt ?? `${brandTitle} ${brandSubtitle}`;
 
   return (
     <div className="nav-wrap" role="presentation">
-      <nav className="nav-pill" ref={navRef} id="navBar" aria-label="Primary">
-        <a className="nav-logo" href="/" aria-label="PHOS Wellness — home">
-          <LogoMark />
+      <NavScrollEffect />
+      <nav className="nav-pill" id="navBar" aria-label="Primary">
+        <a className="nav-logo" href="/" aria-label={`${brandTitle} ${brandSubtitle} — home`}>
+          {logoUrl ? (
+            <Image
+              src={logoUrl}
+              alt={logoAlt}
+              width={60}
+              height={60}
+              className="nav-logo-mark"
+              priority
+            />
+          ) : (
+            <LogoMark />
+          )}
           <span className="nav-logo-text">
-            <span className="nav-logo-word">PHOS</span>
-            <span className="nav-logo-sub">And Wellness</span>
+            <span className="nav-logo-word">{brandTitle}</span>
+            <span className="nav-logo-sub">{brandSubtitle}</span>
           </span>
         </a>
 
         <div className="nav-links" role="menubar">
-          <a className="nav-link is-active" href="#practice" role="menuitem">
-            Practice
-          </a>
-          <a className="nav-link" href="#treatments" role="menuitem">
-            Treatments
-          </a>
-          <a className="nav-link" href="#about" role="menuitem">
-            About
-          </a>
-          <a className="nav-link" href="#contact" role="menuitem">
-            Contact
-          </a>
+          {items.map((item, i) => (
+            <a
+              key={`${item.href}-${i}`}
+              className={`nav-link${i === 0 ? ' is-active' : ''}`}
+              href={item.href ?? '#'}
+              role="menuitem"
+            >
+              {item.label}
+            </a>
+          ))}
         </div>
 
-        <a className="nav-cta" href="/book">
-          Book a consultation
+        <a className="nav-cta" href={ctaHref}>
+          {ctaLabel}
         </a>
       </nav>
     </div>
