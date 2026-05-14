@@ -200,9 +200,26 @@ export const bookPageQuery = groq`*[_type == "bookPage"][0] {
 }`;
 
 export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
-  flowNew { heading, subheading, eyebrow, pickerLabel },
-  flowReturning { heading, subheading, eyebrow, pickerLabel },
-  flowAthome { heading, subheading, eyebrow, pickerLabel },
+  flowNew {
+    heading,
+    subheading,
+    eyebrow,
+    deposit { label, amount, description, stripePriceId }
+  },
+  flowReturning {
+    heading,
+    subheading,
+    eyebrow,
+    pickerLabel,
+    prices[] { label, amount, description, stripePriceId }
+  },
+  flowAthome {
+    heading,
+    subheading,
+    eyebrow,
+    pickerLabel,
+    prices[] { label, amount, description, stripePriceId }
+  },
   newDepositCtaLabel,
   newDepositLoadingLabel,
   otherCtaLabel,

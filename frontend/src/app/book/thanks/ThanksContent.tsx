@@ -13,107 +13,6 @@ function setCookie(name: string, days: number) {
   document.cookie = `${name}=true; expires=${expires.toUTCString()}; path=/; SameSite=Lax`;
 }
 
-// ─── Price catalog ────────────────────────────────────────────────────────────
-// Price IDs come from the Stripe sandbox (prod → price structure).
-// Swap these for live price IDs when connecting the live account.
-
-const NEW_PATIENT_PRICE = {
-  id: 'price_1TUZfLAEmpFZtKZrBUkSXcKA',
-  label: 'Initial Consultation',
-  amount: 100,
-  description: 'Applied as a credit toward your first session if you move forward.',
-};
-
-const IN_CLINIC_PRICES = [
-  {
-    id: 'price_1TUZfMAEmpFZtKZrHVF413eb',
-    label: 'Appointment Deposit',
-    amount: 100,
-    description: 'Required to schedule your infusion appointment.',
-  },
-  {
-    id: 'price_1TUZfMAEmpFZtKZrWTmNc1sn',
-    label: '60 Min Infusion (sessions 1–4)',
-    amount: 700,
-    description: '',
-  },
-  {
-    id: 'price_1TUZfMAEmpFZtKZrYyEIRKJI',
-    label: '60 Min Booster Infusion',
-    amount: 550,
-    description: 'For established patients.',
-  },
-  {
-    id: 'price_1TUZfNAEmpFZtKZroakOPLD9',
-    label: '90 Min Ketamine Infusion',
-    amount: 650,
-    description: '',
-  },
-  {
-    id: 'price_1TUZfNAEmpFZtKZrYVpP4FPr',
-    label: '2-Hour Pain or Mood Infusion',
-    amount: 850,
-    description: '',
-  },
-  {
-    id: 'price_1TUZfOAEmpFZtKZrMTAhDFkT',
-    label: '3-Hour Pain or Mood Infusion',
-    amount: 1150,
-    description: '',
-  },
-  {
-    id: 'price_1TUZfOAEmpFZtKZrgVEs62v9',
-    label: '4-Hour Pain or Mood Infusion',
-    amount: 1650,
-    description: '',
-  },
-  {
-    id: 'price_1TUZfPAEmpFZtKZrQUvOlB2u',
-    label: '6-Infusion Membership',
-    amount: 2750,
-    description: 'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
-  },
-  {
-    id: 'price_1TUZfPAEmpFZtKZrZ76d0VgA',
-    label: '12-Infusion Membership',
-    amount: 5000,
-    description: 'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
-  },
-];
-
-const AT_HOME_PRICES = [
-  {
-    id: 'price_1TUZfPAEmpFZtKZr9c3BFhxk',
-    label: '1st Video Consultation',
-    amount: 250,
-    description: 'For new at-home patients. First month prescription filled by pharmacy.',
-  },
-  {
-    id: 'price_1TUZfQAEmpFZtKZrHz035xcy',
-    label: '2nd Video Consultation',
-    amount: 225,
-    description: 'Ready for your second month refill.',
-  },
-  {
-    id: 'price_1TUZfQAEmpFZtKZr7U2B0sfN',
-    label: '3rd Video Consultation',
-    amount: 200,
-    description: 'Includes a 3-month supply dispensed one month at a time.',
-  },
-  {
-    id: 'price_1TUZfRAEmpFZtKZrDSBgMRqO',
-    label: 'Follow-up Video Visit',
-    amount: 250,
-    description: 'Required every 6 months for a continued prescription.',
-  },
-  {
-    id: 'price_1TUZfRAEmpFZtKZrKPXRcig0',
-    label: 'Prescription Changes',
-    amount: 200,
-    description: 'Dosage adjustment consult before your 6-month follow-up.',
-  },
-];
-
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
 function fmt(dollars: number) {
@@ -139,17 +38,32 @@ async function redirectToCheckout(priceId: string): Promise<string | null> {
 
 type FlowType = 'new' | 'returning' | 'athome';
 
-export type FlowCopy = {
+export type Price = {
+  stripePriceId: string;
+  label: string;
+  amount: number;
+  description?: string;
+};
+
+export type FlowNewCopy = {
+  heading: string;
+  subheading: string;
+  eyebrow: string;
+  deposit: Price;
+};
+
+export type FlowPickerCopy = {
   heading: string;
   subheading: string;
   eyebrow: string;
   pickerLabel: string;
+  prices: Price[];
 };
 
 export type ThanksCopy = {
-  flowNew: FlowCopy;
-  flowReturning: FlowCopy;
-  flowAthome: FlowCopy;
+  flowNew: FlowNewCopy;
+  flowReturning: FlowPickerCopy;
+  flowAthome: FlowPickerCopy;
   newDepositCtaLabel: string;
   newDepositLoadingLabel: string;
   otherCtaLabel: string;
@@ -165,8 +79,6 @@ function parseFlowType(raw: string | null): FlowType {
 }
 
 // ─── Service picker row ───────────────────────────────────────────────────────
-
-type Price = { id: string; label: string; amount: number; description: string };
 
 function PriceRow({
   price,
@@ -268,13 +180,19 @@ function PriceRow({
 function ThanksInner({ copy }: { copy: ThanksCopy }) {
   const params = useSearchParams();
   const flow = parseFlowType(params.get('type'));
+
   const flowCopy =
     flow === 'returning' ? copy.flowReturning : flow === 'athome' ? copy.flowAthome : copy.flowNew;
 
-  // Pick the right price list for the flow
   const prices: Price[] =
-    flow === 'returning' ? IN_CLINIC_PRICES : flow === 'athome' ? AT_HOME_PRICES : [];
-  const [selectedId, setSelectedId] = useState<string>(prices[0]?.id ?? NEW_PATIENT_PRICE.id);
+    flow === 'returning'
+      ? copy.flowReturning.prices
+      : flow === 'athome'
+        ? copy.flowAthome.prices
+        : [];
+
+  const initialId = prices[0]?.stripePriceId ?? copy.flowNew.deposit.stripePriceId;
+  const [selectedId, setSelectedId] = useState<string>(initialId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -284,7 +202,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
 
   // Reset selection if the flow type changes mid-session
   useEffect(() => {
-    setSelectedId(prices[0]?.id ?? NEW_PATIENT_PRICE.id);
+    setSelectedId(prices[0]?.stripePriceId ?? copy.flowNew.deposit.stripePriceId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flow]);
 
@@ -389,7 +307,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
                   fontWeight: 600,
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
-                  color: 'var(--brand-amber)',
+                  color: 'var(--brand-teal)',
                   marginBottom: 12,
                 }}
               >
@@ -403,19 +321,21 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
                   marginBottom: 8,
                 }}
               >
-                {fmt(NEW_PATIENT_PRICE.amount)} deposit
+                {fmt(copy.flowNew.deposit.amount)} deposit
               </p>
-              <p
-                style={{
-                  fontFamily: 'var(--font-sans)',
-                  fontSize: 13,
-                  color: 'var(--fg-subtle)',
-                  lineHeight: 1.6,
-                  marginBottom: 28,
-                }}
-              >
-                {NEW_PATIENT_PRICE.description}
-              </p>
+              {copy.flowNew.deposit.description && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 13,
+                    color: 'var(--fg-subtle)',
+                    lineHeight: 1.6,
+                    marginBottom: 28,
+                  }}
+                >
+                  {copy.flowNew.deposit.description}
+                </p>
+              )}
 
               {error && (
                 <p
@@ -431,13 +351,13 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
               )}
 
               <button
-                onClick={() => handleCheckout(NEW_PATIENT_PRICE.id)}
+                onClick={() => handleCheckout(copy.flowNew.deposit.stripePriceId)}
                 disabled={loading}
                 style={{
                   display: 'block',
                   width: '100%',
                   padding: '14px 0',
-                  background: loading ? 'var(--cream-500)' : 'var(--brand-amber)',
+                  background: loading ? 'var(--accent-pressed)' : 'var(--accent)',
                   color: '#fff',
                   fontFamily: 'var(--font-sans)',
                   fontSize: 14,
@@ -465,7 +385,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
             </div>
           )}
 
-          {/* ── Returning or At-Home: dedicated service picker ─────────────── */}
+          {/* ── Existing or At-Home: dedicated service picker ──────────────── */}
           {flow !== 'new' && (
             <div style={{ padding: '32px 28px 28px' }}>
               <p
@@ -475,20 +395,22 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
                   fontWeight: 600,
                   letterSpacing: '0.16em',
                   textTransform: 'uppercase',
-                  color: 'var(--brand-amber)',
+                  color: 'var(--brand-teal)',
                   marginBottom: 16,
                   textAlign: 'center',
                 }}
               >
-                {flowCopy.pickerLabel}
+                {flow === 'returning'
+                  ? copy.flowReturning.pickerLabel
+                  : copy.flowAthome.pickerLabel}
               </p>
 
               {prices.map((price) => (
                 <PriceRow
-                  key={price.id}
+                  key={price.stripePriceId}
                   price={price}
-                  selected={selectedId === price.id}
-                  onSelect={() => setSelectedId(price.id)}
+                  selected={selectedId === price.stripePriceId}
+                  onSelect={() => setSelectedId(price.stripePriceId)}
                 />
               ))}
 
@@ -513,7 +435,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
                   display: 'block',
                   width: '100%',
                   padding: '14px 0',
-                  background: loading ? 'var(--cream-500)' : 'var(--accent)',
+                  background: loading ? 'var(--accent-pressed)' : 'var(--accent)',
                   color: '#fff',
                   fontFamily: 'var(--font-sans)',
                   fontSize: 14,

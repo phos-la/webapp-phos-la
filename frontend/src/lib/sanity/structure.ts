@@ -159,10 +159,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId('bookPage-singleton'),
                 ),
               S.listItem()
-                .title('Thank You — Post-Intake')
+                .title('Thanks')
                 .child(
                   S.document()
-                    .title('Book — Thank You Page')
+                    .title('Thanks Page')
                     .schemaType('bookThanksPage')
                     .documentId('bookThanksPage-singleton'),
                 ),
