@@ -88,6 +88,7 @@ export const faqSectionQuery = groq`*[_type == "faqSection"][0] {
 export const blogSectionQuery = groq`*[_type == "blogSection"][0] {
   label,
   heading,
+  cardCtaLabel,
   "posts": posts[]-> {
     _id,
     image,
@@ -208,6 +209,78 @@ export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
   secureNote,
   errorMessage,
   backLinkLabel
+}`;
+
+export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {
+  heroEyebrow,
+  heroHeadline,
+  heroSubheading,
+  heroImage,
+  heroImageCaption,
+  heroImageAlt,
+  featuredEyebrow,
+  featuredCtaLabel,
+  gridHeadingWithFeatured,
+  gridHeadingNoFeatured,
+  noteCountSingular,
+  noteCountPlural,
+  cardCtaLabel,
+  emptyHeadline,
+  emptyBody,
+  metaTitle,
+  metaDescription,
+  "featuredPost": featuredPost-> {
+    _id,
+    title,
+    "slug": slug.current,
+    image,
+    imageAlt,
+    body,
+    author,
+    publishDate,
+    readMinutes
+  }
+}`;
+
+export const blogPostPageQuery = groq`*[_type == "blogPostPage"][0] {
+  eyebrowLabel,
+  readMinutesSuffix,
+  backLinkLabel,
+  backLinkHref,
+  placeholderBody,
+  placeholderLinkLabel,
+  metaTitleSuffix,
+  metaTitleSeparator,
+  fallbackMetaTitle
+}`;
+
+export const allBlogPostsQuery = groq`*[_type == "blogPost" && defined(slug.current)] | order(publishDate desc, _createdAt desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  image,
+  imageAlt,
+  body,
+  author,
+  publishDate,
+  readMinutes
+}`;
+
+export const allBlogSlugsQuery = groq`*[_type == "blogPost" && defined(slug.current)][].slug.current`;
+
+export const blogPostBySlugQuery = groq`*[_type == "blogPost" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  image,
+  imageAlt,
+  body,
+  fullBody,
+  author,
+  publishDate,
+  readMinutes,
+  metaTitle,
+  metaDescription
 }`;
 
 export const allTreatmentSlugsQuery = groq`*[_type == "treatment" && defined(slug.current)][].slug.current`;

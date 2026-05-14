@@ -108,10 +108,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId('faqSection-singleton'),
                 ),
               S.listItem()
-                .title('10. Forest Stories')
+                .title('10. Field Notes')
                 .child(
                   S.document()
-                    .title('Blog Section')
+                    .title('Field Notes (Home Section)')
                     .schemaType('blogSection')
                     .documentId('blogSection-singleton'),
                 ),
@@ -169,5 +169,31 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.divider(),
-      S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
+      S.listItem()
+        .title('Field Notes (Blog)')
+        .child(
+          S.list()
+            .title('Field Notes')
+            .items([
+              S.listItem()
+                .title('Index Page — Hero + Featured')
+                .child(
+                  S.document()
+                    .title('Blog Index Page')
+                    .schemaType('blogIndexPage')
+                    .documentId('blogIndexPage-singleton'),
+                ),
+              S.listItem()
+                .title('Post Page — Detail Chrome')
+                .child(
+                  S.document()
+                    .title('Blog Post Page (Detail Chrome)')
+                    .schemaType('blogPostPage')
+                    .documentId('blogPostPage-singleton'),
+                ),
+              S.listItem()
+                .title('All Posts')
+                .child(S.documentTypeList('blogPost').title('Blog Posts')),
+            ]),
+        ),
     ]);
