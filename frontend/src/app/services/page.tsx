@@ -17,7 +17,7 @@ export const metadata = {
 
 const SERVICES_NAV_ITEMS = [
   { label: 'Practice', href: '/' },
-  { label: 'Services', href: '/services' },
+  { label: 'Treatments', href: '/services' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/#contact' },
 ];

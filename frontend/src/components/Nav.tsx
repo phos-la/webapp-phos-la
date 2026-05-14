@@ -14,10 +14,10 @@ type NavData = {
 } | null;
 
 const DEFAULT_ITEMS: NavItem[] = [
-  { label: 'Practice', href: '#practice' },
-  { label: 'Treatments', href: '#treatments' },
-  { label: 'About', href: '#about' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Practice', href: '/' },
+  { label: 'Treatments', href: '/services' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/#contact' },
 ];
 
 const LogoMark = () => (
