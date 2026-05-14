@@ -161,18 +161,10 @@ export const structure: StructureResolver = (S) =>
               S.listItem()
                 .title('Thanks')
                 .child(
-                  S.list()
-                    .title('Thanks')
-                    .items([
-                      S.listItem()
-                        .title('Thanks Page')
-                        .child(
-                          S.document()
-                            .title('Thanks Page')
-                            .schemaType('bookThanksPage')
-                            .documentId('bookThanksPage-singleton'),
-                        ),
-                    ]),
+                  S.document()
+                    .title('Thanks Page')
+                    .schemaType('bookThanksPage')
+                    .documentId('bookThanksPage-singleton'),
                 ),
             ]),
         ),
