@@ -4,6 +4,7 @@ export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
   headline,
   subheading,
   ctaLabel,
+  ctaHref,
   heroImage,
   overlayHeadline,
   overlayBody
