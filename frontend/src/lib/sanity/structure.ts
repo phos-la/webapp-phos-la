@@ -165,34 +165,10 @@ export const structure: StructureResolver = (S) =>
                     .title('Thanks')
                     .items([
                       S.listItem()
-                        .title('New Patient')
+                        .title('Thanks Page')
                         .child(
                           S.document()
-                            .title('Thanks — New Patient')
-                            .schemaType('bookThanksNew')
-                            .documentId('bookThanksNew-singleton'),
-                        ),
-                      S.listItem()
-                        .title('Existing Patient')
-                        .child(
-                          S.document()
-                            .title('Thanks — Existing Patient (In-Clinic)')
-                            .schemaType('bookThanksReturning')
-                            .documentId('bookThanksReturning-singleton'),
-                        ),
-                      S.listItem()
-                        .title('At-Home Patient')
-                        .child(
-                          S.document()
-                            .title('Thanks — At-Home Patient')
-                            .schemaType('bookThanksAthome')
-                            .documentId('bookThanksAthome-singleton'),
-                        ),
-                      S.listItem()
-                        .title('Shared Copy')
-                        .child(
-                          S.document()
-                            .title('Thanks — Shared Copy')
+                            .title('Thanks Page')
                             .schemaType('bookThanksPage')
                             .documentId('bookThanksPage-singleton'),
                         ),
