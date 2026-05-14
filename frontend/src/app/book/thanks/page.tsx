@@ -7,7 +7,7 @@ import ThanksContent, {
   type Price,
 } from './ThanksContent';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 /* ──────────────────────────────────────────────────────────────────────────
  * Defaults — used when Sanity has no doc yet (first deploy, seed pending)
