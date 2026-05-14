@@ -4,6 +4,7 @@ import { treatmentsPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
+import HeroParallaxImage from '@/components/HeroParallaxImage';
 import { Markdown } from '@/components/Markdown';
 import './treatments.css';
 
@@ -205,28 +206,32 @@ export default async function TreatmentsPage() {
           <div className="services-hero-inner">
             <h1 className="services-hero-title">{d.heroTitle}</h1>
             <p className="services-hero-sub">{d.heroSub}</p>
-
-            <div className="services-hero-image-wrap">
-              <div className="services-hero-image" aria-label="Infusion room photo placeholder">
-                <div className="services-hero-image-inner">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                    <circle cx="12" cy="13" r="4" />
-                  </svg>
-                  <span>Infusion room photo</span>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
+
+        <HeroParallaxImage>
+          <figure
+            className="hero-image hero-image--simple"
+            aria-label="Infusion room photo placeholder"
+          >
+            <div className="hero-image--placeholder">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+                style={{ width: 40, height: 40 }}
+              >
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+              <span>Infusion room photo</span>
+            </div>
+          </figure>
+        </HeroParallaxImage>
 
         {/* INTRO */}
         <section className="services-intro" data-screen-label="02 Intro">

@@ -445,6 +445,51 @@ body {
 .hero-image::after {
   content: none;
 }
+/* Variant for inner pages: same parallax geometry, no overlay darken,
+   no auto-applied background image — caller controls the background.
+   Lets pages place a placeholder caption / icon inside the figure
+   without the homepage's left-edge text-darkening pseudo-element. */
+.hero-image--simple {
+  background: linear-gradient(155deg, #3a6358 0%, #1e3028 100%);
+}
+.hero-image--simple::before {
+  display: none;
+}
+.hero-image--placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+  color: rgba(237, 232, 220, 0.4);
+}
+.hero-image--placeholder svg {
+  opacity: 0.4;
+  margin-bottom: 12px;
+}
+.hero-image--placeholder span {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+}
+.hero-image-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px 28px;
+  background: linear-gradient(0deg, rgba(10, 6, 2, 0.55), transparent);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: rgba(237, 232, 220, 0.82);
+  z-index: 3;
+}
 .hero-image-overlay {
   position: absolute;
   left: clamp(24px, calc(40px + var(--p) * 80px), 120px);

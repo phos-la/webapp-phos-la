@@ -5,6 +5,7 @@ import { treatmentBySlugQuery, allTreatmentSlugsQuery } from '@/lib/sanity/queri
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
+import HeroParallaxImage from '@/components/HeroParallaxImage';
 import { Markdown } from '@/components/Markdown';
 import './slug.css';
 
@@ -451,34 +452,35 @@ export default async function TreatmentSlugPage({ params }: { params: Promise<{ 
             <h1 className="slug-hero-headline">{withBreaks(data.title)}</h1>
             <p className="slug-hero-sub">{data.heroSub}</p>
           </div>
-          <div className="slug-hero-image-belt">
-            <figure className="slug-hero-image" aria-label="Service hero photo placeholder">
-              <div className="slug-hero-image-ph">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M12 3v5M10 5h4"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M9 8h6l-1 11a1 1 0 01-1 1h-2a1 1 0 01-1-1L9 8z"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M7 12h10"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span>Service photo</span>
-              </div>
-            </figure>
-          </div>
         </section>
+
+        <HeroParallaxImage>
+          <figure className="hero-image hero-image--simple" aria-label="Treatment hero photo">
+            <div className="hero-image--placeholder">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                aria-hidden="true"
+                style={{ width: 40, height: 40 }}
+              >
+                <path
+                  d="M12 3v5M10 5h4"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+                <path
+                  d="M9 8h6l-1 11a1 1 0 01-1 1h-2a1 1 0 01-1-1L9 8z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinejoin="round"
+                />
+                <path d="M7 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
+              <span>Treatment photo</span>
+            </div>
+          </figure>
+        </HeroParallaxImage>
 
         {/* STAT STRIP */}
         <section

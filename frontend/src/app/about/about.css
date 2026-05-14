@@ -28,33 +28,6 @@
   margin: 20px 0 0;
   text-wrap: pretty;
 }
-.about-hero .hero-img {
-  max-width: min(1160px, calc(100vw - 80px));
-  margin: 56px auto 0;
-  border-radius: 28px;
-  overflow: hidden;
-  aspect-ratio: 16/7;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(48, 36, 22, 0.16);
-}
-.about-hero .hero-img-inner {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.about-hero .hero-img-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 18px 28px;
-  background: linear-gradient(0deg, rgba(10, 6, 2, 0.55), transparent);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: rgba(237, 232, 220, 0.82);
-}
 
 /* ── BIO BLOCK — Dr. Christa Riley ──────────────────── */
 .about-bio-wrap {
@@ -528,10 +501,6 @@
 @media (max-width: 640px) {
   .about-hero {
     padding: 120px 24px 0;
-  }
-  .about-hero .hero-img {
-    border-radius: 18px;
-    margin-top: 44px;
   }
   .about-bio-wrap {
     padding: 12px;

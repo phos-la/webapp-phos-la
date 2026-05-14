@@ -50,43 +50,6 @@
   max-width: 500px;
   margin-top: 18px;
 }
-.slug-hero-image-belt {
-  width: 100%;
-  padding: 56px 40px 0;
-}
-.slug-hero-image {
-  width: min(1160px, 100%);
-  margin: 0 auto;
-  display: block;
-  height: clamp(380px, 62vh, 660px);
-  border-radius: 32px;
-  overflow: hidden;
-  background: linear-gradient(160deg, #d9c9a4 0%, #b89865 42%, #7a5830 100%);
-  box-shadow: 0 24px 60px rgba(48, 36, 22, 0.18);
-  position: relative;
-}
-.slug-hero-image-ph {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-.slug-hero-image-ph svg {
-  width: 32px;
-  height: 32px;
-  color: rgba(237, 232, 220, 0.36);
-}
-.slug-hero-image-ph span {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(237, 232, 220, 0.4);
-  font-weight: 500;
-}
 
 /* ── STAT STRIP ────────────────────────────────────── */
 .slug-stat-section {
@@ -502,13 +465,6 @@
 /* ── RESPONSIVE ──────────────────────────────────── */
 @media (max-width: 960px) {
   .slug-hero-copy,
-  .slug-hero-image-belt {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-  .slug-hero-image {
-    border-radius: 20px;
-  }
   .slug-stat-section,
   .slug-protocol-section,
   .slug-eligibility,

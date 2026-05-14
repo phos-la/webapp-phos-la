@@ -4,6 +4,7 @@ import { aboutPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
+import HeroParallaxImage from '@/components/HeroParallaxImage';
 import './about.css';
 
 export const revalidate = 300;
@@ -124,27 +125,20 @@ export default async function AboutPage() {
               {d.heroSubheading}
             </p>
           </div>
-          <div className="hero-img" data-reveal data-d="2">
-            <div
-              className="hero-img-inner"
-              style={
-                heroImg
-                  ? { background: `url(${heroImg}) center/cover no-repeat` }
-                  : { background: 'linear-gradient(155deg,#3a6358 0%,#1e3028 100%)' }
-              }
-            >
-              {!heroImg && (
-                <svg
-                  width="56"
-                  height="56"
-                  viewBox="0 0 200 200"
-                  fill="none"
-                  aria-hidden="true"
-                  style={{ opacity: 0.16 }}
-                >
-                  <circle cx="100" cy="100" r="90" stroke="rgba(237,232,220,1)" strokeWidth="2.5" />
+        </section>
+
+        <HeroParallaxImage>
+          <figure
+            className="hero-image hero-image--simple"
+            aria-label="About hero photo"
+            style={heroImg ? { background: `url(${heroImg}) center/cover no-repeat` } : undefined}
+          >
+            {!heroImg && (
+              <div className="hero-image--placeholder">
+                <svg width="56" height="56" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+                  <circle cx="100" cy="100" r="90" stroke="currentColor" strokeWidth="2.5" />
                   <g
-                    stroke="rgba(237,232,220,1)"
+                    stroke="currentColor"
                     strokeWidth="3"
                     fill="none"
                     strokeLinecap="round"
@@ -155,11 +149,14 @@ export default async function AboutPage() {
                     <path d="M100 165 C 126 148, 136 122, 128 96 C 110 114, 100 142, 100 165 Z" />
                   </g>
                 </svg>
-              )}
-            </div>
-            {d.heroImageCaption && <p className="hero-img-caption">{d.heroImageCaption}</p>}
-          </div>
-        </section>
+                <span>About hero photo</span>
+              </div>
+            )}
+            {d.heroImageCaption && (
+              <figcaption className="hero-image-caption">{d.heroImageCaption}</figcaption>
+            )}
+          </figure>
+        </HeroParallaxImage>
 
         {/* DR. CHRISTA RILEY */}
         <section className="about-bio-wrap" id="christa">
