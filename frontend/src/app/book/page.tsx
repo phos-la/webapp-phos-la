@@ -1,335 +1,73 @@
-'use client';
+import { client } from '@/lib/sanity/client';
+import { bookPageQuery } from '@/lib/sanity/queries';
+import BookForm, { type BookCopy } from './BookForm';
 
-import { useEffect, useState } from 'react';
-import Nav from '@/components/Nav';
+export const revalidate = 300;
 
-// JotForm intake forms.
-// Each tab has its own intake form. JotForm thank-you redirect URLs should
-// be configured to land on /book/thanks?type=new|returning|athome.
-const JOTFORM_NEW = 'https://form.jotform.com/261265432029150';
-const JOTFORM_RETURNING = 'https://form.jotform.com/261265681381157';
-const JOTFORM_ATHOME = 'https://form.jotform.com/261267150831049';
-
-const COOKIE_NAME = 'phos_returning';
-
-function readCookie(name: string): boolean {
-  if (typeof document === 'undefined') return false;
-  return document.cookie.split('; ').some((c) => c.startsWith(`${name}=`));
-}
-
-type Tab = 'new' | 'clinic' | 'athome';
-
-const TAB_CONFIG: Record<Tab, { label: string; accent: string; jotform: string; cta: string }> = {
-  new: {
+const DEFAULTS: BookCopy = {
+  eyebrow: 'Phos Wellness',
+  headlineDefault: 'Start your journey.',
+  headlineReturning: 'Welcome back.',
+  subheadingDefault: 'Tell us a bit about yourself so Katie can prepare for your visit.',
+  subheadingReturning: "Your intake is on file. Just let us know why you're coming in.",
+  tabNew: {
     label: 'New Patient',
-    accent: 'var(--brand-teal)',
-    jotform: JOTFORM_NEW,
-    cta: 'Begin new patient intake →',
+    h2: 'First consultation',
+    sub: 'Takes about five minutes. We gather a few basics so Katie can look over your profile before you come in.',
+    bullets: ['Date of birth, phone, email', 'Gender', 'Electronic signature'],
+    ctaLabel: 'Begin new patient intake →',
   },
-  clinic: {
+  tabClinic: {
     label: 'Returning · In-Clinic',
-    accent: '#6b46c1',
-    jotform: JOTFORM_RETURNING,
-    cta: 'Continue as returning patient →',
+    h2: 'Book an in-clinic session',
+    sub: "Quick one. Just your email and a short note on what's bringing you in. Your intake's already on file.",
+    bullets: [
+      '60 min, 90 min, 2, 3, or 4 hour infusions',
+      'Booster sessions and 6 or 12 pack memberships',
+    ],
+    ctaLabel: 'Continue as returning patient →',
   },
-  athome: {
+  tabAthome: {
     label: 'At-Home',
-    accent: '#0f766e',
-    jotform: JOTFORM_ATHOME,
-    cta: 'Continue with at-home visit →',
+    h2: 'Schedule an at-home video visit',
+    sub: "Quick one. Just your email and a short note on what's bringing you in. Your intake's already on file.",
+    bullets: ['1st, 2nd, or 3rd video consultation', '6 month follow-up and prescription changes'],
+    ctaLabel: 'Continue with at-home visit →',
   },
+  footerNote: 'Secure form · HIPAA compliant · Powered by JotForm',
 };
 
-export default function BookPage() {
-  const [activeTab, setActiveTab] = useState<Tab>('new');
-  const [ready, setReady] = useState(false);
-  const [isLocal, setIsLocal] = useState(false);
+function merge<T>(fallback: T, value: T | undefined | null): T {
+  if (value === undefined || value === null) return fallback;
+  if (typeof value === 'string' && value.trim() === '') return fallback;
+  return value;
+}
 
-  useEffect(() => {
-    if (readCookie(COOKIE_NAME)) {
-      setActiveTab('clinic');
-    }
-    setIsLocal(
-      typeof window !== 'undefined' &&
-        (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'),
-    );
-    setReady(true);
-  }, []);
+function mergeTab(fallback: BookCopy['tabNew'], value: Partial<BookCopy['tabNew']> | null) {
+  if (!value) return fallback;
+  return {
+    label: merge(fallback.label, value.label),
+    h2: merge(fallback.h2, value.h2),
+    sub: merge(fallback.sub, value.sub),
+    bullets: value.bullets && value.bullets.length > 0 ? value.bullets : fallback.bullets,
+    ctaLabel: merge(fallback.ctaLabel, value.ctaLabel),
+  };
+}
 
-  const config = TAB_CONFIG[activeTab];
+export default async function BookPage() {
+  const data = await client.fetch<Partial<BookCopy> | null>(bookPageQuery).catch(() => null);
 
-  // On localhost, append ?env=local so the JotForm hidden "env" field gets
-  // prefilled with "local" (JotForm prefills any field whose name matches a
-  // URL query param). The JotForm condition checks IF env contains "local"
-  // and redirects to localhost instead of phos.la.
-  const jotformHref = isLocal ? `${config.jotform}?env=local` : config.jotform;
+  const copy: BookCopy = {
+    eyebrow: merge(DEFAULTS.eyebrow, data?.eyebrow),
+    headlineDefault: merge(DEFAULTS.headlineDefault, data?.headlineDefault),
+    headlineReturning: merge(DEFAULTS.headlineReturning, data?.headlineReturning),
+    subheadingDefault: merge(DEFAULTS.subheadingDefault, data?.subheadingDefault),
+    subheadingReturning: merge(DEFAULTS.subheadingReturning, data?.subheadingReturning),
+    tabNew: mergeTab(DEFAULTS.tabNew, data?.tabNew ?? null),
+    tabClinic: mergeTab(DEFAULTS.tabClinic, data?.tabClinic ?? null),
+    tabAthome: mergeTab(DEFAULTS.tabAthome, data?.tabAthome ?? null),
+    footerNote: merge(DEFAULTS.footerNote, data?.footerNote),
+  };
 
-  return (
-    <>
-      <Nav />
-
-      <main
-        style={{
-          minHeight: '100vh',
-          background: 'var(--brand-cream)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: '120px 24px 80px',
-        }}
-      >
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 48, maxWidth: 560 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--brand-teal)',
-              marginBottom: 16,
-            }}
-          >
-            Phos Wellness
-          </p>
-          <h1
-            style={{
-              fontFamily: 'var(--font-serif)',
-              fontSize: 'clamp(2rem, 5vw, 3rem)',
-              fontWeight: 400,
-              color: 'var(--brand-navy)',
-              lineHeight: 1.2,
-              marginBottom: 16,
-            }}
-          >
-            {ready && activeTab !== 'new' ? 'Welcome back.' : 'Start your journey.'}
-          </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 15,
-              color: '#4a5568',
-              lineHeight: 1.6,
-            }}
-          >
-            {ready && activeTab !== 'new'
-              ? "Your intake is on file. Just let us know why you're coming in."
-              : 'Tell us a bit about yourself so Katie can prepare for your visit.'}
-          </p>
-        </div>
-
-        {/* Card */}
-        <div
-          style={{
-            background: '#fff',
-            borderRadius: 20,
-            boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
-            overflow: 'hidden',
-            width: '100%',
-            maxWidth: 600,
-          }}
-        >
-          {/* Tab bar — three columns */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr 1fr',
-              borderBottom: '1px solid #ede8dc',
-            }}
-          >
-            {(Object.keys(TAB_CONFIG) as Tab[]).map((tab) => {
-              const t = TAB_CONFIG[tab];
-              const isActive = activeTab === tab;
-              return (
-                <button
-                  key={tab}
-                  onClick={() => setActiveTab(tab)}
-                  style={{
-                    padding: '16px 8px',
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 12,
-                    fontWeight: 600,
-                    letterSpacing: '0.03em',
-                    background: isActive ? t.accent : '#f9f7f4',
-                    color: isActive ? '#fff' : '#9ca3af',
-                    border: 0,
-                    cursor: 'pointer',
-                    transition: 'background 0.2s, color 0.2s',
-                    lineHeight: 1.3,
-                  }}
-                >
-                  {t.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Tab body */}
-          <div style={{ padding: '32px 36px 36px' }}>
-            {activeTab === 'new' && (
-              <>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: 22,
-                    fontWeight: 400,
-                    color: 'var(--brand-navy)',
-                    marginBottom: 12,
-                  }}
-                >
-                  First consultation
-                </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    color: '#4a5568',
-                    lineHeight: 1.7,
-                    marginBottom: 8,
-                  }}
-                >
-                  Takes about 5 minutes. We collect a few basics so Katie can review your profile
-                  before your first visit.
-                </p>
-                <ul
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 13,
-                    color: '#6b7280',
-                    lineHeight: 1.8,
-                    paddingLeft: 18,
-                    marginBottom: 28,
-                  }}
-                >
-                  <li>Date of birth, phone, email</li>
-                  <li>Gender</li>
-                  <li>Electronic signature</li>
-                </ul>
-              </>
-            )}
-
-            {activeTab === 'clinic' && (
-              <>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: 22,
-                    fontWeight: 400,
-                    color: 'var(--brand-navy)',
-                    marginBottom: 12,
-                  }}
-                >
-                  Book an in-clinic session
-                </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    color: '#4a5568',
-                    lineHeight: 1.7,
-                    marginBottom: 8,
-                  }}
-                >
-                  Quick — just your email and a note on why you're coming in. Your full intake is
-                  already on file.
-                </p>
-                <ul
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 13,
-                    color: '#6b7280',
-                    lineHeight: 1.8,
-                    paddingLeft: 18,
-                    marginBottom: 28,
-                  }}
-                >
-                  <li>60 min, 90 min, 2-, 3-, 4-hour infusions</li>
-                  <li>Booster sessions and 6 / 12-pack memberships</li>
-                </ul>
-              </>
-            )}
-
-            {activeTab === 'athome' && (
-              <>
-                <h2
-                  style={{
-                    fontFamily: 'var(--font-serif)',
-                    fontSize: 22,
-                    fontWeight: 400,
-                    color: 'var(--brand-navy)',
-                    marginBottom: 12,
-                  }}
-                >
-                  Schedule an at-home video visit
-                </h2>
-                <p
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 14,
-                    color: '#4a5568',
-                    lineHeight: 1.7,
-                    marginBottom: 8,
-                  }}
-                >
-                  Quick — just your email and a note on why you're coming in. Your full intake is
-                  already on file.
-                </p>
-                <ul
-                  style={{
-                    fontFamily: 'var(--font-sans)',
-                    fontSize: 13,
-                    color: '#6b7280',
-                    lineHeight: 1.8,
-                    paddingLeft: 18,
-                    marginBottom: 28,
-                  }}
-                >
-                  <li>1st, 2nd, 3rd video consultations</li>
-                  <li>6-month follow-up and prescription changes</li>
-                </ul>
-              </>
-            )}
-
-            <a
-              href={jotformHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '14px 0',
-                background: config.accent,
-                color: '#fff',
-                fontFamily: 'var(--font-sans)',
-                fontSize: 14,
-                fontWeight: 600,
-                letterSpacing: '0.03em',
-                textAlign: 'center',
-                textDecoration: 'none',
-                borderRadius: 10,
-                transition: 'background 0.2s',
-              }}
-            >
-              {config.cta}
-            </a>
-          </div>
-        </div>
-
-        {/* Footer note */}
-        <p
-          style={{
-            fontFamily: 'var(--font-sans)',
-            fontSize: 11,
-            color: '#9ca3af',
-            marginTop: 24,
-            textAlign: 'center',
-          }}
-        >
-          Secure form · HIPAA compliant · Powered by JotForm
-        </p>
-      </main>
-    </>
-  );
+  return <BookForm copy={copy} />;
 }

@@ -47,7 +47,7 @@ export const structure: StructureResolver = (S) =>
                 .title('2. Three ways to heal')
                 .child(
                   S.document()
-                    .title('Services')
+                    .title('Treatments')
                     .schemaType('servicesSection')
                     .documentId('servicesSection-singleton'),
                 ),
@@ -122,6 +122,49 @@ export const structure: StructureResolver = (S) =>
                     .title('Glimpses (Instagram)')
                     .schemaType('glimpsesSection')
                     .documentId('glimpsesSection-singleton'),
+                ),
+            ]),
+        ),
+      S.divider(),
+      S.listItem()
+        .title('About Page')
+        .child(
+          S.document()
+            .title('About Page')
+            .schemaType('aboutPage')
+            .documentId('aboutPage-singleton'),
+        ),
+      S.listItem()
+        .title('Treatments Index')
+        .child(
+          S.document()
+            .title('Treatments Index')
+            .schemaType('treatmentsPage')
+            .documentId('treatmentsPage-singleton'),
+        ),
+      S.listItem().title('Treatments').child(S.documentTypeList('treatment').title('Treatments')),
+      S.divider(),
+      S.listItem()
+        .title('Book Page')
+        .child(
+          S.list()
+            .title('Book Page')
+            .items([
+              S.listItem()
+                .title('Booking — Tabs + Copy')
+                .child(
+                  S.document()
+                    .title('Book Page')
+                    .schemaType('bookPage')
+                    .documentId('bookPage-singleton'),
+                ),
+              S.listItem()
+                .title('Thank You — Post-Intake')
+                .child(
+                  S.document()
+                    .title('Book — Thank You Page')
+                    .schemaType('bookThanksPage')
+                    .documentId('bookThanksPage-singleton'),
                 ),
             ]),
         ),

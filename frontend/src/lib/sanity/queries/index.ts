@@ -1,7 +1,6 @@
 import { groq } from 'next-sanity';
 
 export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
-  pill,
   headline,
   subheading,
   ctaLabel,
@@ -129,4 +128,116 @@ export const navSectionQuery = groq`*[_type == "navSection"][0] {
   items[] { label, href },
   ctaLabel,
   ctaHref
+}`;
+
+export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
+  heroHeadline,
+  heroSubheading,
+  heroImage,
+  heroImageCaption,
+  christaName,
+  christaBio,
+  christaCredentials,
+  christaPortrait,
+  teamHeading,
+  teamMembers[] {
+    role,
+    name,
+    bio,
+    portrait,
+    gradient,
+    placeholderNote
+  },
+  kapHeading,
+  kapPartnerName,
+  kapBody,
+  kapLinkLabel,
+  kapLinkHref,
+  kapPortrait,
+  locationHeadline,
+  locationBody,
+  locationPrimaryCtaLabel,
+  locationPrimaryCtaHref,
+  locationSecondaryCtaLabel,
+  locationSecondaryCtaHref,
+  locationPhoto
+}`;
+
+export const treatmentsPageQuery = groq`*[_type == "treatmentsPage"][0] {
+  heroTitle,
+  heroSub,
+  heroImage,
+  introBody,
+  "treatments": treatments[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    cardDescription,
+    cardIcon,
+    cardGradient,
+    cardPhoto,
+    draft
+  },
+  ctaText,
+  ctaPrimaryLabel,
+  ctaPrimaryHref,
+  ctaSecondaryLabel,
+  ctaSecondaryHref,
+  ctaAddress
+}`;
+
+export const bookPageQuery = groq`*[_type == "bookPage"][0] {
+  eyebrow,
+  headlineDefault,
+  headlineReturning,
+  subheadingDefault,
+  subheadingReturning,
+  tabNew { label, h2, sub, bullets, ctaLabel },
+  tabClinic { label, h2, sub, bullets, ctaLabel },
+  tabAthome { label, h2, sub, bullets, ctaLabel },
+  footerNote
+}`;
+
+export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
+  flowNew { heading, subheading, eyebrow, pickerLabel },
+  flowReturning { heading, subheading, eyebrow, pickerLabel },
+  flowAthome { heading, subheading, eyebrow, pickerLabel },
+  newDepositCtaLabel,
+  newDepositLoadingLabel,
+  otherCtaLabel,
+  secureNote,
+  errorMessage,
+  backLinkLabel
+}`;
+
+export const allTreatmentSlugsQuery = groq`*[_type == "treatment" && defined(slug.current)][].slug.current`;
+
+export const treatmentBySlugQuery = groq`*[_type == "treatment" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  draft,
+  metaDescription,
+  heroSub,
+  heroImage,
+  stats[] { value, label },
+  protocolAsideTitle,
+  protocolBody,
+  treatList[] { label, offlabel },
+  referList,
+  qualifyLinkLabel,
+  qualifyLinkHref,
+  pricingMain,
+  pricingNote,
+  steps[] { num, title, body },
+  related[] {
+    tag,
+    bodyOverride,
+    "service": service-> {
+      _id,
+      title,
+      "slug": slug.current,
+      cardDescription
+    }
+  }
 }`;

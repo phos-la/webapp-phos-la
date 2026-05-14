@@ -11,6 +11,10 @@ import { blogPostType, blogSectionType } from './blogPost';
 import { glimpsesSectionType } from './glimpsesSection';
 import { footerSectionType } from './footerSection';
 import { navSectionType } from './navSection';
+import { aboutPageType } from './aboutPage';
+import { treatmentType, treatmentsPageType } from './treatment';
+import { bookPageType } from './bookPage';
+import { bookThanksPageType } from './bookThanksPage';
 
 export const schemaTypes = [
   pricingTierItemType,
@@ -30,4 +34,9 @@ export const schemaTypes = [
   glimpsesSectionType,
   footerSectionType,
   navSectionType,
+  aboutPageType,
+  treatmentType,
+  treatmentsPageType,
+  bookPageType,
+  bookThanksPageType,
 ];
