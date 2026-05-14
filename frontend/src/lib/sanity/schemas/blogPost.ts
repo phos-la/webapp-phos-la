@@ -92,18 +92,34 @@ export const blogPostType = defineType({
 
 export const blogSectionType = defineType({
   name: 'blogSection',
-  title: 'Blog Section',
+  title: 'Field Notes (Home Section)',
   type: 'document',
   fields: [
-    defineField({ name: 'label', title: 'Eyebrow Label', type: 'string' }),
-    defineField({ name: 'heading', title: 'Section Heading', type: 'string' }),
+    defineField({
+      name: 'label',
+      title: 'Eyebrow Label',
+      type: 'string',
+      initialValue: 'Field Notes',
+    }),
+    defineField({
+      name: 'heading',
+      title: 'Section Heading',
+      type: 'string',
+      initialValue: 'Field Notes',
+    }),
     defineField({
       name: 'posts',
       title: 'Posts Shown on Home Page',
       description:
-        'Pick which Blog Posts appear on the home page. Drag to reorder. Edit a post by clicking it.',
+        'Pick which Field Notes appear on the home page. Drag to reorder. Edit a post by clicking it.',
       type: 'array',
       of: [{ type: 'reference', to: [{ type: 'blogPost' }] }],
+    }),
+    defineField({
+      name: 'cardCtaLabel',
+      title: 'Card CTA Label',
+      type: 'string',
+      initialValue: 'Read →',
     }),
   ],
 });

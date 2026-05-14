@@ -88,6 +88,7 @@ export const faqSectionQuery = groq`*[_type == "faqSection"][0] {
 export const blogSectionQuery = groq`*[_type == "blogSection"][0] {
   label,
   heading,
+  cardCtaLabel,
   "posts": posts[]-> {
     _id,
     image,

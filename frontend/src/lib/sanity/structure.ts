@@ -108,10 +108,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId('faqSection-singleton'),
                 ),
               S.listItem()
-                .title('10. Forest Stories')
+                .title('10. Field Notes')
                 .child(
                   S.document()
-                    .title('Blog Section')
+                    .title('Field Notes (Home Section)')
                     .schemaType('blogSection')
                     .documentId('blogSection-singleton'),
                 ),

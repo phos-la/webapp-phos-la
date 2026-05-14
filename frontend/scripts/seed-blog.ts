@@ -171,6 +171,54 @@ async function run() {
     fallbackMetaTitle: 'Field Notes — Phos',
   });
   console.log('  blogPostPage-singleton ready');
+
+  // Home Page → Field Notes section. The singleton itself may already exist
+  // (seeded by an earlier home-page seed), but it might still carry the old
+  // "Our Blog" / "Forest Stories" labels or have no post references wired in.
+  // Read first; only patch the fields the editor hasn't customised.
+  type BlogSectionDoc = {
+    label?: string;
+    heading?: string;
+    cardCtaLabel?: string;
+    posts?: { _key: string; _ref: string; _type: 'reference' }[];
+  };
+  const existing = (await client.getDocument('blogSection-singleton')) as BlogSectionDoc | null;
+
+  await client.createIfNotExists({
+    _type: 'blogSection',
+    _id: 'blogSection-singleton',
+    label: 'Field Notes',
+    heading: 'Field Notes',
+    cardCtaLabel: 'Read →',
+  });
+
+  const patch = client.patch('blogSection-singleton').setIfMissing({
+    cardCtaLabel: 'Read →',
+  });
+
+  // Migrate the old hardcoded labels over to "Field Notes" only if the editor
+  // hasn't already changed them to something custom.
+  const STALE_LABELS = new Set(['Our Blog', 'Forest Stories', 'Blog', '']);
+  if (!existing?.label || STALE_LABELS.has(existing.label.trim())) {
+    patch.set({ label: 'Field Notes' });
+  }
+  if (!existing?.heading || STALE_LABELS.has(existing.heading.trim())) {
+    patch.set({ heading: 'Field Notes' });
+  }
+
+  // If the editor hasn't wired any post references yet, point the section at
+  // the three starter posts so the home page renders something real.
+  if (!existing?.posts || existing.posts.length === 0) {
+    patch.set({
+      posts: STARTERS.map((s, i) => ({
+        _key: `homepost-${i}`,
+        _type: 'reference',
+        _ref: s.id,
+      })),
+    });
+  }
+  await patch.commit();
+  console.log('  blogSection-singleton: Field Notes labels + references ensured');
 }
 
 run().catch((err) => {
