@@ -158,14 +158,14 @@ const FLOW_CONFIG: Record<
     pickerLabel: null,
   },
   returning: {
-    accentColor: '#6b46c1',
+    accentColor: 'var(--aqua-500)',
     heading: 'See you soon.',
     subheading: "We've got your note. One last step — choose your in-clinic session below.",
     eyebrow: 'In-clinic services',
     pickerLabel: 'Select your session',
   },
   athome: {
-    accentColor: '#0f766e',
+    accentColor: 'var(--aqua-700)',
     heading: 'Welcome back.',
     subheading: "We've got your note. One last step — choose your at-home video visit below.",
     eyebrow: 'At-home services',
@@ -204,7 +204,7 @@ function PriceRow({
         width: '100%',
         padding: '14px 16px',
         background: selected ? 'rgba(30,58,72,0.05)' : 'transparent',
-        border: selected ? `1.5px solid ${accentColor}` : '1.5px solid #ede8dc',
+        border: selected ? `1.5px solid ${accentColor}` : '1.5px solid var(--border)',
         borderRadius: 10,
         cursor: 'pointer',
         textAlign: 'left',
@@ -219,7 +219,7 @@ function PriceRow({
           width: 16,
           height: 16,
           borderRadius: '50%',
-          border: `2px solid ${selected ? accentColor : '#d1d5db'}`,
+          border: `2px solid ${selected ? accentColor : 'var(--border)'}`,
           background: selected ? accentColor : 'transparent',
           display: 'flex',
           alignItems: 'center',
@@ -255,7 +255,7 @@ function PriceRow({
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 12,
-              color: '#6b7280',
+              color: 'var(--fg-subtle)',
               lineHeight: 1.5,
               display: 'block',
               marginTop: 2,
@@ -376,7 +376,7 @@ function ThanksContent() {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 15,
-              color: '#4a5568',
+              color: 'var(--fg-muted)',
               lineHeight: 1.7,
             }}
           >
@@ -389,7 +389,7 @@ function ThanksContent() {
           style={{
             background: '#fff',
             borderRadius: 20,
-            boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
+            boxShadow: 'var(--shadow-md)',
             width: '100%',
             maxWidth: flow === 'new' ? 440 : 560,
             overflow: 'hidden',
@@ -425,7 +425,7 @@ function ThanksContent() {
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 13,
-                  color: '#6b7280',
+                  color: 'var(--fg-subtle)',
                   lineHeight: 1.6,
                   marginBottom: 28,
                 }}
@@ -453,7 +453,7 @@ function ThanksContent() {
                   display: 'block',
                   width: '100%',
                   padding: '14px 0',
-                  background: loading ? '#9ca3af' : 'var(--brand-amber)',
+                  background: loading ? 'var(--cream-500)' : 'var(--brand-amber)',
                   color: '#fff',
                   fontFamily: 'var(--font-sans)',
                   fontSize: 14,
@@ -472,7 +472,7 @@ function ThanksContent() {
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 11,
-                  color: '#9ca3af',
+                  color: 'var(--cream-500)',
                   marginTop: 12,
                 }}
               >
@@ -530,7 +530,7 @@ function ThanksContent() {
                   display: 'block',
                   width: '100%',
                   padding: '14px 0',
-                  background: loading ? '#9ca3af' : config.accentColor,
+                  background: loading ? 'var(--cream-500)' : config.accentColor,
                   color: '#fff',
                   fontFamily: 'var(--font-sans)',
                   fontSize: 14,
@@ -550,7 +550,7 @@ function ThanksContent() {
                 style={{
                   fontFamily: 'var(--font-sans)',
                   fontSize: 11,
-                  color: '#9ca3af',
+                  color: 'var(--cream-500)',
                   marginTop: 12,
                   textAlign: 'center',
                 }}

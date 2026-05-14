@@ -88,7 +88,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 15,
-              color: '#4a5568',
+              color: 'var(--fg-muted)',
               lineHeight: 1.7,
             }}
           >
@@ -105,7 +105,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
           style={{
             background: '#fff',
             borderRadius: 20,
-            boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
+            boxShadow: 'var(--shadow-md)',
             padding: '28px 36px',
             width: '100%',
             maxWidth: 440,
@@ -116,7 +116,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 13,
-              color: '#6b7280',
+              color: 'var(--fg-subtle)',
               lineHeight: 1.7,
             }}
           >
@@ -183,7 +183,7 @@ export default async function SuccessPage({
           >
             Payment received.
           </h1>
-          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: '#4a5568' }}>
+          <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--fg-muted)' }}>
             Katie will be in touch shortly to confirm your appointment.
           </p>
           <a

@@ -28,13 +28,13 @@ const TAB_CONFIG: Record<Tab, { label: string; accent: string; jotform: string; 
   },
   clinic: {
     label: 'Returning · In-Clinic',
-    accent: '#6b46c1',
+    accent: 'var(--aqua-500)',
     jotform: JOTFORM_RETURNING,
     cta: 'Continue as returning patient →',
   },
   athome: {
     label: 'At-Home',
-    accent: '#0f766e',
+    accent: 'var(--aqua-700)',
     jotform: JOTFORM_ATHOME,
     cta: 'Continue with at-home visit →',
   },
@@ -110,7 +110,7 @@ export default function BookPage() {
             style={{
               fontFamily: 'var(--font-sans)',
               fontSize: 15,
-              color: '#4a5568',
+              color: 'var(--fg-muted)',
               lineHeight: 1.6,
             }}
           >
@@ -125,7 +125,7 @@ export default function BookPage() {
           style={{
             background: '#fff',
             borderRadius: 20,
-            boxShadow: '0 4px 24px rgba(30,58,72,0.08)',
+            boxShadow: 'var(--shadow-md)',
             overflow: 'hidden',
             width: '100%',
             maxWidth: 600,
@@ -136,7 +136,7 @@ export default function BookPage() {
             style={{
               display: 'grid',
               gridTemplateColumns: '1fr 1fr 1fr',
-              borderBottom: '1px solid #ede8dc',
+              borderBottom: '1px solid var(--border)',
             }}
           >
             {(Object.keys(TAB_CONFIG) as Tab[]).map((tab) => {
@@ -152,8 +152,8 @@ export default function BookPage() {
                     fontSize: 12,
                     fontWeight: 600,
                     letterSpacing: '0.03em',
-                    background: isActive ? t.accent : '#f9f7f4',
-                    color: isActive ? '#fff' : '#9ca3af',
+                    background: isActive ? t.accent : 'var(--cream-50)',
+                    color: isActive ? '#fff' : 'var(--cream-500)',
                     border: 0,
                     cursor: 'pointer',
                     transition: 'background 0.2s, color 0.2s',
@@ -185,7 +185,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 14,
-                    color: '#4a5568',
+                    color: 'var(--fg-muted)',
                     lineHeight: 1.7,
                     marginBottom: 8,
                   }}
@@ -197,7 +197,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 13,
-                    color: '#6b7280',
+                    color: 'var(--fg-subtle)',
                     lineHeight: 1.8,
                     paddingLeft: 18,
                     marginBottom: 28,
@@ -227,7 +227,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 14,
-                    color: '#4a5568',
+                    color: 'var(--fg-muted)',
                     lineHeight: 1.7,
                     marginBottom: 8,
                   }}
@@ -239,7 +239,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 13,
-                    color: '#6b7280',
+                    color: 'var(--fg-subtle)',
                     lineHeight: 1.8,
                     paddingLeft: 18,
                     marginBottom: 28,
@@ -268,7 +268,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 14,
-                    color: '#4a5568',
+                    color: 'var(--fg-muted)',
                     lineHeight: 1.7,
                     marginBottom: 8,
                   }}
@@ -280,7 +280,7 @@ export default function BookPage() {
                   style={{
                     fontFamily: 'var(--font-sans)',
                     fontSize: 13,
-                    color: '#6b7280',
+                    color: 'var(--fg-subtle)',
                     lineHeight: 1.8,
                     paddingLeft: 18,
                     marginBottom: 28,
@@ -322,7 +322,7 @@ export default function BookPage() {
           style={{
             fontFamily: 'var(--font-sans)',
             fontSize: 11,
-            color: '#9ca3af',
+            color: 'var(--cream-500)',
             marginTop: 24,
             textAlign: 'center',
           }}
