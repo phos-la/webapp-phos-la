@@ -207,16 +207,40 @@ export default function BookForm({ copy }: { copy: BookCopy }) {
             </p>
             <ul
               style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 13,
-                color: 'var(--fg-subtle)',
-                lineHeight: 1.8,
-                paddingLeft: 18,
-                marginBottom: 28,
+                listStyle: 'none',
+                padding: 0,
+                margin: '0 0 28px 0',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 8,
               }}
             >
               {config.bullets.map((b) => (
-                <li key={b}>{b}</li>
+                <li
+                  key={b}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'baseline',
+                    gap: 10,
+                    fontFamily: 'var(--font-sans)',
+                    fontSize: 13,
+                    color: 'var(--fg-subtle)',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  <span
+                    aria-hidden
+                    style={{
+                      color: 'var(--accent)',
+                      fontSize: 20,
+                      lineHeight: 0.9,
+                      flexShrink: 0,
+                    }}
+                  >
+                    ·
+                  </span>
+                  <span>{b}</span>
+                </li>
               ))}
             </ul>
 
