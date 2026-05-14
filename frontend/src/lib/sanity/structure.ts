@@ -184,6 +184,14 @@ export const structure: StructureResolver = (S) =>
                     .documentId('blogIndexPage-singleton'),
                 ),
               S.listItem()
+                .title('Post Page — Detail Chrome')
+                .child(
+                  S.document()
+                    .title('Blog Post Page (Detail Chrome)')
+                    .schemaType('blogPostPage')
+                    .documentId('blogPostPage-singleton'),
+                ),
+              S.listItem()
                 .title('All Posts')
                 .child(S.documentTypeList('blogPost').title('Blog Posts')),
             ]),

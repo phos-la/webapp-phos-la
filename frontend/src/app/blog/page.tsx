@@ -5,16 +5,11 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
+import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
 import './blog.css';
 
 export const revalidate = 300;
-
-export const metadata = {
-  title: 'Field Notes — Phos',
-  description:
-    'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
-};
 
 type PostCard = {
   _id: string;
@@ -34,8 +29,18 @@ type IndexData = {
   heroSubheading?: string;
   heroImage?: SanityImageSource;
   heroImageCaption?: string;
+  heroImageAlt?: string;
+  featuredEyebrow?: string;
+  featuredCtaLabel?: string;
+  gridHeadingWithFeatured?: string;
+  gridHeadingNoFeatured?: string;
+  noteCountSingular?: string;
+  noteCountPlural?: string;
+  cardCtaLabel?: string;
   emptyHeadline?: string;
   emptyBody?: string;
+  metaTitle?: string;
+  metaDescription?: string;
   featuredPost?: PostCard;
 };
 
@@ -45,8 +50,19 @@ const DEFAULTS = {
   heroSubheading:
     'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
   heroImageCaption: '',
+  heroImageAlt: 'Field Notes hero photo',
+  featuredEyebrow: 'Featured',
+  featuredCtaLabel: 'Read the note →',
+  gridHeadingWithFeatured: 'More notes',
+  gridHeadingNoFeatured: 'All notes',
+  noteCountSingular: 'note',
+  noteCountPlural: 'notes',
+  cardCtaLabel: 'Read →',
   emptyHeadline: 'New notes coming soon.',
   emptyBody: 'Katie and Christa are working on the first batch. Check back in a couple weeks.',
+  metaTitle: 'Field Notes — Phos',
+  metaDescription:
+    'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
 };
 
 const FALLBACK_IMAGES = [
@@ -69,6 +85,14 @@ function cardImage(post: PostCard, fallbackIdx: number): string {
   return FALLBACK_IMAGES[fallbackIdx % FALLBACK_IMAGES.length] ?? FALLBACK_IMAGES[0]!;
 }
 
+export async function generateMetadata(): Promise<Metadata> {
+  const indexData = await client.fetch<IndexData | null>(blogIndexPageQuery).catch(() => null);
+  return {
+    title: indexData?.metaTitle?.trim() || DEFAULTS.metaTitle,
+    description: indexData?.metaDescription?.trim() || DEFAULTS.metaDescription,
+  };
+}
+
 export default async function BlogIndexPage() {
   const [indexData, postsData] = await Promise.all([
     client.fetch<IndexData | null>(blogIndexPageQuery).catch(() => null),
@@ -79,9 +103,20 @@ export default async function BlogIndexPage() {
   const heroHeadline = indexData?.heroHeadline?.trim() || DEFAULTS.heroHeadline;
   const heroSubheading = indexData?.heroSubheading?.trim() || DEFAULTS.heroSubheading;
   const heroCaption = indexData?.heroImageCaption?.trim() || DEFAULTS.heroImageCaption;
+  const heroImageAlt = indexData?.heroImageAlt?.trim() || DEFAULTS.heroImageAlt;
   const heroImg = indexData?.heroImage
     ? urlFor(indexData.heroImage).width(2400).quality(80).auto('format').url()
     : null;
+
+  const featuredEyebrow = indexData?.featuredEyebrow?.trim() || DEFAULTS.featuredEyebrow;
+  const featuredCtaLabel = indexData?.featuredCtaLabel?.trim() || DEFAULTS.featuredCtaLabel;
+  const gridHeadingWithFeatured =
+    indexData?.gridHeadingWithFeatured?.trim() || DEFAULTS.gridHeadingWithFeatured;
+  const gridHeadingNoFeatured =
+    indexData?.gridHeadingNoFeatured?.trim() || DEFAULTS.gridHeadingNoFeatured;
+  const noteCountSingular = indexData?.noteCountSingular?.trim() || DEFAULTS.noteCountSingular;
+  const noteCountPlural = indexData?.noteCountPlural?.trim() || DEFAULTS.noteCountPlural;
+  const cardCtaLabel = indexData?.cardCtaLabel?.trim() || DEFAULTS.cardCtaLabel;
 
   const emptyHeadline = indexData?.emptyHeadline?.trim() || DEFAULTS.emptyHeadline;
   const emptyBody = indexData?.emptyBody?.trim() || DEFAULTS.emptyBody;
@@ -116,7 +151,7 @@ export default async function BlogIndexPage() {
         <HeroParallaxImage>
           <figure
             className="hero-image hero-image--simple"
-            aria-label="Field Notes hero photo"
+            aria-label={heroImageAlt}
             style={heroImg ? { background: `url(${heroImg}) center/cover no-repeat` } : undefined}
           >
             {!heroImg && (
@@ -131,7 +166,7 @@ export default async function BlogIndexPage() {
                     strokeLinecap="round"
                   />
                 </svg>
-                <span>Field Notes hero photo</span>
+                <span>{heroImageAlt}</span>
               </div>
             )}
             {heroCaption && <figcaption className="hero-image-caption">{heroCaption}</figcaption>}
@@ -147,7 +182,7 @@ export default async function BlogIndexPage() {
                 <img src={cardImage(featured, 0)} alt={featured.imageAlt ?? ''} loading="eager" />
               </div>
               <div className="blog-featured-text">
-                <p className="blog-featured-eyebrow">Featured</p>
+                <p className="blog-featured-eyebrow">{featuredEyebrow}</p>
                 <h2 className="blog-featured-title">{featured.title}</h2>
                 {featured.body && <p className="blog-featured-body">{featured.body}</p>}
                 {(featured.author || featured.publishDate || featured.readMinutes) && (
@@ -162,7 +197,7 @@ export default async function BlogIndexPage() {
                   </p>
                 )}
                 <a className="blog-featured-read" href={`/blog/${featured.slug}`}>
-                  Read the note →
+                  {featuredCtaLabel}
                 </a>
               </div>
             </article>
@@ -174,9 +209,11 @@ export default async function BlogIndexPage() {
           <div className="blog-grid-inner">
             {gridPosts.length > 0 && (
               <header className="blog-grid-head">
-                <h2 className="blog-grid-title">{featured ? 'More notes' : 'All notes'}</h2>
+                <h2 className="blog-grid-title">
+                  {featured ? gridHeadingWithFeatured : gridHeadingNoFeatured}
+                </h2>
                 <span className="blog-grid-count">
-                  {gridPosts.length} {gridPosts.length === 1 ? 'note' : 'notes'}
+                  {gridPosts.length} {gridPosts.length === 1 ? noteCountSingular : noteCountPlural}
                 </span>
               </header>
             )}
@@ -201,7 +238,7 @@ export default async function BlogIndexPage() {
                       )}
                       <h3 className="blog-card-title">{post.title}</h3>
                       {post.body && <p className="blog-card-excerpt">{post.body}</p>}
-                      <span className="blog-card-read">Read →</span>
+                      <span className="blog-card-read">{cardCtaLabel}</span>
                     </div>
                   </a>
                 ))}

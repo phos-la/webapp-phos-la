@@ -216,8 +216,18 @@ export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {
   heroSubheading,
   heroImage,
   heroImageCaption,
+  heroImageAlt,
+  featuredEyebrow,
+  featuredCtaLabel,
+  gridHeadingWithFeatured,
+  gridHeadingNoFeatured,
+  noteCountSingular,
+  noteCountPlural,
+  cardCtaLabel,
   emptyHeadline,
   emptyBody,
+  metaTitle,
+  metaDescription,
   "featuredPost": featuredPost-> {
     _id,
     title,
@@ -229,6 +239,18 @@ export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {
     publishDate,
     readMinutes
   }
+}`;
+
+export const blogPostPageQuery = groq`*[_type == "blogPostPage"][0] {
+  eyebrowLabel,
+  readMinutesSuffix,
+  backLinkLabel,
+  backLinkHref,
+  placeholderBody,
+  placeholderLinkLabel,
+  metaTitleSuffix,
+  metaTitleSeparator,
+  fallbackMetaTitle
 }`;
 
 export const allBlogPostsQuery = groq`*[_type == "blogPost" && defined(slug.current)] | order(publishDate desc, _createdAt desc) {

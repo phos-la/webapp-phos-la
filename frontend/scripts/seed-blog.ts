@@ -116,14 +116,61 @@ async function run() {
     heroHeadline: 'Field Notes',
     heroSubheading:
       'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
+    heroImageAlt: 'Field Notes hero photo',
+    featuredEyebrow: 'Featured',
+    featuredCtaLabel: 'Read the note →',
+    gridHeadingWithFeatured: 'More notes',
+    gridHeadingNoFeatured: 'All notes',
+    noteCountSingular: 'note',
+    noteCountPlural: 'notes',
+    cardCtaLabel: 'Read →',
     emptyHeadline: 'New notes coming soon.',
     emptyBody: 'Katie and Christa are working on the first batch. Check back in a couple weeks.',
+    metaTitle: 'Field Notes — Phos',
+    metaDescription:
+      'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
     featuredPost: {
       _type: 'reference',
       _ref: STARTERS[0]!.id,
     },
   });
   console.log('  blogIndexPage-singleton ready');
+
+  // Apply defaults to any new fields added after the first seed.
+  // setIfMissing leaves edited fields alone but fills in the new ones.
+  await client
+    .patch('blogIndexPage-singleton')
+    .setIfMissing({
+      heroImageAlt: 'Field Notes hero photo',
+      featuredEyebrow: 'Featured',
+      featuredCtaLabel: 'Read the note →',
+      gridHeadingWithFeatured: 'More notes',
+      gridHeadingNoFeatured: 'All notes',
+      noteCountSingular: 'note',
+      noteCountPlural: 'notes',
+      cardCtaLabel: 'Read →',
+      metaTitle: 'Field Notes — Phos',
+      metaDescription:
+        'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
+    })
+    .commit();
+  console.log('  blogIndexPage-singleton: new fields backfilled');
+
+  await client.createIfNotExists({
+    _type: 'blogPostPage',
+    _id: 'blogPostPage-singleton',
+    eyebrowLabel: 'Field Notes',
+    readMinutesSuffix: 'min read',
+    backLinkLabel: '← All field notes',
+    backLinkHref: '/blog',
+    placeholderBody:
+      'This note is still being written. Come back soon, or browse the rest of our Field Notes.',
+    placeholderLinkLabel: 'Field Notes',
+    metaTitleSuffix: 'Field Notes — Phos',
+    metaTitleSeparator: ' — ',
+    fallbackMetaTitle: 'Field Notes — Phos',
+  });
+  console.log('  blogPostPage-singleton ready');
 }
 
 run().catch((err) => {

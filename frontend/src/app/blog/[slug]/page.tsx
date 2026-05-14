@@ -1,12 +1,13 @@
 import { notFound } from 'next/navigation';
 import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
-import { allBlogSlugsQuery, blogPostBySlugQuery } from '@/lib/sanity/queries';
+import { allBlogSlugsQuery, blogPostBySlugQuery, blogPostPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
 import { Markdown } from '@/components/Markdown';
+import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
 import '../blog.css';
 
@@ -27,6 +28,45 @@ type BlogPostFull = {
   metaDescription?: string;
 };
 
+type BlogPostPageChrome = {
+  eyebrowLabel?: string;
+  readMinutesSuffix?: string;
+  backLinkLabel?: string;
+  backLinkHref?: string;
+  placeholderBody?: string;
+  placeholderLinkLabel?: string;
+  metaTitleSuffix?: string;
+  metaTitleSeparator?: string;
+  fallbackMetaTitle?: string;
+};
+
+const CHROME_DEFAULTS: Required<BlogPostPageChrome> = {
+  eyebrowLabel: 'Field Notes',
+  readMinutesSuffix: 'min read',
+  backLinkLabel: '← All field notes',
+  backLinkHref: '/blog',
+  placeholderBody:
+    'This note is still being written. Come back soon, or browse the rest of our Field Notes.',
+  placeholderLinkLabel: 'Field Notes',
+  metaTitleSuffix: 'Field Notes — Phos',
+  metaTitleSeparator: ' — ',
+  fallbackMetaTitle: 'Field Notes — Phos',
+};
+
+function mergeChrome(c: BlogPostPageChrome | null): Required<BlogPostPageChrome> {
+  return {
+    eyebrowLabel: c?.eyebrowLabel?.trim() || CHROME_DEFAULTS.eyebrowLabel,
+    readMinutesSuffix: c?.readMinutesSuffix?.trim() || CHROME_DEFAULTS.readMinutesSuffix,
+    backLinkLabel: c?.backLinkLabel?.trim() || CHROME_DEFAULTS.backLinkLabel,
+    backLinkHref: c?.backLinkHref?.trim() || CHROME_DEFAULTS.backLinkHref,
+    placeholderBody: c?.placeholderBody?.trim() || CHROME_DEFAULTS.placeholderBody,
+    placeholderLinkLabel: c?.placeholderLinkLabel?.trim() || CHROME_DEFAULTS.placeholderLinkLabel,
+    metaTitleSuffix: c?.metaTitleSuffix?.trim() || CHROME_DEFAULTS.metaTitleSuffix,
+    metaTitleSeparator: c?.metaTitleSeparator ?? CHROME_DEFAULTS.metaTitleSeparator,
+    fallbackMetaTitle: c?.fallbackMetaTitle?.trim() || CHROME_DEFAULTS.fallbackMetaTitle,
+  };
+}
+
 function formatDate(d?: string): string {
   if (!d) return '';
   const date = new Date(d);
@@ -34,36 +74,80 @@ function formatDate(d?: string): string {
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
+/**
+ * Render the placeholder body with the link substituted in for {link}.
+ * Editors can rewrite the copy in Sanity and decide where the link sits.
+ */
+function PlaceholderBody({
+  template,
+  linkLabel,
+  href,
+}: {
+  template: string;
+  linkLabel: string;
+  href: string;
+}) {
+  // Try to match the editor-provided linkLabel inside the template and turn it
+  // into an anchor. Fall back to "<text>. <linkLabel link>" if not found.
+  const idx = template.indexOf(linkLabel);
+  if (idx >= 0) {
+    const before = template.slice(0, idx);
+    const after = template.slice(idx + linkLabel.length);
+    return (
+      <p>
+        {before}
+        <a href={href}>{linkLabel}</a>
+        {after}
+      </p>
+    );
+  }
+  return (
+    <p>
+      {template} <a href={href}>{linkLabel}</a>
+    </p>
+  );
+}
+
 export async function generateStaticParams() {
   const slugs = await client.fetch<string[]>(allBlogSlugsQuery).catch(() => []);
   return (slugs ?? []).map((slug) => ({ slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const post = await client
-    .fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug })
-    .catch(() => null);
-  if (!post) return { title: 'Field Notes — Phos' };
+  const [post, chromeRaw] = await Promise.all([
+    client.fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug }).catch(() => null),
+    client.fetch<BlogPostPageChrome | null>(blogPostPageQuery).catch(() => null),
+  ]);
+  const chrome = mergeChrome(chromeRaw);
+  if (!post) return { title: chrome.fallbackMetaTitle };
   return {
-    title: post.metaTitle?.trim() || `${post.title} — Field Notes — Phos`,
+    title:
+      post.metaTitle?.trim() ||
+      `${post.title}${chrome.metaTitleSeparator}${chrome.metaTitleSuffix}`,
     description: post.metaDescription?.trim() || post.body || undefined,
   };
 }
 
 export default async function BlogSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await client
-    .fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug })
-    .catch(() => null);
+  const [post, chromeRaw] = await Promise.all([
+    client.fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug }).catch(() => null),
+    client.fetch<BlogPostPageChrome | null>(blogPostPageQuery).catch(() => null),
+  ]);
   if (!post) notFound();
+  const chrome = mergeChrome(chromeRaw);
 
   const heroImg = post.image
     ? urlFor(post.image).width(2400).quality(80).auto('format').url()
     : null;
 
   const dateLabel = formatDate(post.publishDate);
-  const readLabel = post.readMinutes ? `${post.readMinutes} min read` : '';
+  const readLabel = post.readMinutes ? `${post.readMinutes} ${chrome.readMinutesSuffix}` : '';
 
   return (
     <div className="blog-page">
@@ -74,7 +158,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
         <section className="blog-hero">
           <div className="blog-hero-copy">
             <p className="blog-hero-eyebrow" data-reveal>
-              Field Notes
+              {chrome.eyebrowLabel}
             </p>
             <h1 className="hero-h1" data-reveal data-d="1">
               {post.title}
@@ -125,14 +209,15 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
             {post.fullBody ? (
               <Markdown content={post.fullBody} />
             ) : (
-              <p>
-                This note is still being written. Come back soon, or browse the rest of our{' '}
-                <a href="/blog">Field Notes</a>.
-              </p>
+              <PlaceholderBody
+                template={chrome.placeholderBody}
+                linkLabel={chrome.placeholderLinkLabel}
+                href={chrome.backLinkHref}
+              />
             )}
           </div>
           <p className="blogpost-back">
-            <a href="/blog">← All field notes</a>
+            <a href={chrome.backLinkHref}>{chrome.backLinkLabel}</a>
           </p>
         </section>
       </main>

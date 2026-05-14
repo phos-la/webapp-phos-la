@@ -7,7 +7,9 @@ export const blogIndexPageType = defineType({
   groups: [
     { name: 'hero', title: 'Hero' },
     { name: 'featured', title: 'Featured Post' },
+    { name: 'grid', title: 'Grid Labels' },
     { name: 'empty', title: 'Empty State' },
+    { name: 'seo', title: 'SEO' },
   ],
   fields: [
     defineField({
@@ -47,12 +49,68 @@ export const blogIndexPageType = defineType({
       group: 'hero',
     }),
     defineField({
+      name: 'heroImageAlt',
+      title: 'Hero Image Alt Text',
+      type: 'string',
+      group: 'hero',
+      initialValue: 'Field Notes hero photo',
+    }),
+    defineField({
       name: 'featuredPost',
       title: 'Featured Post',
       description: 'Shown large at the top of the index. Pick from existing Blog Posts.',
       type: 'reference',
       to: [{ type: 'blogPost' }],
       group: 'featured',
+    }),
+    defineField({
+      name: 'featuredEyebrow',
+      title: 'Featured Eyebrow',
+      type: 'string',
+      group: 'featured',
+      initialValue: 'Featured',
+    }),
+    defineField({
+      name: 'featuredCtaLabel',
+      title: 'Featured CTA Label',
+      type: 'string',
+      group: 'featured',
+      initialValue: 'Read the note →',
+    }),
+    defineField({
+      name: 'gridHeadingWithFeatured',
+      title: 'Grid Heading (when a featured post is set)',
+      type: 'string',
+      group: 'grid',
+      initialValue: 'More notes',
+    }),
+    defineField({
+      name: 'gridHeadingNoFeatured',
+      title: 'Grid Heading (no featured post)',
+      type: 'string',
+      group: 'grid',
+      initialValue: 'All notes',
+    }),
+    defineField({
+      name: 'noteCountSingular',
+      title: 'Note Count Label (singular)',
+      type: 'string',
+      group: 'grid',
+      initialValue: 'note',
+    }),
+    defineField({
+      name: 'noteCountPlural',
+      title: 'Note Count Label (plural)',
+      type: 'string',
+      group: 'grid',
+      initialValue: 'notes',
+    }),
+    defineField({
+      name: 'cardCtaLabel',
+      title: 'Card CTA Label',
+      type: 'string',
+      group: 'grid',
+      initialValue: 'Read →',
     }),
     defineField({
       name: 'emptyHeadline',
@@ -69,6 +127,22 @@ export const blogIndexPageType = defineType({
       group: 'empty',
       initialValue:
         'Katie and Christa are working on the first batch. Check back in a couple weeks.',
+    }),
+    defineField({
+      name: 'metaTitle',
+      title: 'Meta Title (browser tab + SEO)',
+      type: 'string',
+      group: 'seo',
+      initialValue: 'Field Notes — Phos',
+    }),
+    defineField({
+      name: 'metaDescription',
+      title: 'Meta Description',
+      type: 'text',
+      rows: 2,
+      group: 'seo',
+      initialValue:
+        'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
     }),
   ],
   preview: {
