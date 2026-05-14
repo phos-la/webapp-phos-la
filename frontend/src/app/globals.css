@@ -1460,6 +1460,71 @@ body {
   z-index: 1;
 }
 
+/* ============ RESPONSIVE — HERO PARALLAX ============
+   On mobile we drop the scroll-driven card → full-bleed parallax entirely.
+   The image is full-bleed from first paint, the overlay copy is centered
+   over it, and the leaf icon sits centered above the headline. The 200vh
+   sticky stage collapses to a normal block layout. */
+@media (max-width: 960px) {
+  .hero-parallax {
+    height: auto;
+  }
+  .hero-parallax-pin {
+    position: static;
+    height: auto;
+    display: block;
+  }
+  .hero-image {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-top: 0;
+    height: clamp(560px, 86vh, 760px);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .hero-image::before {
+    background: linear-gradient(180deg, rgba(20, 12, 4, 0.32) 0%, rgba(20, 12, 4, 0.52) 100%);
+  }
+  .hero-image--simple::before {
+    display: none;
+  }
+  .hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    left: 0;
+    top: 0;
+    transform: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    opacity: 1;
+    max-width: 100%;
+    padding: 32px 24px;
+  }
+  .hero-image-mark {
+    margin: 0 auto 18px;
+  }
+  .hero-image-headline {
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-image-body {
+    max-width: 38ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-image--placeholder {
+    justify-content: center;
+    align-items: center;
+  }
+  .hero-image-caption {
+    text-align: center;
+  }
+}
+
 /* ============ RESPONSIVE ============ */
 @media (max-width: 960px) {
   .three-cards {
