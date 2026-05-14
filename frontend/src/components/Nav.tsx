@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity/image';
 import NavScrollEffect from './NavScrollEffect';
+import NavLinks from './NavLinks';
 
 type NavItem = { label?: string; href?: string };
 type NavData = {
@@ -84,18 +85,7 @@ export default function Nav({ data }: { data?: NavData }) {
           </span>
         </a>
 
-        <div className="nav-links" role="menubar">
-          {items.map((item, i) => (
-            <a
-              key={`${item.href}-${i}`}
-              className={`nav-link${i === 0 ? ' is-active' : ''}`}
-              href={item.href ?? '#'}
-              role="menuitem"
-            >
-              {item.label}
-            </a>
-          ))}
-        </div>
+        <NavLinks items={items} />
 
         <a className="nav-cta" href={ctaHref}>
           {ctaLabel}

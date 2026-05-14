@@ -193,7 +193,12 @@ export default async function TreatmentsPage() {
       { next: { tags: ['sanity'], revalidate: 300 } },
     )) ?? {};
   const d = { ...DEFAULTS, ...raw };
-  const services: ServiceCard[] = raw.treatments?.length ? raw.treatments : DEFAULTS.treatments;
+  // Filter out null dereferences (deleted / unpublished treatment refs) before
+  // deciding whether to fall back to DEFAULTS.
+  const sanityTreatments = (raw.treatments ?? []).filter(
+    (t) => t !== null && t !== undefined,
+  ) as ServiceCard[];
+  const services: ServiceCard[] = sanityTreatments.length ? sanityTreatments : DEFAULTS.treatments;
 
   return (
     <div className="services-page">
