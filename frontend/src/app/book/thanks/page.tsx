@@ -1,29 +1,144 @@
 import { client } from '@/lib/sanity/client';
-import { bookThanksPageQuery } from '@/lib/sanity/queries';
-import ThanksContent, { type ThanksCopy, type FlowCopy } from './ThanksContent';
+import {
+  bookThanksPageQuery,
+  bookThanksNewQuery,
+  bookThanksReturningQuery,
+  bookThanksAthomeQuery,
+} from '@/lib/sanity/queries';
+import ThanksContent, {
+  type ThanksCopy,
+  type FlowNewCopy,
+  type FlowPickerCopy,
+  type Price,
+} from './ThanksContent';
 
 export const revalidate = 300;
 
-const DEFAULTS: ThanksCopy = {
-  flowNew: {
-    heading: "You're all set.",
-    subheading:
-      'Katie will review your intake before your first visit. One last step. A deposit holds your appointment slot.',
-    eyebrow: 'Hold your appointment',
-    pickerLabel: '',
+/* ──────────────────────────────────────────────────────────────────────────
+ * Defaults — used when Sanity has no doc yet (first deploy, seed pending).
+ * Stripe price IDs are sandbox values; swap for live in the Sanity studio.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const DEFAULT_FLOW_NEW: FlowNewCopy = {
+  heading: "You're all set.",
+  subheading:
+    'Katie will review your intake before your first visit. One last step. A deposit holds your appointment slot.',
+  eyebrow: 'Hold your appointment',
+  deposit: {
+    stripePriceId: 'price_1TUZfLAEmpFZtKZrBUkSXcKA',
+    label: 'Initial Consultation',
+    amount: 100,
+    description: 'Applied as a credit toward your first session if you move forward.',
   },
-  flowReturning: {
-    heading: 'See you soon.',
-    subheading: "We've got your note. One last step. Choose your in-clinic session below.",
-    eyebrow: 'In-clinic services',
-    pickerLabel: 'Select your session',
-  },
-  flowAthome: {
-    heading: 'Welcome back.',
-    subheading: "We've got your note. One last step. Choose your at-home video visit below.",
-    eyebrow: 'At-home services',
-    pickerLabel: 'Select your visit type',
-  },
+};
+
+const DEFAULT_FLOW_RETURNING: FlowPickerCopy = {
+  heading: 'See you soon.',
+  subheading: "We've got your note. One last step. Choose your in-clinic session below.",
+  eyebrow: 'In-clinic services',
+  pickerLabel: 'Select your session',
+  prices: [
+    {
+      stripePriceId: 'price_1TUZfMAEmpFZtKZrHVF413eb',
+      label: 'Appointment Deposit',
+      amount: 100,
+      description: 'Required to schedule your infusion appointment.',
+    },
+    {
+      stripePriceId: 'price_1TUZfMAEmpFZtKZrWTmNc1sn',
+      label: '60 Min Infusion (sessions 1–4)',
+      amount: 700,
+    },
+    {
+      stripePriceId: 'price_1TUZfMAEmpFZtKZrYyEIRKJI',
+      label: '60 Min Booster Infusion',
+      amount: 550,
+      description: 'For established patients.',
+    },
+    {
+      stripePriceId: 'price_1TUZfNAEmpFZtKZroakOPLD9',
+      label: '90 Min Ketamine Infusion',
+      amount: 650,
+    },
+    {
+      stripePriceId: 'price_1TUZfNAEmpFZtKZrYVpP4FPr',
+      label: '2-Hour Pain or Mood Infusion',
+      amount: 850,
+    },
+    {
+      stripePriceId: 'price_1TUZfOAEmpFZtKZrMTAhDFkT',
+      label: '3-Hour Pain or Mood Infusion',
+      amount: 1150,
+    },
+    {
+      stripePriceId: 'price_1TUZfOAEmpFZtKZrgVEs62v9',
+      label: '4-Hour Pain or Mood Infusion',
+      amount: 1650,
+    },
+    {
+      stripePriceId: 'price_1TUZfPAEmpFZtKZrQUvOlB2u',
+      label: '6-Infusion Membership',
+      amount: 2750,
+      description: 'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
+    },
+    {
+      stripePriceId: 'price_1TUZfPAEmpFZtKZrZ76d0VgA',
+      label: '12-Infusion Membership',
+      amount: 5000,
+      description: 'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
+    },
+  ],
+};
+
+const DEFAULT_FLOW_ATHOME: FlowPickerCopy = {
+  heading: 'Welcome back.',
+  subheading: "We've got your note. One last step. Choose your at-home video visit below.",
+  eyebrow: 'At-home services',
+  pickerLabel: 'Select your visit type',
+  prices: [
+    {
+      stripePriceId: 'price_1TUZfPAEmpFZtKZr9c3BFhxk',
+      label: '1st Video Consultation',
+      amount: 250,
+      description: 'For new at-home patients. First month prescription filled by pharmacy.',
+    },
+    {
+      stripePriceId: 'price_1TUZfQAEmpFZtKZrHz035xcy',
+      label: '2nd Video Consultation',
+      amount: 225,
+      description: 'Ready for your second month refill.',
+    },
+    {
+      stripePriceId: 'price_1TUZfQAEmpFZtKZr7U2B0sfN',
+      label: '3rd Video Consultation',
+      amount: 200,
+      description: 'Includes a 3-month supply dispensed one month at a time.',
+    },
+    {
+      stripePriceId: 'price_1TUZfRAEmpFZtKZrDSBgMRqO',
+      label: 'Follow-up Video Visit',
+      amount: 250,
+      description: 'Required every 6 months for a continued prescription.',
+    },
+    {
+      stripePriceId: 'price_1TUZfRAEmpFZtKZrKPXRcig0',
+      label: 'Prescription Changes',
+      amount: 200,
+      description: 'Dosage adjustment consult before your 6-month follow-up.',
+    },
+  ],
+};
+
+type SharedCopy = {
+  newDepositCtaLabel: string;
+  newDepositLoadingLabel: string;
+  otherCtaLabel: string;
+  secureNote: string;
+  errorMessage: string;
+  backLinkLabel: string;
+};
+
+const DEFAULT_SHARED: SharedCopy = {
   newDepositCtaLabel: 'Pay with card →',
   newDepositLoadingLabel: 'Redirecting…',
   otherCtaLabel: 'Continue to payment →',
@@ -32,37 +147,85 @@ const DEFAULTS: ThanksCopy = {
   backLinkLabel: '← Back to phos.la',
 };
 
-function merge<T>(fallback: T, value: T | undefined | null): T {
+/* ──────────────────────────────────────────────────────────────────────────
+ * Merge helpers
+ * ────────────────────────────────────────────────────────────────────────── */
+
+function str(fallback: string, value: string | undefined | null): string {
   if (value === undefined || value === null) return fallback;
   if (typeof value === 'string' && value.trim() === '') return fallback;
   return value;
 }
 
-function mergeFlow(fallback: FlowCopy, value: Partial<FlowCopy> | null | undefined): FlowCopy {
+function mergePrice(fallback: Price, value: Partial<Price> | null | undefined): Price {
   if (!value) return fallback;
   return {
-    heading: merge(fallback.heading, value.heading),
-    subheading: merge(fallback.subheading, value.subheading),
-    eyebrow: merge(fallback.eyebrow, value.eyebrow),
-    pickerLabel: value.pickerLabel ?? fallback.pickerLabel,
+    stripePriceId: str(fallback.stripePriceId, value.stripePriceId),
+    label: str(fallback.label, value.label),
+    amount: typeof value.amount === 'number' ? value.amount : fallback.amount,
+    description: value.description ?? fallback.description,
   };
 }
 
+function mergePriceArray(fallback: Price[], value: Partial<Price>[] | null | undefined): Price[] {
+  if (!value || value.length === 0) return fallback;
+  return value
+    .map((p) => mergePrice({ stripePriceId: '', label: '', amount: 0 }, p))
+    .filter((p) => p.stripePriceId && p.label);
+}
+
+function mergeFlowNew(
+  fallback: FlowNewCopy,
+  value: Partial<FlowNewCopy> | null | undefined,
+): FlowNewCopy {
+  if (!value) return fallback;
+  return {
+    heading: str(fallback.heading, value.heading),
+    subheading: str(fallback.subheading, value.subheading),
+    eyebrow: str(fallback.eyebrow, value.eyebrow),
+    deposit: mergePrice(fallback.deposit, value.deposit),
+  };
+}
+
+function mergeFlowPicker(
+  fallback: FlowPickerCopy,
+  value: Partial<FlowPickerCopy> | null | undefined,
+): FlowPickerCopy {
+  if (!value) return fallback;
+  return {
+    heading: str(fallback.heading, value.heading),
+    subheading: str(fallback.subheading, value.subheading),
+    eyebrow: str(fallback.eyebrow, value.eyebrow),
+    pickerLabel: str(fallback.pickerLabel, value.pickerLabel),
+    prices: mergePriceArray(fallback.prices, value.prices),
+  };
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+ * Page
+ * ────────────────────────────────────────────────────────────────────────── */
+
 export default async function ThanksPage() {
-  const data = await client
-    .fetch<Partial<ThanksCopy> | null>(bookThanksPageQuery)
-    .catch(() => null);
+  const [shared, flowNew, flowReturning, flowAthome] = await Promise.all([
+    client.fetch<Partial<SharedCopy> | null>(bookThanksPageQuery).catch(() => null),
+    client.fetch<Partial<FlowNewCopy> | null>(bookThanksNewQuery).catch(() => null),
+    client.fetch<Partial<FlowPickerCopy> | null>(bookThanksReturningQuery).catch(() => null),
+    client.fetch<Partial<FlowPickerCopy> | null>(bookThanksAthomeQuery).catch(() => null),
+  ]);
 
   const copy: ThanksCopy = {
-    flowNew: mergeFlow(DEFAULTS.flowNew, data?.flowNew),
-    flowReturning: mergeFlow(DEFAULTS.flowReturning, data?.flowReturning),
-    flowAthome: mergeFlow(DEFAULTS.flowAthome, data?.flowAthome),
-    newDepositCtaLabel: merge(DEFAULTS.newDepositCtaLabel, data?.newDepositCtaLabel),
-    newDepositLoadingLabel: merge(DEFAULTS.newDepositLoadingLabel, data?.newDepositLoadingLabel),
-    otherCtaLabel: merge(DEFAULTS.otherCtaLabel, data?.otherCtaLabel),
-    secureNote: merge(DEFAULTS.secureNote, data?.secureNote),
-    errorMessage: merge(DEFAULTS.errorMessage, data?.errorMessage),
-    backLinkLabel: merge(DEFAULTS.backLinkLabel, data?.backLinkLabel),
+    flowNew: mergeFlowNew(DEFAULT_FLOW_NEW, flowNew),
+    flowReturning: mergeFlowPicker(DEFAULT_FLOW_RETURNING, flowReturning),
+    flowAthome: mergeFlowPicker(DEFAULT_FLOW_ATHOME, flowAthome),
+    newDepositCtaLabel: str(DEFAULT_SHARED.newDepositCtaLabel, shared?.newDepositCtaLabel),
+    newDepositLoadingLabel: str(
+      DEFAULT_SHARED.newDepositLoadingLabel,
+      shared?.newDepositLoadingLabel,
+    ),
+    otherCtaLabel: str(DEFAULT_SHARED.otherCtaLabel, shared?.otherCtaLabel),
+    secureNote: str(DEFAULT_SHARED.secureNote, shared?.secureNote),
+    errorMessage: str(DEFAULT_SHARED.errorMessage, shared?.errorMessage),
+    backLinkLabel: str(DEFAULT_SHARED.backLinkLabel, shared?.backLinkLabel),
   };
 
   return <ThanksContent copy={copy} />;

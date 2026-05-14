@@ -159,12 +159,44 @@ export const structure: StructureResolver = (S) =>
                     .documentId('bookPage-singleton'),
                 ),
               S.listItem()
-                .title('Thank You — Post-Intake')
+                .title('Thanks')
                 .child(
-                  S.document()
-                    .title('Book — Thank You Page')
-                    .schemaType('bookThanksPage')
-                    .documentId('bookThanksPage-singleton'),
+                  S.list()
+                    .title('Thanks')
+                    .items([
+                      S.listItem()
+                        .title('New Patient')
+                        .child(
+                          S.document()
+                            .title('Thanks — New Patient')
+                            .schemaType('bookThanksNew')
+                            .documentId('bookThanksNew-singleton'),
+                        ),
+                      S.listItem()
+                        .title('Existing Patient')
+                        .child(
+                          S.document()
+                            .title('Thanks — Existing Patient (In-Clinic)')
+                            .schemaType('bookThanksReturning')
+                            .documentId('bookThanksReturning-singleton'),
+                        ),
+                      S.listItem()
+                        .title('At-Home Patient')
+                        .child(
+                          S.document()
+                            .title('Thanks — At-Home Patient')
+                            .schemaType('bookThanksAthome')
+                            .documentId('bookThanksAthome-singleton'),
+                        ),
+                      S.listItem()
+                        .title('Shared Copy')
+                        .child(
+                          S.document()
+                            .title('Thanks — Shared Copy')
+                            .schemaType('bookThanksPage')
+                            .documentId('bookThanksPage-singleton'),
+                        ),
+                    ]),
                 ),
             ]),
         ),

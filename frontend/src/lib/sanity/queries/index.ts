@@ -200,15 +200,35 @@ export const bookPageQuery = groq`*[_type == "bookPage"][0] {
 }`;
 
 export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
-  flowNew { heading, subheading, eyebrow, pickerLabel },
-  flowReturning { heading, subheading, eyebrow, pickerLabel },
-  flowAthome { heading, subheading, eyebrow, pickerLabel },
   newDepositCtaLabel,
   newDepositLoadingLabel,
   otherCtaLabel,
   secureNote,
   errorMessage,
   backLinkLabel
+}`;
+
+export const bookThanksNewQuery = groq`*[_type == "bookThanksNew"][0] {
+  heading,
+  subheading,
+  eyebrow,
+  deposit { label, amount, description, stripePriceId }
+}`;
+
+export const bookThanksReturningQuery = groq`*[_type == "bookThanksReturning"][0] {
+  heading,
+  subheading,
+  eyebrow,
+  pickerLabel,
+  prices[] { label, amount, description, stripePriceId }
+}`;
+
+export const bookThanksAthomeQuery = groq`*[_type == "bookThanksAthome"][0] {
+  heading,
+  subheading,
+  eyebrow,
+  pickerLabel,
+  prices[] { label, amount, description, stripePriceId }
 }`;
 
 export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {
