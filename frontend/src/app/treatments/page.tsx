@@ -1,45 +1,43 @@
 import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
-import { servicesPageQuery } from '@/lib/sanity/queries';
+import { treatmentsPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import { Markdown } from '@/components/Markdown';
-import './services.css';
+import './treatments.css';
 
 export const revalidate = 300;
 
 export const metadata = {
-  title: 'Services — Phos',
+  title: 'Treatments — Phos',
   description:
     'Four ways Phos treats patients, from clinical IV ketamine infusions to spa wellness drips.',
 };
 
-const SERVICES_NAV_ITEMS = [
+const TREATMENTS_NAV_ITEMS = [
   { label: 'Practice', href: '/' },
-  { label: 'Treatments', href: '/services' },
+  { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Field Notes', href: '/blog' },
 ];
 
 type IconKey = 'iv' | 'home' | 'drop' | 'conversation';
 type GradientKey = 'green' | 'sand' | 'mist' | 'amber';
 
 const DEFAULTS = {
-  eyebrowLabel: 'Our Services',
-  heroTitle: 'Services',
+  heroTitle: 'Treatments',
   heroSub:
     'Four ways Phos treats patients, from clinical IV ketamine infusions to spa wellness drips.',
   introBody:
-    "Phos is built around medical IV ketamine therapy under direct anesthesiologist oversight. Around that core, we offer at-home telehealth ketamine for patients who qualify, IV spa drips for general wellness, and an optional partnership with an independent ketamine-assisted psychotherapist for patients who want adjunctive talk therapy alongside their protocol. Every patient is evaluated by our PA before and after each session, regardless of which service they're booked for.",
-  gridLabel: 'What We Offer',
-  services: [
+    "Phos is built around medical IV ketamine therapy under direct anesthesiologist oversight. Around that core, we offer at-home telehealth ketamine for patients who qualify, IV spa drips for general wellness, and an optional partnership with an independent ketamine-assisted psychotherapist for patients who want adjunctive talk therapy alongside their protocol. Every patient is evaluated by our PA before and after each session, regardless of which treatment they're booked for.",
+  treatments: [
     {
       _id: 'default-iv',
       title: 'IV Ketamine Infusions',
       slug: 'iv-ketamine-infusions',
       cardDescription:
-        'Our core service. 60-minute infusions in our Westwood clinic, run on a 5 to 6 session protocol with PA-supported intention setting and integration.',
+        'Our core treatment. 60-minute infusions in our Westwood clinic, run on a 5 to 6 session protocol with PA-supported intention setting and integration.',
       cardIcon: 'iv' as IconKey,
       cardGradient: 'mist' as GradientKey,
     },
@@ -92,7 +90,7 @@ type ServiceCard = {
 
 type ServicesPageData = Partial<Omit<typeof DEFAULTS, 'services'>> & {
   heroImage?: unknown;
-  services?: ServiceCard[];
+  treatments?: ServiceCard[];
 };
 
 function imageUrl(image: unknown, width: number): string | null {
@@ -186,26 +184,25 @@ const ArrowRight = () => (
   </svg>
 );
 
-export default async function ServicesPage() {
+export default async function TreatmentsPage() {
   const raw =
     (await client.fetch<ServicesPageData | null>(
-      servicesPageQuery,
+      treatmentsPageQuery,
       {},
       { next: { tags: ['sanity'], revalidate: 300 } },
     )) ?? {};
   const d = { ...DEFAULTS, ...raw };
-  const services: ServiceCard[] = raw.services?.length ? raw.services : DEFAULTS.services;
+  const services: ServiceCard[] = raw.treatments?.length ? raw.treatments : DEFAULTS.treatments;
 
   return (
     <div className="services-page">
-      <Nav data={{ items: SERVICES_NAV_ITEMS }} />
+      <Nav data={{ items: TREATMENTS_NAV_ITEMS }} />
       <RevealOnScroll selectors={['.service-card', '.services-cta-card']} threshold={0.12} />
 
       <main>
         {/* HERO */}
         <section className="services-hero" data-screen-label="01 Hero">
           <div className="services-hero-inner">
-            <span className="label-pill">{d.eyebrowLabel}</span>
             <h1 className="services-hero-title">{d.heroTitle}</h1>
             <p className="services-hero-sub">{d.heroSub}</p>
 
@@ -242,9 +239,7 @@ export default async function ServicesPage() {
         {/* GRID */}
         <section className="services-grid-section" data-screen-label="03 Services Grid">
           <div className="services-grid-inner">
-            <div className="services-grid-head">
-              <span className="label-pill">{d.gridLabel}</span>
-            </div>
+            <div className="services-grid-head"></div>
 
             <div className="services-grid">
               {services.map((s, i) => {
@@ -275,7 +270,7 @@ export default async function ServicesPage() {
                     <div className="service-card-body">
                       <h2 className="service-card-name">{s.title}</h2>
                       <p className="service-card-desc">{s.cardDescription}</p>
-                      <a className="service-card-link" href={`/services/${s.slug}`}>
+                      <a className="service-card-link" href={`/treatments/${s.slug}`}>
                         Learn more
                         <ArrowRight />
                       </a>

@@ -14,12 +14,12 @@ const GRADIENT_OPTIONS = [
   { title: 'Amber', value: 'amber' },
 ];
 
-export const serviceType = defineType({
-  name: 'service',
-  title: 'Service',
+export const treatmentType = defineType({
+  name: 'treatment',
+  title: 'Treatment',
   type: 'document',
   groups: [
-    { name: 'card', title: 'Card on /services index' },
+    { name: 'card', title: 'Card on /treatments index' },
     { name: 'hero', title: 'Slug page hero' },
     { name: 'protocol', title: 'Protocol section' },
     { name: 'eligibility', title: 'Eligibility' },
@@ -32,7 +32,7 @@ export const serviceType = defineType({
     // Core
     defineField({
       name: 'title',
-      title: 'Service Title',
+      title: 'Treatment Title',
       description: 'Used as the slug page hero heading. Line breaks become real <br>.',
       type: 'string',
       validation: (Rule) => Rule.required(),
@@ -67,7 +67,7 @@ export const serviceType = defineType({
     defineField({
       name: 'cardDescription',
       title: 'Card Description',
-      description: 'Short blurb shown in the 2x2 grid on /services.',
+      description: 'Short blurb shown in the 2x2 grid on /treatments.',
       type: 'text',
       rows: 3,
       group: 'card',
@@ -245,10 +245,10 @@ export const serviceType = defineType({
           fields: [
             defineField({ name: 'tag', title: 'Tag', type: 'string' }),
             defineField({
-              name: 'service',
-              title: 'Service',
+              name: 'treatment',
+              title: 'Treatment',
               type: 'reference',
-              to: [{ type: 'service' }],
+              to: [{ type: 'treatment' }],
             }),
             defineField({
               name: 'bodyOverride',
@@ -268,36 +268,29 @@ export const serviceType = defineType({
   preview: {
     select: { title: 'title', subtitle: 'slug.current', draft: 'draft' },
     prepare: ({ title, subtitle, draft }) => ({
-      title: title ?? 'Untitled service',
+      title: title ?? 'Untitled treatment',
       subtitle: `/${subtitle ?? '?'}${draft ? '  ·  DRAFT' : ''}`,
     }),
   },
 });
 
-export const servicesPageType = defineType({
-  name: 'servicesPage',
-  title: 'Services Index Page',
+export const treatmentsPageType = defineType({
+  name: 'treatmentsPage',
+  title: 'Treatments Index Page',
   type: 'document',
   groups: [
     { name: 'hero', title: 'Hero' },
     { name: 'intro', title: 'Intro paragraph' },
-    { name: 'grid', title: 'Services grid' },
+    { name: 'grid', title: 'Treatments grid' },
     { name: 'cta', title: 'CTA card' },
   ],
   fields: [
     // Hero
     defineField({
-      name: 'eyebrowLabel',
-      title: 'Eyebrow Label',
-      type: 'string',
-      initialValue: 'Our Services',
-      group: 'hero',
-    }),
-    defineField({
       name: 'heroTitle',
       title: 'Hero Title',
       type: 'string',
-      initialValue: 'Services',
+      initialValue: 'Treatments',
       group: 'hero',
     }),
     defineField({
@@ -326,19 +319,12 @@ export const servicesPageType = defineType({
 
     // Grid
     defineField({
-      name: 'gridLabel',
-      title: 'Grid Eyebrow Label',
-      type: 'string',
-      initialValue: 'What We Offer',
-      group: 'grid',
-    }),
-    defineField({
-      name: 'services',
-      title: 'Services Shown on This Page',
+      name: 'treatments',
+      title: 'Treatments Shown on This Page',
       description:
-        'Pick which Service documents appear, in what order. Drag to reorder. Edit a service by clicking it.',
+        'Pick which Treatment documents appear, in what order. Drag to reorder. Edit a treatment by clicking it.',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'service' }] }],
+      of: [{ type: 'reference', to: [{ type: 'treatment' }] }],
       group: 'grid',
     }),
 

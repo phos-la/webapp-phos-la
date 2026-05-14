@@ -14,13 +14,6 @@ export const aboutPageType = defineType({
   fields: [
     // Hero
     defineField({
-      name: 'eyebrowLabel',
-      title: 'Eyebrow Label',
-      type: 'string',
-      group: 'hero',
-      initialValue: 'About',
-    }),
-    defineField({
       name: 'heroHeadline',
       title: 'Hero Headline',
       type: 'string',
@@ -52,13 +45,6 @@ export const aboutPageType = defineType({
 
     // Featured Provider — Dr. Christa Riley
     defineField({
-      name: 'christaEyebrow',
-      title: 'Eyebrow',
-      type: 'string',
-      group: 'christa',
-      initialValue: 'Medical Director',
-    }),
-    defineField({
       name: 'christaName',
       title: 'Name',
       type: 'string',
@@ -89,13 +75,6 @@ export const aboutPageType = defineType({
     }),
 
     // Team grid
-    defineField({
-      name: 'teamLabel',
-      title: 'Team Section Eyebrow',
-      type: 'string',
-      group: 'team',
-      initialValue: 'The clinic',
-    }),
     defineField({
       name: 'teamHeading',
       title: 'Team Section Heading',
@@ -159,13 +138,6 @@ export const aboutPageType = defineType({
 
     // KAP — extended care
     defineField({
-      name: 'kapEyebrow',
-      title: 'KAP Eyebrow',
-      type: 'string',
-      group: 'kap',
-      initialValue: 'Extended care',
-    }),
-    defineField({
       name: 'kapHeading',
       title: 'KAP Heading',
       type: 'string',
@@ -209,13 +181,6 @@ export const aboutPageType = defineType({
     }),
 
     // Location + CTA
-    defineField({
-      name: 'locationEyebrow',
-      title: 'Location Eyebrow',
-      type: 'string',
-      group: 'location',
-      initialValue: 'Find us',
-    }),
     defineField({
       name: 'locationHeadline',
       title: 'Location Headline',

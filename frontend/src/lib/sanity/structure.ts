@@ -47,7 +47,7 @@ export const structure: StructureResolver = (S) =>
                 .title('2. Three ways to heal')
                 .child(
                   S.document()
-                    .title('Services')
+                    .title('Treatments')
                     .schemaType('servicesSection')
                     .documentId('servicesSection-singleton'),
                 ),
@@ -135,14 +135,14 @@ export const structure: StructureResolver = (S) =>
             .documentId('aboutPage-singleton'),
         ),
       S.listItem()
-        .title('Services Index')
+        .title('Treatments Index')
         .child(
           S.document()
-            .title('Services Index')
-            .schemaType('servicesPage')
-            .documentId('servicesPage-singleton'),
+            .title('Treatments Index')
+            .schemaType('treatmentsPage')
+            .documentId('treatmentsPage-singleton'),
         ),
-      S.listItem().title('Services').child(S.documentTypeList('service').title('Services')),
+      S.listItem().title('Treatments').child(S.documentTypeList('treatment').title('Treatments')),
       S.divider(),
       S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
     ]);

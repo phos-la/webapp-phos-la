@@ -5,7 +5,6 @@ import { urlFor } from '@/lib/sanity/image';
 import type { SanityImageSource } from '@sanity/image-url';
 
 export interface HeroData {
-  pill?: string;
   headline?: string;
   subheading?: string;
   ctaLabel?: string;
@@ -15,7 +14,6 @@ export interface HeroData {
 }
 
 const DEFAULTS: Required<HeroData> = {
-  pill: 'Accepting new patients in Westwood',
   headline: 'Your protocol evolves with you.',
   subheading:
     'IV ketamine therapy in a private Los Angeles practice — a licensed provider evaluates your response before and after every infusion, adjusting your treatment in real time.',
@@ -59,11 +57,6 @@ export default function Hero({ data }: { data?: HeroData }) {
   return (
     <section className="hero" data-screen-label="01 Hero">
       <div className="hero-inner">
-        <span className="hero-pill" aria-label="Availability">
-          <span className="hero-pill-dot" aria-hidden="true" />
-          {d.pill}
-        </span>
-
         <h1 className="hero-headline">{d.headline}</h1>
 
         <p className="hero-sub">{d.subheading}</p>

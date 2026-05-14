@@ -5,12 +5,6 @@ export const heroSectionType = defineType({
   title: 'Hero Section',
   type: 'document',
   fields: [
-    defineField({
-      name: 'pill',
-      title: 'Availability Pill',
-      type: 'string',
-      description: 'e.g. "Accepting new patients in Westwood"',
-    }),
     defineField({ name: 'headline', title: 'Headline', type: 'string' }),
     defineField({ name: 'subheading', title: 'Subheading', type: 'text', rows: 3 }),
     defineField({ name: 'ctaLabel', title: 'CTA Button Label', type: 'string' }),

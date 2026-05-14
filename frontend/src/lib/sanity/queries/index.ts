@@ -1,7 +1,6 @@
 import { groq } from 'next-sanity';
 
 export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
-  pill,
   headline,
   subheading,
   ctaLabel,
@@ -132,17 +131,14 @@ export const navSectionQuery = groq`*[_type == "navSection"][0] {
 }`;
 
 export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
-  eyebrowLabel,
   heroHeadline,
   heroSubheading,
   heroImage,
   heroImageCaption,
-  christaEyebrow,
   christaName,
   christaBio,
   christaCredentials,
   christaPortrait,
-  teamLabel,
   teamHeading,
   teamMembers[] {
     role,
@@ -152,14 +148,12 @@ export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
     gradient,
     placeholderNote
   },
-  kapEyebrow,
   kapHeading,
   kapPartnerName,
   kapBody,
   kapLinkLabel,
   kapLinkHref,
   kapPortrait,
-  locationEyebrow,
   locationHeadline,
   locationBody,
   locationPrimaryCtaLabel,
@@ -169,14 +163,12 @@ export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
   locationPhoto
 }`;
 
-export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
-  eyebrowLabel,
+export const treatmentsPageQuery = groq`*[_type == "treatmentsPage"][0] {
   heroTitle,
   heroSub,
   heroImage,
   introBody,
-  gridLabel,
-  "services": services[]-> {
+  "treatments": treatments[]-> {
     _id,
     title,
     "slug": slug.current,
@@ -194,9 +186,9 @@ export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
   ctaAddress
 }`;
 
-export const allServiceSlugsQuery = groq`*[_type == "service" && defined(slug.current)][].slug.current`;
+export const allTreatmentSlugsQuery = groq`*[_type == "treatment" && defined(slug.current)][].slug.current`;
 
-export const serviceBySlugQuery = groq`*[_type == "service" && slug.current == $slug][0] {
+export const treatmentBySlugQuery = groq`*[_type == "treatment" && slug.current == $slug][0] {
   _id,
   title,
   "slug": slug.current,

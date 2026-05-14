@@ -16,23 +16,20 @@ export const metadata = {
 
 const ABOUT_NAV_ITEMS = [
   { label: 'Practice', href: '/' },
-  { label: 'Treatments', href: '/services' },
+  { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Field Notes', href: '/blog' },
 ];
 
 const DEFAULTS = {
-  eyebrowLabel: 'About',
   heroHeadline: 'About Phos',
   heroSubheading:
     'A Westwood ketamine clinic built around a board-certified anesthesiologist and a small, hands-on care team.',
   heroImageCaption: 'Photo: Christa and Katie, Huntington Garden shoot, April 2026',
-  christaEyebrow: 'Medical Director',
   christaName: 'Dr. Christa Riley, MD',
   christaBio:
     'Christa is a board-certified anesthesiologist and the medical director of Phos. Her work in operating rooms and on active military service in Afghanistan shaped how she runs this clinic: patient-by-patient judgment, careful dosing, full evaluation before and after every infusion. She bought the practice because she wanted a ketamine clinic that took itself seriously as a medical operation, not a wellness brand. She sees every Phos patient herself, and she sets the standard the rest of the team works to.',
   christaCredentials: ['Board-certified anesthesiologist', 'Military veteran', 'Owner of Phos'],
-  teamLabel: 'The clinic',
   teamHeading: "The team you'll see each visit",
   teamMembers: [
     {
@@ -49,14 +46,12 @@ const DEFAULTS = {
       gradient: 'vera' as const,
     },
   ],
-  kapEyebrow: 'Extended care',
   kapHeading: 'Ketamine-Assisted Psychotherapy',
   kapPartnerName: 'With Carly Salcido',
   kapBody:
     'Phos partners with Carly Salcido, an independent licensed therapist, for patients who want adjunctive psychotherapy alongside their infusion protocol. Her approach is neurobiologically-informed integration therapy, focused on the neuroplastic window that follows ketamine treatment. Sessions are booked directly with Carly, separately from infusion costs.',
   kapLinkLabel: 'Learn about KAP',
-  kapLinkHref: '/services/kap',
-  locationEyebrow: 'Find us',
+  kapLinkHref: '/treatments/kap',
   locationHeadline: 'Westwood, Los Angeles',
   locationBody:
     '1762 Westwood Blvd, Ste 320\nLos Angeles, CA 90024\n\nThird floor. Private suite, designed for medical privacy and patient comfort. Near UCLA.',
@@ -122,7 +117,6 @@ export default async function AboutPage() {
         {/* HERO */}
         <section className="about-hero" data-screen-label="01 Hero">
           <div className="about-hero-copy">
-            <span className="label-pill">{d.eyebrowLabel}</span>
             <h1 className="hero-h1" data-reveal>
               {d.heroHeadline}
             </h1>
@@ -172,7 +166,6 @@ export default async function AboutPage() {
           <div className="about-bio-card" data-reveal>
             <div className="about-bio-text">
               <div>
-                <span className="about-bio-eyebrow">{d.christaEyebrow}</span>
                 <h2 className="about-bio-name">{d.christaName}</h2>
                 <p className="about-bio-body">{d.christaBio}</p>
               </div>
@@ -207,7 +200,6 @@ export default async function AboutPage() {
         <section className="about-team" id="team">
           <div className="about-team-inner">
             <div className="about-team-hd" data-reveal>
-              <span className="label-pill">{d.teamLabel}</span>
               <h2>{d.teamHeading}</h2>
             </div>
             <div className="about-team-grid">
@@ -258,7 +250,6 @@ export default async function AboutPage() {
           <div className="about-kap-inner">
             <div className="about-kap-card" data-reveal>
               <div>
-                <span className="about-kap-tag">{d.kapEyebrow}</span>
                 <h2 className="about-kap-heading">{d.kapHeading}</h2>
                 <p className="about-kap-who">{d.kapPartnerName}</p>
                 <p className="about-kap-body">{d.kapBody}</p>
@@ -293,7 +284,6 @@ export default async function AboutPage() {
         <section className="about-location" id="location">
           <div className="about-location-grid">
             <div className="about-loc-text" data-reveal>
-              <p className="about-loc-eyebrow">{d.locationEyebrow}</p>
               <h2 className="about-loc-headline">{d.locationHeadline}</h2>
               <p className="about-loc-address" style={{ whiteSpace: 'pre-line' }}>
                 {d.locationBody}

@@ -25,9 +25,9 @@ async function run() {
     brandSubtitle: 'And Wellness',
     items: [
       { _key: 'nav1', label: 'Practice', href: '/' },
-      { _key: 'nav2', label: 'Treatments', href: '/services' },
+      { _key: 'nav2', label: 'Treatments', href: '/treatments' },
       { _key: 'nav3', label: 'About', href: '/about' },
-      { _key: 'nav4', label: 'Contact', href: '/#contact' },
+      { _key: 'nav4', label: 'Field Notes', href: '/blog' },
     ],
     ctaLabel: 'Book a consultation',
     ctaHref: '/book',

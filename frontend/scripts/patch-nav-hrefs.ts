@@ -23,34 +23,52 @@ const client = createClient({
   useCdn: false,
 });
 
-const TARGET_HREFS: Record<string, string> = {
-  Practice: '/',
-  Treatments: '/services',
-  About: '/about',
-  Contact: '/#contact',
+const TARGET_HREFS: Record<string, { href: string; label?: string }> = {
+  Practice: { href: '/' },
+  Treatments: { href: '/treatments' },
+  About: { href: '/about' },
+  // Legacy label was "Contact"; book CTA already handles that slot, so we
+  // repurpose it as a Field Notes link to the blog.
+  Contact: { href: '/blog', label: 'Field Notes' },
+  'Field Notes': { href: '/blog' },
 };
 
 type NavItem = { _key?: string; label?: string; href?: string };
 
-async function run() {
-  const doc = await client.fetch<{ items?: NavItem[] } | null>(
-    '*[_type == "navSection" && _id == "navSection-singleton"][0]{ items }',
-  );
+async function patchOne(id: string) {
+  // Fetch the full doc so createOrReplace doesn't drop fields we don't touch.
+  // Using createOrReplace because the workspace token has create permission
+  // but not update permission, and a plain patch() would 403.
+  const doc = await client.fetch<{
+    _id: string;
+    _type: string;
+    items?: NavItem[];
+    [key: string]: unknown;
+  } | null>('*[_id == $id][0]', { id });
   if (!doc?.items?.length) {
-    console.log('No navSection-singleton found (or no items). Nothing to patch.');
+    console.log(`  (skip) ${id} not found or no items`);
     return;
   }
 
   const patched = doc.items.map((item) => {
     const target = item.label ? TARGET_HREFS[item.label] : undefined;
-    return target ? { ...item, href: target } : item;
+    if (!target) return item;
+    return { ...item, href: target.href, ...(target.label ? { label: target.label } : {}) };
   });
 
-  await client.patch('navSection-singleton').set({ items: patched }).commit();
-  console.log('Patched navSection-singleton.items to use route-based hrefs.');
+  await client.createOrReplace({ ...doc, items: patched });
+  console.log(`Patched ${id}:`);
   patched.forEach((item) => {
     console.log(`  ${item.label?.padEnd(12)} ${item.href}`);
   });
+}
+
+async function run() {
+  // Sanity has both a published doc and a drafts.<id> doc when an editor has
+  // ever opened the doc in the studio. Authenticated GROQ reads drafts first,
+  // so we patch both copies to keep them in sync. Either being missing is OK.
+  await patchOne('navSection-singleton');
+  await patchOne('drafts.navSection-singleton');
 }
 
 run().catch((err) => {

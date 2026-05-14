@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
-import { serviceBySlugQuery, allServiceSlugsQuery } from '@/lib/sanity/queries';
+import { treatmentBySlugQuery, allTreatmentSlugsQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
@@ -46,7 +46,7 @@ const DEFAULT_SLUGS: Record<string, SlugContent> = {
     protocolAsideTitle: 'Sixty minutes.\nNot forty.',
     protocolBody: [
       'Phos runs IV ketamine on a 5 to 6 session protocol, based on the Yale dosing studies that established the modern evidence base for ketamine in treatment-resistant depression. Sessions are 60 minutes, not the 40-minute industry shortcut. Starting dose is weight-based, 0.4 to 0.7 mg/kg/hour, adjusted by our PA between sessions based on how each patient responds.',
-      'Every infusion includes the full session, IV placement, supportive medications like Zofran for nausea or ketorolac for headache if needed, and a 15 to 20 minute integration window with our PA at the end. There are no hidden fees inside the protocol itself. NAD+ and other spa add-ons are billed separately under our IV Spa service.',
+      'Every infusion includes the full session, IV placement, supportive medications like Zofran for nausea or ketorolac for headache if needed, and a 15 to 20 minute integration window with our PA at the end. There are no hidden fees inside the protocol itself. NAD+ and other spa add-ons are billed separately under our IV Spa treatment.',
       'Single sessions are available, but we recommend completing the full protocol. Most patients need multiple sessions to reach a transition point, and the evidence base is built around the full course.',
     ].join('\n\n'),
     treatList: [
@@ -90,13 +90,13 @@ const DEFAULT_SLUGS: Record<string, SlugContent> = {
         tag: 'Add-on',
         title: 'Ketamine-Assisted Psychotherapy',
         body: 'Optional adjunctive talk therapy through our partner Carly Salcido.',
-        href: '/services/kap',
+        href: '/treatments/kap',
       },
       {
         tag: 'Maintenance option',
         title: 'At-Home Ketamine Therapy',
         body: 'For qualifying patients between in-clinic sessions or as a maintenance option.',
-        href: '/services/at-home-ketamine',
+        href: '/treatments/at-home-ketamine',
       },
     ],
   },
@@ -157,13 +157,13 @@ const DEFAULT_SLUGS: Record<string, SlugContent> = {
         tag: 'Core service',
         title: 'IV Ketamine Infusions',
         body: 'Our in-clinic protocol. Recommended as the starting point for most new patients.',
-        href: '/services/iv-ketamine-infusions',
+        href: '/treatments/iv-ketamine-infusions',
       },
       {
         tag: 'Add-on',
         title: 'Ketamine-Assisted Psychotherapy',
         body: 'Optional adjunctive talk therapy through our partner Carly Salcido.',
-        href: '/services/kap',
+        href: '/treatments/kap',
       },
     ],
   },
@@ -222,13 +222,13 @@ const DEFAULT_SLUGS: Record<string, SlugContent> = {
         tag: 'Core service',
         title: 'IV Ketamine Infusions',
         body: 'Our medical IV ketamine protocol, separate from the spa menu.',
-        href: '/services/iv-ketamine-infusions',
+        href: '/treatments/iv-ketamine-infusions',
       },
       {
         tag: 'Maintenance option',
         title: 'At-Home Ketamine Therapy',
         body: 'For qualifying patients between in-clinic sessions.',
-        href: '/services/at-home-ketamine',
+        href: '/treatments/at-home-ketamine',
       },
     ],
   },
@@ -287,13 +287,13 @@ const DEFAULT_SLUGS: Record<string, SlugContent> = {
         tag: 'Core service',
         title: 'IV Ketamine Infusions',
         body: 'KAP is structured around our in-clinic protocol. Most patients start here.',
-        href: '/services/iv-ketamine-infusions',
+        href: '/treatments/iv-ketamine-infusions',
       },
       {
         tag: 'Maintenance option',
         title: 'At-Home Ketamine Therapy',
         body: 'KAP also pairs with at-home sessions for qualifying patients.',
-        href: '/services/at-home-ketamine',
+        href: '/treatments/at-home-ketamine',
       },
     ],
   },
@@ -338,7 +338,7 @@ function imageUrl(image: unknown, width: number): string | null {
 
 async function getResolved(slug: string): Promise<SlugContent | null> {
   const sanity = await client.fetch<SanityService | null>(
-    serviceBySlugQuery,
+    treatmentBySlugQuery,
     { slug },
     { next: { tags: ['sanity'], revalidate: 300 } },
   );
@@ -350,7 +350,7 @@ async function getResolved(slug: string): Promise<SlugContent | null> {
       tag: r.tag ?? '',
       title: r.service?.title ?? '',
       body: r.bodyOverride ?? r.service?.cardDescription ?? '',
-      href: r.service?.slug ? `/services/${r.service.slug}` : '#',
+      href: r.service?.slug ? `/treatments/${r.service.slug}` : '#',
     })) ??
     fallback?.related ??
     [];
@@ -390,7 +390,7 @@ async function getResolved(slug: string): Promise<SlugContent | null> {
 }
 
 export async function generateStaticParams() {
-  const sanitySlugs = (await client.fetch<string[]>(allServiceSlugsQuery)) ?? [];
+  const sanitySlugs = (await client.fetch<string[]>(allTreatmentSlugsQuery)) ?? [];
   const all = new Set([...sanitySlugs, ...Object.keys(DEFAULT_SLUGS)]);
   return Array.from(all).map((slug) => ({ slug }));
 }
@@ -404,9 +404,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 const NAV_ITEMS = [
   { label: 'Practice', href: '/' },
-  { label: 'Treatments', href: '/services' },
+  { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
-  { label: 'Contact', href: '/#contact' },
+  { label: 'Field Notes', href: '/blog' },
 ];
 
 const ArrowRight = () => (
@@ -427,7 +427,7 @@ function withBreaks(text: string) {
   return parts.flatMap((part, i) => (i === 0 ? [part] : [<br key={i} />, part]));
 }
 
-export default async function ServiceSlugPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function TreatmentSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const data = await getResolved(slug);
   if (!data) notFound();
@@ -448,7 +448,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         {/* HERO */}
         <section className="slug-hero" data-screen-label="01 Hero">
           <div className="slug-hero-copy">
-            <span className="label-pill">Services</span>
             <h1 className="slug-hero-headline">{withBreaks(data.title)}</h1>
             <p className="slug-hero-sub">{data.heroSub}</p>
           </div>
@@ -501,7 +500,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         <section className="slug-protocol-section" data-screen-label="03 The Protocol">
           <div className="slug-protocol-layout">
             <aside className="slug-protocol-aside reveal">
-              <span className="label-pill">The Protocol</span>
               <h2 className="slug-protocol-aside-title">{withBreaks(data.protocolAsideTitle)}</h2>
             </aside>
             <div className="slug-protocol-body reveal reveal-d1">
@@ -514,7 +512,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         <section className="slug-eligibility" data-screen-label="04 Eligibility">
           <div className="section-inner">
             <div className="section-head reveal">
-              <span className="label-pill">Eligibility</span>
               <h2 className="section-title">Is this right for you?</h2>
             </div>
 
@@ -551,9 +548,7 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         {/* PRICING */}
         <section className="slug-pricing-section" data-screen-label="05 Pricing">
           <div className="section-inner">
-            <div className="section-head reveal" style={{ marginBottom: 36 }}>
-              <span className="label-pill">Pricing</span>
-            </div>
+            <div className="section-head reveal" style={{ marginBottom: 36 }}></div>
             <div className="slug-pricing-block reveal">
               <p className="slug-pricing-main">{data.pricingMain}</p>
               <Markdown content={data.pricingNote} className="slug-pricing-note" />
@@ -565,7 +560,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         <section className="slug-steps-section" data-screen-label="06 What to Expect">
           <div className="section-inner">
             <div className="section-head reveal">
-              <span className="label-pill">What to Expect</span>
               <h2 className="section-title">From self-assessment to integration</h2>
             </div>
             <div className="slug-steps-grid">
@@ -588,7 +582,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
           <section className="slug-related-section" data-screen-label="07 Related Care">
             <div className="section-inner">
               <div className="section-head reveal" style={{ marginBottom: 40 }}>
-                <span className="label-pill">Related Care</span>
                 <h2 className="section-title">Other services</h2>
               </div>
               <div className="slug-related-grid">
@@ -612,7 +605,6 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
 
         {/* CTA ZONE */}
         <section className="slug-cta-zone" data-screen-label="08 CTA">
-          <span className="label-pill slug-label-pill--inv reveal">Westwood, Los Angeles</span>
           <h2 className="slug-cta-title reveal">Ready to begin?</h2>
           <p className="slug-cta-sub reveal">
             Our PA reviews every intake personally. Most patients hear back within one business day.
