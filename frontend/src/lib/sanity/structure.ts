@@ -126,5 +126,23 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.divider(),
+      S.listItem()
+        .title('About Page')
+        .child(
+          S.document()
+            .title('About Page')
+            .schemaType('aboutPage')
+            .documentId('aboutPage-singleton'),
+        ),
+      S.listItem()
+        .title('Services Index')
+        .child(
+          S.document()
+            .title('Services Index')
+            .schemaType('servicesPage')
+            .documentId('servicesPage-singleton'),
+        ),
+      S.listItem().title('Services').child(S.documentTypeList('service').title('Services')),
+      S.divider(),
       S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
     ]);

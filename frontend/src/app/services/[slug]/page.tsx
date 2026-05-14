@@ -1,36 +1,37 @@
 import { notFound } from 'next/navigation';
+import { client } from '@/lib/sanity/client';
+import { urlFor } from '@/lib/sanity/image';
+import { serviceBySlugQuery, allServiceSlugsQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
+import { Markdown } from '@/components/Markdown';
 import './slug.css';
 
+export const revalidate = 300;
+
 type SlugContent = {
-  title: React.ReactNode;
+  title: string;
   metaTitle: string;
   metaDesc: string;
   heroSub: string;
   stats: { value: string; label: string }[];
-  protocolAsideTitle: React.ReactNode;
-  protocolParas: string[];
+  protocolAsideTitle: string;
+  protocolBody: string;
   treatList: { label: string; offlabel?: boolean }[];
   referList: string[];
+  qualifyLinkLabel: string;
+  qualifyLinkHref: string;
   pricingMain: string;
-  pricingNote: React.ReactNode;
+  pricingNote: string;
   steps: { num: string; title: string; body: string }[];
   related: { tag: string; title: string; body: string; href: string }[];
-  /** Draft content shows a visible "review before publish" banner. */
   draft?: boolean;
 };
 
-const SLUGS: Record<string, SlugContent> = {
+const DEFAULT_SLUGS: Record<string, SlugContent> = {
   'iv-ketamine-infusions': {
-    title: (
-      <>
-        IV Ketamine
-        <br />
-        Infusions
-      </>
-    ),
+    title: 'IV Ketamine\nInfusions',
     metaTitle: 'IV Ketamine Infusions — Phos',
     metaDesc:
       '60-minute IV ketamine infusions in our Westwood clinic, anesthesiologist-supervised. A 5 to 6 session protocol with PA support before and after every infusion.',
@@ -42,18 +43,12 @@ const SLUGS: Record<string, SlugContent> = {
       { value: '0.4 to 0.7', label: 'mg/kg/hr starting dose' },
       { value: 'PA-supported', label: 'before and after every session' },
     ],
-    protocolAsideTitle: (
-      <>
-        Sixty minutes.
-        <br />
-        Not forty.
-      </>
-    ),
-    protocolParas: [
+    protocolAsideTitle: 'Sixty minutes.\nNot forty.',
+    protocolBody: [
       'Phos runs IV ketamine on a 5 to 6 session protocol, based on the Yale dosing studies that established the modern evidence base for ketamine in treatment-resistant depression. Sessions are 60 minutes, not the 40-minute industry shortcut. Starting dose is weight-based, 0.4 to 0.7 mg/kg/hour, adjusted by our PA between sessions based on how each patient responds.',
       'Every infusion includes the full session, IV placement, supportive medications like Zofran for nausea or ketorolac for headache if needed, and a 15 to 20 minute integration window with our PA at the end. There are no hidden fees inside the protocol itself. NAD+ and other spa add-ons are billed separately under our IV Spa service.',
       'Single sessions are available, but we recommend completing the full protocol. Most patients need multiple sessions to reach a transition point, and the evidence base is built around the full course.',
-    ],
+    ].join('\n\n'),
     treatList: [
       { label: 'Treatment-resistant depression', offlabel: true },
       { label: 'PTSD and trauma', offlabel: true },
@@ -68,14 +63,11 @@ const SLUGS: Record<string, SlugContent> = {
       'Active benzodiazepine, lamotrigine, diphenhydramine, or alcohol use',
       'Aminophylline use',
     ],
+    qualifyLinkLabel: 'Take the self-assessment',
+    qualifyLinkHref: '/qualify',
     pricingMain: '$700 per infusion  ·  $400 at the membership rate',
-    pricingNote: (
-      <>
-        Membership rate available after the first 4 sessions. Includes the full session, IV
-        placement, supportive medications, and PA integration time. NAD+ and spa add-ons are billed
-        separately. <a href="/pricing">See full pricing for membership and at-home options →</a>
-      </>
-    ),
+    pricingNote:
+      'Membership rate available after the first 4 sessions. Includes the full session, IV placement, supportive medications, and PA integration time. NAD+ and spa add-ons are billed separately. [See full pricing for membership and at-home options →](/pricing)',
     steps: [
       {
         num: '1',
@@ -108,16 +100,9 @@ const SLUGS: Record<string, SlugContent> = {
       },
     ],
   },
-
   'at-home-ketamine': {
     draft: true,
-    title: (
-      <>
-        At-Home Ketamine
-        <br />
-        Therapy
-      </>
-    ),
+    title: 'At-Home Ketamine\nTherapy',
     metaTitle: 'At-Home Ketamine Therapy — Phos',
     metaDesc:
       'Telehealth-monitored sublingual ketamine for qualifying patients, with the same medical oversight as our in-clinic infusions.',
@@ -129,18 +114,9 @@ const SLUGS: Record<string, SlugContent> = {
       { value: 'PA review', label: 'before every refill' },
       { value: 'Qualifying', label: 'patients only' },
     ],
-    protocolAsideTitle: (
-      <>
-        Same standard.
-        <br />
-        Different setting.
-      </>
-    ),
-    protocolParas: [
-      'At-Home Ketamine Therapy is offered to qualifying patients as a complement to, or maintenance option after, the in-clinic infusion protocol. The medical oversight is the same as our IV service: Dr. Riley reviews every patient, and our PA stays involved between visits.',
-      'Sessions are conducted via video telehealth from a quiet, private space at home, with a support person present. We schedule preparation and integration calls around each session, and adjust dosing between visits based on response.',
-      'Not every patient qualifies for the at-home format. Our self-assessment will tell you quickly whether you are a candidate before you pay for a consultation.',
-    ],
+    protocolAsideTitle: 'Same standard.\nDifferent setting.',
+    protocolBody:
+      'At-Home Ketamine Therapy is offered to qualifying patients as a complement to, or maintenance option after, the in-clinic infusion protocol. The medical oversight is the same as our IV service: Dr. Riley reviews every patient, and our PA stays involved between visits.\n\nSessions are conducted via video telehealth from a quiet, private space at home, with a support person present. We schedule preparation and integration calls around each session, and adjust dosing between visits based on response.\n\nNot every patient qualifies for the at-home format. Our self-assessment will tell you quickly whether you are a candidate before you pay for a consultation.',
     treatList: [
       { label: 'Treatment-resistant depression', offlabel: true },
       { label: 'PTSD and trauma', offlabel: true },
@@ -154,13 +130,11 @@ const SLUGS: Record<string, SlugContent> = {
       'Active substance use that increases interaction risk',
       'First-time patients better served in-clinic',
     ],
+    qualifyLinkLabel: 'Take the self-assessment',
+    qualifyLinkHref: '/qualify',
     pricingMain: 'Pricing in review — to be confirmed before publish',
-    pricingNote: (
-      <>
-        At-home pricing is being finalized with the clinical team. The full schedule will live on
-        the main <a href="/pricing">pricing page</a> once confirmed.
-      </>
-    ),
+    pricingNote:
+      'At-home pricing is being finalized with the clinical team. The full schedule will live on the main [pricing page](/pricing) once confirmed.',
     steps: [
       {
         num: '1',
@@ -193,7 +167,6 @@ const SLUGS: Record<string, SlugContent> = {
       },
     ],
   },
-
   'iv-spa': {
     draft: true,
     title: 'IV Spa',
@@ -208,18 +181,9 @@ const SLUGS: Record<string, SlugContent> = {
       { value: 'Glutathione', label: 'antioxidant push' },
       { value: 'Standalone', label: 'no ketamine required' },
     ],
-    protocolAsideTitle: (
-      <>
-        Wellness drips,
-        <br />
-        cleanly separated.
-      </>
-    ),
-    protocolParas: [
-      'Our IV Spa menu is for patients who want wellness infusions without the ketamine protocol. NAD+, Meyers cocktail, glutathione, and other standard drips are offered as standalone bookings in the same clinic space.',
-      'Spa drips can also be added on to a ketamine session for an additional fee. Pricing for add-ons is shown at booking and is never bundled silently into the infusion cost.',
-      "All IV Spa services are run by our RN under our PA's supervision. We screen for contraindications before every visit.",
-    ],
+    protocolAsideTitle: 'Wellness drips,\ncleanly separated.',
+    protocolBody:
+      "Our IV Spa menu is for patients who want wellness infusions without the ketamine protocol. NAD+, Meyers cocktail, glutathione, and other standard drips are offered as standalone bookings in the same clinic space.\n\nSpa drips can also be added on to a ketamine session for an additional fee. Pricing for add-ons is shown at booking and is never bundled silently into the infusion cost.\n\nAll IV Spa services are run by our RN under our PA's supervision. We screen for contraindications before every visit.",
     treatList: [
       { label: 'General wellness and recovery' },
       { label: 'Hydration after travel or illness' },
@@ -231,13 +195,11 @@ const SLUGS: Record<string, SlugContent> = {
       'Active acute illness needing emergency care',
       'Allergies to listed drip ingredients',
     ],
+    qualifyLinkLabel: 'Take the self-assessment',
+    qualifyLinkHref: '/qualify',
     pricingMain: 'Pricing in review — to be confirmed before publish',
-    pricingNote: (
-      <>
-        Per-drip pricing is being finalized. The full menu will live on the main{' '}
-        <a href="/pricing">pricing page</a> once confirmed.
-      </>
-    ),
+    pricingNote:
+      'Per-drip pricing is being finalized. The full menu will live on the main [pricing page](/pricing) once confirmed.',
     steps: [
       {
         num: '1',
@@ -270,16 +232,9 @@ const SLUGS: Record<string, SlugContent> = {
       },
     ],
   },
-
   kap: {
     draft: true,
-    title: (
-      <>
-        Ketamine-Assisted
-        <br />
-        Psychotherapy
-      </>
-    ),
+    title: 'Ketamine-Assisted\nPsychotherapy',
     metaTitle: 'Ketamine-Assisted Psychotherapy — Phos',
     metaDesc:
       'Optional adjunctive psychotherapy with Carly Salcido, an independent therapist, structured around the neuroplastic window that follows each infusion.',
@@ -291,18 +246,9 @@ const SLUGS: Record<string, SlugContent> = {
       { value: 'Telehealth', label: 'or in-person' },
       { value: 'Independent', label: 'booked outside infusion cost' },
     ],
-    protocolAsideTitle: (
-      <>
-        Neurobiologically
-        <br />
-        informed integration.
-      </>
-    ),
-    protocolParas: [
-      'Phos partners with Carly Salcido, an independent licensed therapist, for patients who want adjunctive psychotherapy alongside their ketamine protocol. Her approach is neurobiologically informed integration therapy, focused on the neuroplastic window that follows each infusion.',
-      'KAP at Phos pairs structured preparation before each session with reflective integration afterward. The aim is to help insights from the medicine experience translate into lasting change, not just feel meaningful in the moment.',
-      'Sessions are booked directly with Carly. They are billed separately from infusion costs. Many patients see Carly for a few sessions around their initial protocol, then continue or step down based on need.',
-    ],
+    protocolAsideTitle: 'Neurobiologically\ninformed integration.',
+    protocolBody:
+      'Phos partners with Carly Salcido, an independent licensed therapist, for patients who want adjunctive psychotherapy alongside their ketamine protocol. Her approach is neurobiologically informed integration therapy, focused on the neuroplastic window that follows each infusion.\n\nKAP at Phos pairs structured preparation before each session with reflective integration afterward. The aim is to help insights from the medicine experience translate into lasting change, not just feel meaningful in the moment.\n\nSessions are booked directly with Carly. They are billed separately from infusion costs. Many patients see Carly for a few sessions around their initial protocol, then continue or step down based on need.',
     treatList: [
       { label: 'Patients new to ketamine who want support around the protocol' },
       { label: 'Complex trauma histories needing structured integration' },
@@ -314,13 +260,11 @@ const SLUGS: Record<string, SlugContent> = {
       'Patients seeking psychiatry / medication management (not psychotherapy)',
       'Patients seeking primary therapy unrelated to ketamine treatment',
     ],
+    qualifyLinkLabel: 'Take the self-assessment',
+    qualifyLinkHref: '/qualify',
     pricingMain: '$300 per 50-minute psychotherapy session',
-    pricingNote: (
-      <>
-        Booked and billed directly with Carly Salcido, separately from infusion costs. See the Phos{' '}
-        <a href="/pricing">pricing page</a> for medical service pricing.
-      </>
-    ),
+    pricingNote:
+      'Booked and billed directly with Carly Salcido, separately from infusion costs. See the Phos [pricing page](/pricing) for medical service pricing.',
     steps: [
       {
         num: '1',
@@ -355,13 +299,105 @@ const SLUGS: Record<string, SlugContent> = {
   },
 };
 
-export function generateStaticParams() {
-  return Object.keys(SLUGS).map((slug) => ({ slug }));
+type SanityService = {
+  _id?: string;
+  title?: string;
+  slug?: string;
+  draft?: boolean;
+  metaDescription?: string;
+  heroSub?: string;
+  heroImage?: unknown;
+  stats?: { value?: string; label?: string }[];
+  protocolAsideTitle?: string;
+  protocolBody?: string;
+  treatList?: { label?: string; offlabel?: boolean }[];
+  referList?: string[];
+  qualifyLinkLabel?: string;
+  qualifyLinkHref?: string;
+  pricingMain?: string;
+  pricingNote?: string;
+  steps?: { num?: string; title?: string; body?: string }[];
+  related?: {
+    tag?: string;
+    bodyOverride?: string;
+    service?: { _id?: string; title?: string; slug?: string; cardDescription?: string };
+  }[];
+};
+
+function imageUrl(image: unknown, width: number): string | null {
+  if (!image) return null;
+  try {
+    return urlFor(image as never)
+      .width(width)
+      .auto('format')
+      .url();
+  } catch {
+    return null;
+  }
+}
+
+async function getResolved(slug: string): Promise<SlugContent | null> {
+  const sanity = await client.fetch<SanityService | null>(
+    serviceBySlugQuery,
+    { slug },
+    { next: { tags: ['sanity'], revalidate: 300 } },
+  );
+  const fallback = DEFAULT_SLUGS[slug];
+  if (!sanity && !fallback) return null;
+
+  const related =
+    sanity?.related?.map((r) => ({
+      tag: r.tag ?? '',
+      title: r.service?.title ?? '',
+      body: r.bodyOverride ?? r.service?.cardDescription ?? '',
+      href: r.service?.slug ? `/services/${r.service.slug}` : '#',
+    })) ??
+    fallback?.related ??
+    [];
+
+  return {
+    title: sanity?.title ?? fallback?.title ?? '',
+    metaTitle: fallback?.metaTitle ?? `${sanity?.title ?? 'Service'} — Phos`,
+    metaDesc: sanity?.metaDescription ?? fallback?.metaDesc ?? '',
+    heroSub: sanity?.heroSub ?? fallback?.heroSub ?? '',
+    stats:
+      sanity?.stats?.map((s) => ({ value: s.value ?? '', label: s.label ?? '' })) ??
+      fallback?.stats ??
+      [],
+    protocolAsideTitle: sanity?.protocolAsideTitle ?? fallback?.protocolAsideTitle ?? '',
+    protocolBody: sanity?.protocolBody ?? fallback?.protocolBody ?? '',
+    treatList:
+      sanity?.treatList?.map((t) => ({ label: t.label ?? '', offlabel: t.offlabel })) ??
+      fallback?.treatList ??
+      [],
+    referList: sanity?.referList ?? fallback?.referList ?? [],
+    qualifyLinkLabel:
+      sanity?.qualifyLinkLabel ?? fallback?.qualifyLinkLabel ?? 'Take the self-assessment',
+    qualifyLinkHref: sanity?.qualifyLinkHref ?? fallback?.qualifyLinkHref ?? '/qualify',
+    pricingMain: sanity?.pricingMain ?? fallback?.pricingMain ?? '',
+    pricingNote: sanity?.pricingNote ?? fallback?.pricingNote ?? '',
+    steps:
+      sanity?.steps?.map((s) => ({
+        num: s.num ?? '',
+        title: s.title ?? '',
+        body: s.body ?? '',
+      })) ??
+      fallback?.steps ??
+      [],
+    related,
+    draft: sanity?.draft ?? fallback?.draft,
+  };
+}
+
+export async function generateStaticParams() {
+  const sanitySlugs = (await client.fetch<string[]>(allServiceSlugsQuery)) ?? [];
+  const all = new Set([...sanitySlugs, ...Object.keys(DEFAULT_SLUGS)]);
+  return Array.from(all).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data = SLUGS[slug];
+  const data = await getResolved(slug);
   if (!data) return { title: 'Service — Phos' };
   return { title: data.metaTitle, description: data.metaDesc };
 }
@@ -385,9 +421,15 @@ const ArrowRight = () => (
   </svg>
 );
 
+/** Render a string with `\n` line-breaks as JSX with <br /> tags. */
+function withBreaks(text: string) {
+  const parts = text.split('\n');
+  return parts.flatMap((part, i) => (i === 0 ? [part] : [<br key={i} />, part]));
+}
+
 export default async function ServiceSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const data = SLUGS[slug];
+  const data = await getResolved(slug);
   if (!data) notFound();
 
   return (
@@ -407,14 +449,11 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         <section className="slug-hero" data-screen-label="01 Hero">
           <div className="slug-hero-copy">
             <span className="label-pill">Services</span>
-            <h1 className="slug-hero-headline">{data.title}</h1>
+            <h1 className="slug-hero-headline">{withBreaks(data.title)}</h1>
             <p className="slug-hero-sub">{data.heroSub}</p>
           </div>
           <div className="slug-hero-image-belt">
-            <figure
-              className="slug-hero-image"
-              aria-label="Infusion room interior — photo to be placed"
-            >
+            <figure className="slug-hero-image" aria-label="Service hero photo placeholder">
               <div className="slug-hero-image-ph">
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path
@@ -436,7 +475,7 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
                     strokeLinecap="round"
                   />
                 </svg>
-                <span>Infusion room · photo</span>
+                <span>Service photo</span>
               </div>
             </figure>
           </div>
@@ -463,12 +502,10 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
           <div className="slug-protocol-layout">
             <aside className="slug-protocol-aside reveal">
               <span className="label-pill">The Protocol</span>
-              <h2 className="slug-protocol-aside-title">{data.protocolAsideTitle}</h2>
+              <h2 className="slug-protocol-aside-title">{withBreaks(data.protocolAsideTitle)}</h2>
             </aside>
             <div className="slug-protocol-body reveal reveal-d1">
-              {data.protocolParas.map((p, i) => (
-                <p key={i}>{p}</p>
-              ))}
+              <Markdown content={data.protocolBody} />
             </div>
           </div>
         </section>
@@ -506,7 +543,7 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
             <p className="slug-elig-footer reveal">
               If you&apos;re unsure, our pre-booking self-assessment will tell you quickly whether
               you qualify before you pay for a consultation.&ensp;
-              <a href="/qualify">Take the self-assessment →</a>
+              <a href={data.qualifyLinkHref}>{data.qualifyLinkLabel} →</a>
             </p>
           </div>
         </section>
@@ -519,7 +556,7 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
             </div>
             <div className="slug-pricing-block reveal">
               <p className="slug-pricing-main">{data.pricingMain}</p>
-              <p className="slug-pricing-note">{data.pricingNote}</p>
+              <Markdown content={data.pricingNote} className="slug-pricing-note" />
             </div>
           </div>
         </section>
@@ -529,11 +566,7 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
           <div className="section-inner">
             <div className="section-head reveal">
               <span className="label-pill">What to Expect</span>
-              <h2 className="section-title">
-                From self-assessment
-                <br />
-                to integration
-              </h2>
+              <h2 className="section-title">From self-assessment to integration</h2>
             </div>
             <div className="slug-steps-grid">
               {data.steps.map((step, i) => (
@@ -551,26 +584,31 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
         </section>
 
         {/* RELATED */}
-        <section className="slug-related-section" data-screen-label="07 Related Care">
-          <div className="section-inner">
-            <div className="section-head reveal" style={{ marginBottom: 40 }}>
-              <span className="label-pill">Related Care</span>
-              <h2 className="section-title">Other services</h2>
+        {data.related.length > 0 && (
+          <section className="slug-related-section" data-screen-label="07 Related Care">
+            <div className="section-inner">
+              <div className="section-head reveal" style={{ marginBottom: 40 }}>
+                <span className="label-pill">Related Care</span>
+                <h2 className="section-title">Other services</h2>
+              </div>
+              <div className="slug-related-grid">
+                {data.related.map((r, i) => (
+                  <div
+                    key={r.href}
+                    className={`slug-related-card reveal${i ? ` reveal-d${i}` : ''}`}
+                  >
+                    <span className="slug-related-tag">{r.tag}</span>
+                    <h3 className="slug-related-title">{r.title}</h3>
+                    <p className="slug-related-body">{r.body}</p>
+                    <a className="slug-related-link" href={r.href}>
+                      View service <ArrowRight />
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="slug-related-grid">
-              {data.related.map((r, i) => (
-                <div key={r.href} className={`slug-related-card reveal${i ? ` reveal-d${i}` : ''}`}>
-                  <span className="slug-related-tag">{r.tag}</span>
-                  <h3 className="slug-related-title">{r.title}</h3>
-                  <p className="slug-related-body">{r.body}</p>
-                  <a className="slug-related-link" href={r.href}>
-                    View service <ArrowRight />
-                  </a>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* CTA ZONE */}
         <section className="slug-cta-zone" data-screen-label="08 CTA">
@@ -583,8 +621,8 @@ export default async function ServiceSlugPage({ params }: { params: Promise<{ sl
             <a className="slug-cta-btn-primary" href="/book">
               Book a consultation
             </a>
-            <a className="slug-cta-btn-secondary" href="/qualify">
-              Take the self-assessment first
+            <a className="slug-cta-btn-secondary" href={data.qualifyLinkHref}>
+              {data.qualifyLinkLabel} first
             </a>
           </div>
           <p className="slug-cta-address reveal">

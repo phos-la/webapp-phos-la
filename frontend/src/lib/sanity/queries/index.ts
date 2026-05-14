@@ -130,3 +130,98 @@ export const navSectionQuery = groq`*[_type == "navSection"][0] {
   ctaLabel,
   ctaHref
 }`;
+
+export const aboutPageQuery = groq`*[_type == "aboutPage"][0] {
+  eyebrowLabel,
+  heroHeadline,
+  heroSubheading,
+  heroImage,
+  heroImageCaption,
+  christaEyebrow,
+  christaName,
+  christaBio,
+  christaCredentials,
+  christaPortrait,
+  teamLabel,
+  teamHeading,
+  teamMembers[] {
+    role,
+    name,
+    bio,
+    portrait,
+    gradient,
+    placeholderNote
+  },
+  kapEyebrow,
+  kapHeading,
+  kapPartnerName,
+  kapBody,
+  kapLinkLabel,
+  kapLinkHref,
+  kapPortrait,
+  locationEyebrow,
+  locationHeadline,
+  locationBody,
+  locationPrimaryCtaLabel,
+  locationPrimaryCtaHref,
+  locationSecondaryCtaLabel,
+  locationSecondaryCtaHref,
+  locationPhoto
+}`;
+
+export const servicesPageQuery = groq`*[_type == "servicesPage"][0] {
+  eyebrowLabel,
+  heroTitle,
+  heroSub,
+  heroImage,
+  introBody,
+  gridLabel,
+  "services": services[]-> {
+    _id,
+    title,
+    "slug": slug.current,
+    cardDescription,
+    cardIcon,
+    cardGradient,
+    cardPhoto,
+    draft
+  },
+  ctaText,
+  ctaPrimaryLabel,
+  ctaPrimaryHref,
+  ctaSecondaryLabel,
+  ctaSecondaryHref,
+  ctaAddress
+}`;
+
+export const allServiceSlugsQuery = groq`*[_type == "service" && defined(slug.current)][].slug.current`;
+
+export const serviceBySlugQuery = groq`*[_type == "service" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  draft,
+  metaDescription,
+  heroSub,
+  heroImage,
+  stats[] { value, label },
+  protocolAsideTitle,
+  protocolBody,
+  treatList[] { label, offlabel },
+  referList,
+  qualifyLinkLabel,
+  qualifyLinkHref,
+  pricingMain,
+  pricingNote,
+  steps[] { num, title, body },
+  related[] {
+    tag,
+    bodyOverride,
+    "service": service-> {
+      _id,
+      title,
+      "slug": slug.current,
+      cardDescription
+    }
+  }
+}`;
