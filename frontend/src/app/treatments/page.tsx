@@ -8,7 +8,7 @@ import HeroParallaxImage from '@/components/HeroParallaxImage';
 import { Markdown } from '@/components/Markdown';
 import './treatments.css';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Treatments — Phos',

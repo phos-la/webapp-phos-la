@@ -30,7 +30,7 @@ import Footer from '@/components/Footer';
 
 // Fallback in case the Sanity webhook ever fails to fire; publish events
 // normally invalidate the 'sanity' tag instantly via /api/revalidate.
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 const sanityFetch = (query: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
 import '../blog.css';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 type BlogPostFull = {
   _id: string;

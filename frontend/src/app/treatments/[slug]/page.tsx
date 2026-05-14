@@ -9,7 +9,7 @@ import HeroParallaxImage from '@/components/HeroParallaxImage';
 import { Markdown } from '@/components/Markdown';
 import './slug.css';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 type SlugContent = {
   title: string;

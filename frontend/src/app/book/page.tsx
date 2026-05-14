@@ -2,7 +2,7 @@ import { client } from '@/lib/sanity/client';
 import { bookPageQuery } from '@/lib/sanity/queries';
 import BookForm, { type BookCopy } from './BookForm';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 const DEFAULTS: BookCopy = {
   eyebrow: 'Phos Wellness',
