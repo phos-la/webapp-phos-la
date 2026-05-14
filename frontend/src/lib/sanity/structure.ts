@@ -144,5 +144,30 @@ export const structure: StructureResolver = (S) =>
         ),
       S.listItem().title('Treatments').child(S.documentTypeList('treatment').title('Treatments')),
       S.divider(),
+      S.listItem()
+        .title('Book Page')
+        .child(
+          S.list()
+            .title('Book Page')
+            .items([
+              S.listItem()
+                .title('Booking — Tabs + Copy')
+                .child(
+                  S.document()
+                    .title('Book Page')
+                    .schemaType('bookPage')
+                    .documentId('bookPage-singleton'),
+                ),
+              S.listItem()
+                .title('Thank You — Post-Intake')
+                .child(
+                  S.document()
+                    .title('Book — Thank You Page')
+                    .schemaType('bookThanksPage')
+                    .documentId('bookThanksPage-singleton'),
+                ),
+            ]),
+        ),
+      S.divider(),
       S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
     ]);

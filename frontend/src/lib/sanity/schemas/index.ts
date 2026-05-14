@@ -13,6 +13,8 @@ import { footerSectionType } from './footerSection';
 import { navSectionType } from './navSection';
 import { aboutPageType } from './aboutPage';
 import { treatmentType, treatmentsPageType } from './treatment';
+import { bookPageType } from './bookPage';
+import { bookThanksPageType } from './bookThanksPage';
 
 export const schemaTypes = [
   pricingTierItemType,
@@ -35,4 +37,6 @@ export const schemaTypes = [
   aboutPageType,
   treatmentType,
   treatmentsPageType,
+  bookPageType,
+  bookThanksPageType,
 ];

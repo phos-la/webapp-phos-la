@@ -186,6 +186,30 @@ export const treatmentsPageQuery = groq`*[_type == "treatmentsPage"][0] {
   ctaAddress
 }`;
 
+export const bookPageQuery = groq`*[_type == "bookPage"][0] {
+  eyebrow,
+  headlineDefault,
+  headlineReturning,
+  subheadingDefault,
+  subheadingReturning,
+  tabNew { label, h2, sub, bullets, ctaLabel },
+  tabClinic { label, h2, sub, bullets, ctaLabel },
+  tabAthome { label, h2, sub, bullets, ctaLabel },
+  footerNote
+}`;
+
+export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
+  flowNew { heading, subheading, eyebrow, pickerLabel },
+  flowReturning { heading, subheading, eyebrow, pickerLabel },
+  flowAthome { heading, subheading, eyebrow, pickerLabel },
+  newDepositCtaLabel,
+  newDepositLoadingLabel,
+  otherCtaLabel,
+  secureNote,
+  errorMessage,
+  backLinkLabel
+}`;
+
 export const allTreatmentSlugsQuery = groq`*[_type == "treatment" && defined(slug.current)][].slug.current`;
 
 export const treatmentBySlugQuery = groq`*[_type == "treatment" && slug.current == $slug][0] {
