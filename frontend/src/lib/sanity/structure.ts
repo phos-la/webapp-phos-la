@@ -184,10 +184,10 @@ export const structure: StructureResolver = (S) =>
                     .documentId('blogIndexPage-singleton'),
                 ),
               S.listItem()
-                .title('Post Page — Detail Chrome')
+                .title('Post Page — Detail Layout')
                 .child(
                   S.document()
-                    .title('Blog Post Page (Detail Chrome)')
+                    .title('Blog Post Layout (shared labels)')
                     .schemaType('blogPostPage')
                     .documentId('blogPostPage-singleton'),
                 ),

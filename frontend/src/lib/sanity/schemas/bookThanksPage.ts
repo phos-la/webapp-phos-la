@@ -149,7 +149,7 @@ export const bookThanksPageType = defineType({
       ],
     }),
 
-    /* ── Shared chrome — applies to all three flows ───────────────────── */
+    /* ── Shared layout — applies to all three flows ──────────────────── */
     defineField({
       name: 'newDepositCtaLabel',
       title: 'New Patient Deposit CTA Label',

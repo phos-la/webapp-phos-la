@@ -85,7 +85,14 @@ export default async function Page() {
         />
         <Testimonials data={{ ...testimonialsData, items: testimonialsData?.items ?? [] }} />
         <FAQ data={{ ...faqData, items: faqData?.items ?? [] }} />
-        <BlogGrid data={{ ...blogData, posts: blogData?.posts ?? [] }} />
+        <BlogGrid
+          data={{
+            ...blogData,
+            posts: (blogData?.posts ?? []).filter(
+              (p: unknown) => p !== null && p !== undefined,
+            ),
+          }}
+        />
         <Glimpses data={glimpsesData} />
       </main>
       <Footer data={footerData} />

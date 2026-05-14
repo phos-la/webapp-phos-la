@@ -28,7 +28,7 @@ type BlogPostFull = {
   metaDescription?: string;
 };
 
-type BlogPostPageChrome = {
+type BlogPostPageLayout = {
   eyebrowLabel?: string;
   readMinutesSuffix?: string;
   backLinkLabel?: string;
@@ -40,7 +40,7 @@ type BlogPostPageChrome = {
   fallbackMetaTitle?: string;
 };
 
-const CHROME_DEFAULTS: Required<BlogPostPageChrome> = {
+const LAYOUT_DEFAULTS: Required<BlogPostPageLayout> = {
   eyebrowLabel: 'Field Notes',
   readMinutesSuffix: 'min read',
   backLinkLabel: '← All field notes',
@@ -53,17 +53,17 @@ const CHROME_DEFAULTS: Required<BlogPostPageChrome> = {
   fallbackMetaTitle: 'Field Notes — Phos',
 };
 
-function mergeChrome(c: BlogPostPageChrome | null): Required<BlogPostPageChrome> {
+function mergeLayout(c: BlogPostPageLayout | null): Required<BlogPostPageLayout> {
   return {
-    eyebrowLabel: c?.eyebrowLabel?.trim() || CHROME_DEFAULTS.eyebrowLabel,
-    readMinutesSuffix: c?.readMinutesSuffix?.trim() || CHROME_DEFAULTS.readMinutesSuffix,
-    backLinkLabel: c?.backLinkLabel?.trim() || CHROME_DEFAULTS.backLinkLabel,
-    backLinkHref: c?.backLinkHref?.trim() || CHROME_DEFAULTS.backLinkHref,
-    placeholderBody: c?.placeholderBody?.trim() || CHROME_DEFAULTS.placeholderBody,
-    placeholderLinkLabel: c?.placeholderLinkLabel?.trim() || CHROME_DEFAULTS.placeholderLinkLabel,
-    metaTitleSuffix: c?.metaTitleSuffix?.trim() || CHROME_DEFAULTS.metaTitleSuffix,
-    metaTitleSeparator: c?.metaTitleSeparator ?? CHROME_DEFAULTS.metaTitleSeparator,
-    fallbackMetaTitle: c?.fallbackMetaTitle?.trim() || CHROME_DEFAULTS.fallbackMetaTitle,
+    eyebrowLabel: c?.eyebrowLabel?.trim() || LAYOUT_DEFAULTS.eyebrowLabel,
+    readMinutesSuffix: c?.readMinutesSuffix?.trim() || LAYOUT_DEFAULTS.readMinutesSuffix,
+    backLinkLabel: c?.backLinkLabel?.trim() || LAYOUT_DEFAULTS.backLinkLabel,
+    backLinkHref: c?.backLinkHref?.trim() || LAYOUT_DEFAULTS.backLinkHref,
+    placeholderBody: c?.placeholderBody?.trim() || LAYOUT_DEFAULTS.placeholderBody,
+    placeholderLinkLabel: c?.placeholderLinkLabel?.trim() || LAYOUT_DEFAULTS.placeholderLinkLabel,
+    metaTitleSuffix: c?.metaTitleSuffix?.trim() || LAYOUT_DEFAULTS.metaTitleSuffix,
+    metaTitleSeparator: c?.metaTitleSeparator ?? LAYOUT_DEFAULTS.metaTitleSeparator,
+    fallbackMetaTitle: c?.fallbackMetaTitle?.trim() || LAYOUT_DEFAULTS.fallbackMetaTitle,
   };
 }
 
@@ -119,35 +119,35 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const [post, chromeRaw] = await Promise.all([
+  const [post, layoutRaw] = await Promise.all([
     client.fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug }).catch(() => null),
-    client.fetch<BlogPostPageChrome | null>(blogPostPageQuery).catch(() => null),
+    client.fetch<BlogPostPageLayout | null>(blogPostPageQuery).catch(() => null),
   ]);
-  const chrome = mergeChrome(chromeRaw);
-  if (!post) return { title: chrome.fallbackMetaTitle };
+  const layout = mergeLayout(layoutRaw);
+  if (!post) return { title: layout.fallbackMetaTitle };
   return {
     title:
       post.metaTitle?.trim() ||
-      `${post.title}${chrome.metaTitleSeparator}${chrome.metaTitleSuffix}`,
+      `${post.title}${layout.metaTitleSeparator}${layout.metaTitleSuffix}`,
     description: post.metaDescription?.trim() || post.body || undefined,
   };
 }
 
 export default async function BlogSlugPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const [post, chromeRaw] = await Promise.all([
+  const [post, layoutRaw] = await Promise.all([
     client.fetch<BlogPostFull | null>(blogPostBySlugQuery, { slug }).catch(() => null),
-    client.fetch<BlogPostPageChrome | null>(blogPostPageQuery).catch(() => null),
+    client.fetch<BlogPostPageLayout | null>(blogPostPageQuery).catch(() => null),
   ]);
   if (!post) notFound();
-  const chrome = mergeChrome(chromeRaw);
+  const layout = mergeLayout(layoutRaw);
 
   const heroImg = post.image
     ? urlFor(post.image).width(2400).quality(80).auto('format').url()
     : null;
 
   const dateLabel = formatDate(post.publishDate);
-  const readLabel = post.readMinutes ? `${post.readMinutes} ${chrome.readMinutesSuffix}` : '';
+  const readLabel = post.readMinutes ? `${post.readMinutes} ${layout.readMinutesSuffix}` : '';
 
   return (
     <div className="blog-page">
@@ -158,7 +158,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
         <section className="blog-hero">
           <div className="blog-hero-copy">
             <p className="blog-hero-eyebrow" data-reveal>
-              {chrome.eyebrowLabel}
+              {layout.eyebrowLabel}
             </p>
             <h1 className="hero-h1" data-reveal data-d="1">
               {post.title}
@@ -210,14 +210,14 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
               <Markdown content={post.fullBody} />
             ) : (
               <PlaceholderBody
-                template={chrome.placeholderBody}
-                linkLabel={chrome.placeholderLinkLabel}
-                href={chrome.backLinkHref}
+                template={layout.placeholderBody}
+                linkLabel={layout.placeholderLinkLabel}
+                href={layout.backLinkHref}
               />
             )}
           </div>
           <p className="blogpost-back">
-            <a href={chrome.backLinkHref}>{chrome.backLinkLabel}</a>
+            <a href={layout.backLinkHref}>{layout.backLinkLabel}</a>
           </p>
         </section>
       </main>

@@ -1,17 +1,17 @@
 import { defineField, defineType } from 'sanity';
 
 /**
- * Shared chrome for /blog/[slug] (the post detail route).
+ * Shared layout strings for /blog/[slug] (the post detail route).
  * Per-post fields (title, body, author, etc.) live on `blogPost`.
  * This singleton holds the page-level labels that are identical across every
  * post: eyebrow, read-time suffix, placeholder copy, back link, SEO template.
  */
 export const blogPostPageType = defineType({
   name: 'blogPostPage',
-  title: 'Blog Post Page (Detail Chrome)',
+  title: 'Blog Post Layout (shared labels)',
   type: 'document',
   groups: [
-    { name: 'chrome', title: 'Page Chrome' },
+    { name: 'layout', title: 'Page Layout' },
     { name: 'placeholder', title: 'Placeholder Body' },
     { name: 'seo', title: 'SEO' },
   ],
@@ -21,7 +21,7 @@ export const blogPostPageType = defineType({
       title: 'Hero Eyebrow',
       description: 'Small label shown above the post title (e.g. "Field Notes").',
       type: 'string',
-      group: 'chrome',
+      group: 'layout',
       initialValue: 'Field Notes',
     }),
     defineField({
@@ -29,21 +29,21 @@ export const blogPostPageType = defineType({
       title: 'Read-Time Suffix',
       description: 'Text appended after the read-minutes number (e.g. "min read").',
       type: 'string',
-      group: 'chrome',
+      group: 'layout',
       initialValue: 'min read',
     }),
     defineField({
       name: 'backLinkLabel',
       title: 'Back Link Label',
       type: 'string',
-      group: 'chrome',
+      group: 'layout',
       initialValue: '← All field notes',
     }),
     defineField({
       name: 'backLinkHref',
       title: 'Back Link Href',
       type: 'string',
-      group: 'chrome',
+      group: 'layout',
       initialValue: '/blog',
     }),
     defineField({
@@ -90,6 +90,6 @@ export const blogPostPageType = defineType({
     }),
   ],
   preview: {
-    prepare: () => ({ title: 'Blog Post Page (Detail Chrome)' }),
+    prepare: () => ({ title: 'Blog Post Layout (shared labels)' }),
   },
 });
