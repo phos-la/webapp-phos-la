@@ -88,9 +88,7 @@ export default async function Page() {
         <BlogGrid
           data={{
             ...blogData,
-            posts: (blogData?.posts ?? []).filter(
-              (p: unknown) => p !== null && p !== undefined,
-            ),
+            posts: (blogData?.posts ?? []).filter((p: unknown) => p !== null && p !== undefined),
           }}
         />
         <Glimpses data={glimpsesData} />
