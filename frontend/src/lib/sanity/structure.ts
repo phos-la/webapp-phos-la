@@ -169,5 +169,23 @@ export const structure: StructureResolver = (S) =>
             ]),
         ),
       S.divider(),
-      S.listItem().title('Blog Posts').child(S.documentTypeList('blogPost').title('Blog Posts')),
+      S.listItem()
+        .title('Field Notes (Blog)')
+        .child(
+          S.list()
+            .title('Field Notes')
+            .items([
+              S.listItem()
+                .title('Index Page — Hero + Featured')
+                .child(
+                  S.document()
+                    .title('Blog Index Page')
+                    .schemaType('blogIndexPage')
+                    .documentId('blogIndexPage-singleton'),
+                ),
+              S.listItem()
+                .title('All Posts')
+                .child(S.documentTypeList('blogPost').title('Blog Posts')),
+            ]),
+        ),
     ]);

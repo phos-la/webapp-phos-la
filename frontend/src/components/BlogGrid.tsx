@@ -60,7 +60,7 @@ export default function BlogGrid({ data }: { data?: BlogSectionData }) {
             const imgSrc = post.image
               ? urlFor(post.image).width(900).quality(80).auto('format').url()
               : DEFAULT_FALLBACK_IMAGES[i % DEFAULT_FALLBACK_IMAGES.length];
-            const href = post.slug?.current ? `#${post.slug.current}` : '#blog';
+            const href = post.slug?.current ? `/blog/${post.slug.current}` : '/blog';
 
             return (
               <article className="blog-card" key={post._id ?? post.title}>

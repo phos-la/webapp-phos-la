@@ -210,6 +210,56 @@ export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
   backLinkLabel
 }`;
 
+export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {
+  heroEyebrow,
+  heroHeadline,
+  heroSubheading,
+  heroImage,
+  heroImageCaption,
+  emptyHeadline,
+  emptyBody,
+  "featuredPost": featuredPost-> {
+    _id,
+    title,
+    "slug": slug.current,
+    image,
+    imageAlt,
+    body,
+    author,
+    publishDate,
+    readMinutes
+  }
+}`;
+
+export const allBlogPostsQuery = groq`*[_type == "blogPost" && defined(slug.current)] | order(publishDate desc, _createdAt desc) {
+  _id,
+  title,
+  "slug": slug.current,
+  image,
+  imageAlt,
+  body,
+  author,
+  publishDate,
+  readMinutes
+}`;
+
+export const allBlogSlugsQuery = groq`*[_type == "blogPost" && defined(slug.current)][].slug.current`;
+
+export const blogPostBySlugQuery = groq`*[_type == "blogPost" && slug.current == $slug][0] {
+  _id,
+  title,
+  "slug": slug.current,
+  image,
+  imageAlt,
+  body,
+  fullBody,
+  author,
+  publishDate,
+  readMinutes,
+  metaTitle,
+  metaDescription
+}`;
+
 export const allTreatmentSlugsQuery = groq`*[_type == "treatment" && defined(slug.current)][].slug.current`;
 
 export const treatmentBySlugQuery = groq`*[_type == "treatment" && slug.current == $slug][0] {
