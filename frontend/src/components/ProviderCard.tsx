@@ -22,7 +22,7 @@ export default function ProviderCard({ data }: { data?: ProviderSectionData }) {
   const d = { ...DEFAULTS, ...data };
 
   const portraitSrc = d.portrait
-    ? urlFor(d.portrait).width(1200).quality(80).auto('format').url()
+    ? urlFor(d.portrait).width(1400).quality(80).auto('format').url()
     : 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=1200&q=80&auto=format&fit=crop';
 
   return (
@@ -36,10 +36,12 @@ export default function ProviderCard({ data }: { data?: ProviderSectionData }) {
           </div>
           <p className="bio-quote">{d.quote}</p>
         </div>
-        <div className="bio-portrait">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={portraitSrc} alt={`${d.heading}, ${d.label}`} loading="lazy" />
-        </div>
+        <div
+          className="bio-portrait"
+          role="img"
+          aria-label={`${d.heading}, ${d.label}`}
+          style={{ background: `url(${portraitSrc}) center 20% / cover no-repeat` }}
+        />
       </div>
     </section>
   );

@@ -15,13 +15,6 @@ export const metadata = {
     'Phos is a Westwood ketamine clinic built around a board-certified anesthesiologist and a small, hands-on care team.',
 };
 
-const ABOUT_NAV_ITEMS = [
-  { label: 'Practice', href: '/' },
-  { label: 'Treatments', href: '/treatments' },
-  { label: 'About', href: '/about' },
-  { label: 'Field Notes', href: '/blog' },
-];
-
 const DEFAULTS = {
   heroHeadline: 'About Phos',
   heroSubheading:
@@ -99,14 +92,14 @@ export default async function AboutPage() {
   const d = { ...DEFAULTS, ...raw };
   type TeamMember = NonNullable<AboutData['teamMembers']>[number];
   const team: TeamMember[] = raw.teamMembers?.length ? raw.teamMembers : DEFAULTS.teamMembers;
-  const heroImg = imageUrl(raw.heroImage, 1600);
-  const christaImg = imageUrl(raw.christaPortrait, 900);
-  const kapImg = imageUrl(raw.kapPortrait, 300);
-  const locationImg = imageUrl(raw.locationPhoto, 1200);
+  const heroImg = imageUrl(raw.heroImage, 1800);
+  const christaImg = imageUrl(raw.christaPortrait, 1200);
+  const kapImg = imageUrl(raw.kapPortrait, 600);
+  const locationImg = imageUrl(raw.locationPhoto, 1600);
 
   return (
     <div className="about-page">
-      <Nav data={{ items: ABOUT_NAV_ITEMS }} />
+      <Nav />
       <RevealOnScroll
         selectors={['[data-reveal]']}
         visibleClass="vis"
@@ -131,7 +124,9 @@ export default async function AboutPage() {
           <figure
             className="hero-image hero-image--simple"
             aria-label="About hero photo"
-            style={heroImg ? { background: `url(${heroImg}) center/cover no-repeat` } : undefined}
+            style={
+              heroImg ? { background: `url(${heroImg}) center 25% / cover no-repeat` } : undefined
+            }
           >
             {!heroImg && (
               <div className="hero-image--placeholder">
@@ -177,7 +172,9 @@ export default async function AboutPage() {
             <div
               className="about-bio-portrait"
               style={
-                christaImg ? { background: `url(${christaImg}) center/cover no-repeat` } : undefined
+                christaImg
+                  ? { background: `url(${christaImg}) center 15% / cover no-repeat` }
+                  : undefined
               }
             >
               {!christaImg && (
@@ -201,7 +198,7 @@ export default async function AboutPage() {
             </div>
             <div className="about-team-grid">
               {team.map((m, i) => {
-                const portrait = imageUrl(m.portrait, 600);
+                const portrait = imageUrl(m.portrait, 900);
                 const gradientClass =
                   m.gradient === 'vera' ? 'about-team-vera-bg' : 'about-team-katie-bg';
                 return (
@@ -215,7 +212,7 @@ export default async function AboutPage() {
                       className={`about-team-portrait ${portrait ? '' : gradientClass}`}
                       style={
                         portrait
-                          ? { background: `url(${portrait}) center/cover no-repeat` }
+                          ? { background: `url(${portrait}) center 15% / cover no-repeat` }
                           : undefined
                       }
                     >
@@ -258,7 +255,9 @@ export default async function AboutPage() {
                 <div
                   className="about-kap-avatar"
                   style={
-                    kapImg ? { background: `url(${kapImg}) center/cover no-repeat` } : undefined
+                    kapImg
+                      ? { background: `url(${kapImg}) center 20% / cover no-repeat` }
+                      : undefined
                   }
                 >
                   {!kapImg && (
@@ -300,7 +299,7 @@ export default async function AboutPage() {
               data-d="1"
               style={
                 locationImg
-                  ? { background: `url(${locationImg}) center/cover no-repeat` }
+                  ? { background: `url(${locationImg}) center 20% / cover no-repeat` }
                   : undefined
               }
             >

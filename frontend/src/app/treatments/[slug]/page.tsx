@@ -27,6 +27,7 @@ type SlugContent = {
   pricingNote: string;
   steps: { num: string; title: string; body: string }[];
   related: { tag: string; title: string; body: string; href: string }[];
+  heroImage?: unknown;
   draft?: boolean;
 };
 
@@ -386,6 +387,7 @@ async function getResolved(slug: string): Promise<SlugContent | null> {
       fallback?.steps ??
       [],
     related,
+    heroImage: sanity?.heroImage,
     draft: sanity?.draft ?? fallback?.draft,
   };
 }
@@ -402,13 +404,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!data) return { title: 'Service — Phos' };
   return { title: data.metaTitle, description: data.metaDesc };
 }
-
-const NAV_ITEMS = [
-  { label: 'Practice', href: '/' },
-  { label: 'Treatments', href: '/treatments' },
-  { label: 'About', href: '/about' },
-  { label: 'Field Notes', href: '/blog' },
-];
 
 const ArrowRight = () => (
   <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -435,7 +430,7 @@ export default async function TreatmentSlugPage({ params }: { params: Promise<{ 
 
   return (
     <div className="slug-page">
-      <Nav data={{ items: NAV_ITEMS }} />
+      <Nav />
       <RevealOnScroll selectors={['.reveal']} threshold={0.1} />
 
       <main>
@@ -455,30 +450,47 @@ export default async function TreatmentSlugPage({ params }: { params: Promise<{ 
         </section>
 
         <HeroParallaxImage>
-          <figure className="hero-image hero-image--simple" aria-label="Treatment hero photo">
-            <div className="hero-image--placeholder">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                aria-hidden="true"
-                style={{ width: 40, height: 40 }}
-              >
-                <path
-                  d="M12 3v5M10 5h4"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M9 8h6l-1 11a1 1 0 01-1 1h-2a1 1 0 01-1-1L9 8z"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
-                />
-                <path d="M7 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-              </svg>
-              <span>Treatment photo</span>
-            </div>
+          <figure
+            className="hero-image hero-image--simple"
+            aria-label="Treatment hero photo"
+            style={
+              imageUrl(data.heroImage, 1600)
+                ? {
+                    background: `url(${imageUrl(data.heroImage, 1600)}) center/cover no-repeat`,
+                  }
+                : undefined
+            }
+          >
+            {!imageUrl(data.heroImage, 1600) && (
+              <div className="hero-image--placeholder">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden="true"
+                  style={{ width: 40, height: 40 }}
+                >
+                  <path
+                    d="M12 3v5M10 5h4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M9 8h6l-1 11a1 1 0 01-1 1h-2a1 1 0 01-1-1L9 8z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M7 12h10"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>Treatment photo</span>
+              </div>
+            )}
           </figure>
         </HeroParallaxImage>
 

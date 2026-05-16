@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cde4dd"/>
+      <stop offset="0.6" stop-color="#84b0a8"/>
+      <stop offset="1" stop-color="#3a6a64"/>
+    </linearGradient>
+    <linearGradient id="g-ocean" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a8a7e"/>
+      <stop offset="1" stop-color="#1f4a44"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#g-sky)"/>
+  <circle cx="200" cy="220" r="60" fill="#fafaf6" opacity="0.9"/>
+  <rect y="540" width="800" height="200" fill="url(#g-ocean)"/>
+  <path d="M0 580 Q 200 572 400 580 T 800 580" stroke="#fafaf6" stroke-width="2" fill="none" opacity="0.55"/>
+  <path d="M0 620 Q 200 612 400 620 T 800 620" stroke="#fafaf6" stroke-width="1.5" fill="none" opacity="0.4"/>
+  <path d="M0 660 Q 200 652 400 660 T 800 660" stroke="#fafaf6" stroke-width="1.5" fill="none" opacity="0.35"/>
+  <rect y="740" width="800" height="260" fill="#e3d5a8"/>
+  <g stroke="#3a2a1a" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M120 740 L120 540"/>
+    <path d="M120 540 Q 90 510 70 520 M 120 540 Q 90 510 80 490 M 120 540 Q 150 510 170 520 M 120 540 Q 150 510 160 490 M 120 540 Q 120 510 110 480 M 120 540 Q 120 510 130 480"/>
+  </g>
+  <g stroke="#3a2a1a" stroke-width="4" fill="none" stroke-linecap="round">
+    <path d="M700 740 L700 580"/>
+    <path d="M700 580 Q 670 555 655 565 M 700 580 Q 670 555 665 535 M 700 580 Q 730 555 745 565 M 700 580 Q 730 555 735 535 M 700 580 Q 700 555 690 525 M 700 580 Q 700 555 710 525"/>
+  </g>
+  <g transform="translate(400 0)">
+    <path d="M-130 800 Q -130 660 0 620 Q 130 660 130 800 Z" fill="#1f5d52"/>
+    <circle cx="0" cy="560" r="80" fill="#f0e6d2"/>
+    <path d="M-78 560 Q -80 490 0 480 Q 80 490 78 560 L 60 540 Q 0 530 -60 540 Z" fill="#2a1f12"/>
+    <rect x="-50" y="725" width="100" height="70" rx="6" fill="#fafaf6" stroke="#0f3a32" stroke-width="2"/>
+    <path d="M-45 740 L0 765 L45 740" stroke="#0f3a32" stroke-width="2" fill="none"/>
+  </g>
+  <text x="400" y="970" font-family="Georgia, serif" font-size="20" fill="#0f3a32" text-anchor="middle" opacity="0.6">Coordinator portrait coming soon</text>
+</svg>

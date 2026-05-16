@@ -135,9 +135,6 @@ export default async function BlogIndexPage() {
         {/* HERO TITLE */}
         <section className="blog-hero">
           <div className="blog-hero-copy">
-            <p className="blog-hero-eyebrow" data-reveal>
-              {heroEyebrow}
-            </p>
             <h1 className="hero-h1" data-reveal data-d="1">
               {heroHeadline}
             </h1>
