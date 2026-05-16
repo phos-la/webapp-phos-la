@@ -12,4 +12,5 @@ export default defineConfig({
     types: schemaTypes,
   },
   plugins: [structureTool({ structure })],
+  autoUpdates: false,
 });

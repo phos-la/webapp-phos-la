@@ -816,8 +816,7 @@ body {
   padding: 48px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
-  min-height: 460px;
+  gap: 24px;
   color: var(--cream-200);
 }
 .space-headline {
@@ -874,9 +873,9 @@ body {
 }
 .space-photos {
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 8px;
-  min-height: 460px;
+  background: transparent;
 }
 .space-photo {
   position: relative;
@@ -1545,6 +1544,9 @@ body {
   }
   .space-section {
     padding: 24px;
+  }
+  .space-photo {
+    aspect-ratio: 4 / 3;
   }
   .pricing-grid {
     grid-template-columns: 1fr;

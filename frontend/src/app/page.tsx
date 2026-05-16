@@ -12,7 +12,6 @@ import {
   blogSectionQuery,
   glimpsesSectionQuery,
   footerSectionQuery,
-  navSectionQuery,
 } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
@@ -38,7 +37,6 @@ const sanityFetch = (query: string) =>
 
 export default async function Page() {
   const [
-    navData,
     heroData,
     servicesData,
     conditionsData,
@@ -52,7 +50,6 @@ export default async function Page() {
     glimpsesData,
     footerData,
   ] = await Promise.all([
-    sanityFetch(navSectionQuery),
     sanityFetch(heroSectionQuery),
     sanityFetch(servicesSectionQuery),
     sanityFetch(conditionsSectionQuery),
@@ -69,7 +66,7 @@ export default async function Page() {
 
   return (
     <>
-      <Nav data={navData} />
+      <Nav />
       <main>
         <Hero data={heroData} />
         <ServiceCards data={servicesData} />

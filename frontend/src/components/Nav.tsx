@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
+import { navSectionQuery } from '@/lib/sanity/queries';
 import NavScrollEffect from './NavScrollEffect';
 import NavLinks from './NavLinks';
 
@@ -48,9 +50,12 @@ const LogoMark = () => (
   </svg>
 );
 
-export default function Nav({ data }: { data?: NavData }) {
+export default async function Nav() {
+  const data = await client
+    .fetch<NavData>(navSectionQuery, {}, { next: { tags: ['sanity'], revalidate: 300 } })
+    .catch(() => null);
   const brandTitle = data?.brandTitle ?? 'PHOS';
-  const brandSubtitle = data?.brandSubtitle ?? 'And Wellness';
+  const brandSubtitle = data?.brandSubtitle ?? 'Wellness';
   const items = data?.items?.length ? data.items : DEFAULT_ITEMS;
   const ctaLabel = data?.ctaLabel ?? 'Book a consultation';
   const ctaHref = data?.ctaHref ?? '/book';

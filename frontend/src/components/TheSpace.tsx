@@ -25,10 +25,10 @@ export default function TheSpace({ data }: { data?: ClinicSectionData }) {
   const d = { ...DEFAULTS, ...data };
 
   const photo1Src = d.photo1
-    ? urlFor(d.photo1).width(1400).quality(80).auto('format').url()
+    ? urlFor(d.photo1).width(1600).quality(80).auto('format').url()
     : 'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1400&q=80&auto=format&fit=crop';
   const photo2Src = d.photo2
-    ? urlFor(d.photo2).width(1400).quality(80).auto('format').url()
+    ? urlFor(d.photo2).width(1600).quality(80).auto('format').url()
     : 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=1400&q=80&auto=format&fit=crop';
   const chips = d.chips?.length ? d.chips : DEFAULTS.chips;
 
@@ -63,14 +63,18 @@ export default function TheSpace({ data }: { data?: ClinicSectionData }) {
         </div>
 
         <div className="space-card space-photos">
-          <div className="space-photo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo1Src} alt="Calm private clinical suite" loading="lazy" />
-          </div>
-          <div className="space-photo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={photo2Src} alt="Medical professional with patient" loading="lazy" />
-          </div>
+          <div
+            className="space-photo"
+            role="img"
+            aria-label="Calm private clinical suite"
+            style={{ background: `url(${photo1Src}) center 20% / cover no-repeat` }}
+          />
+          <div
+            className="space-photo"
+            role="img"
+            aria-label="Medical professional with patient"
+            style={{ background: `url(${photo2Src}) center 20% / cover no-repeat` }}
+          />
         </div>
       </div>
     </section>

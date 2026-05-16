@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky-pier" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f5d8a2"/>
+      <stop offset="0.4" stop-color="#e08f5e"/>
+      <stop offset="0.8" stop-color="#9a4a5c"/>
+      <stop offset="1" stop-color="#3a2a4a"/>
+    </linearGradient>
+    <linearGradient id="ocean-pier" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a6a7a"/>
+      <stop offset="1" stop-color="#1a2a3a"/>
+    </linearGradient>
+    <radialGradient id="sun-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff2d4" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#fff2d4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="800" fill="url(#sky-pier)"/>
+  <circle cx="1180" cy="430" r="160" fill="url(#sun-glow)"/>
+  <circle cx="1180" cy="430" r="62" fill="#fff2d4" opacity="0.95"/>
+  <rect y="500" width="1600" height="300" fill="url(#ocean-pier)"/>
+  <path d="M0 520 Q 400 510 800 520 T 1600 520" stroke="#f5d8a2" stroke-width="1.5" fill="none" opacity="0.55"/>
+  <path d="M0 552 Q 400 544 800 552 T 1600 552" stroke="#f5d8a2" stroke-width="1.2" fill="none" opacity="0.45"/>
+  <path d="M0 584 Q 400 578 800 584 T 1600 584" stroke="#f5d8a2" stroke-width="1" fill="none" opacity="0.35"/>
+  <path d="M0 460 L120 470 L240 460 L340 470 L460 460 L580 470 L720 460 L860 470 L1000 460 L1140 470 L1280 460 L1420 470 L1600 460 L1600 500 L0 500 Z" fill="#1f2a36" opacity="0.4"/>
+</svg>
