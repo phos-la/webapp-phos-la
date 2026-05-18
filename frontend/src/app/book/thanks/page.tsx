@@ -1,5 +1,6 @@
 import { client } from '@/lib/sanity/client';
 import { bookThanksPageQuery } from '@/lib/sanity/queries';
+import Nav from '@/components/Nav';
 import ThanksContent, {
   type ThanksCopy,
   type FlowNewCopy,
@@ -208,5 +209,10 @@ export default async function ThanksPage() {
     backLinkLabel: str(DEFAULTS.backLinkLabel, data?.backLinkLabel),
   };
 
-  return <ThanksContent copy={copy} />;
+  return (
+    <>
+      <Nav />
+      <ThanksContent copy={copy} />
+    </>
+  );
 }

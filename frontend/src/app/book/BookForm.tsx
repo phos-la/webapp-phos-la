@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Nav from '@/components/Nav';
 
 // JotForm intake forms.
 // Each tab has its own intake form. JotForm thank-you redirect URLs should
@@ -71,8 +70,6 @@ export default function BookForm({ copy }: { copy: BookCopy }) {
 
   return (
     <>
-      <Nav />
-
       <main
         style={{
           minHeight: '100vh',

@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Nav from '@/components/Nav';
 
 const COOKIE_NAME = 'phos_returning';
 const COOKIE_DAYS = 180;
@@ -220,8 +219,6 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
 
   return (
     <>
-      <Nav />
-
       <main
         style={{
           minHeight: '100vh',

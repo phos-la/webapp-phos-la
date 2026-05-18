@@ -1,5 +1,6 @@
 import { client } from '@/lib/sanity/client';
 import { bookPageQuery } from '@/lib/sanity/queries';
+import Nav from '@/components/Nav';
 import BookForm, { type BookCopy } from './BookForm';
 
 export const dynamic = 'force-dynamic';
@@ -18,7 +19,7 @@ const DEFAULTS: BookCopy = {
     ctaLabel: 'Begin new patient intake →',
   },
   tabClinic: {
-    label: 'Returning · In-Clinic',
+    label: 'Returning',
     h2: 'Book an in-clinic session',
     sub: "Quick one. Just your email and a short note on what's bringing you in. Your intake's already on file.",
     bullets: [
@@ -69,5 +70,10 @@ export default async function BookPage() {
     footerNote: merge(DEFAULTS.footerNote, data?.footerNote),
   };
 
-  return <BookForm copy={copy} />;
+  return (
+    <>
+      <Nav />
+      <BookForm copy={copy} />
+    </>
+  );
 }

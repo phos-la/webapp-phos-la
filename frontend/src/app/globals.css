@@ -304,6 +304,48 @@ body {
   background: var(--accent-pressed);
 }
 
+/* Hamburger button + drawer (hidden by default, shown on mobile) */
+.nav-burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  margin-left: auto;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--fg);
+  border-radius: 2px;
+  transition:
+    transform var(--duration-base) var(--ease-out),
+    opacity var(--duration-base) var(--ease-out);
+}
+.nav-burger.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.nav-burger.is-open span:nth-child(2) {
+  opacity: 0;
+}
+.nav-burger.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+.nav-drawer {
+  display: none;
+}
+.nav-drawer-scrim {
+  display: none;
+}
+
 /* ============ HERO ============ */
 .hero {
   position: relative;
@@ -1530,7 +1572,35 @@ body {
     grid-template-columns: 1fr;
   }
   .steps {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+  }
+  /* On mobile, drop the pinned/sticky stage so the heading no longer hovers
+     over the next section. Steps stack vertically in normal flow and are
+     fully visible from first paint (no scroll-driven reveal). */
+  .pinned-stage {
+    height: auto;
+    padding: 80px 0;
+  }
+  .pinned-pin {
+    position: static;
+    height: auto;
+    display: block;
+  }
+  .pinned-pin .section-inner {
+    padding: 0 24px;
+  }
+  .pinned-pin .section-head {
+    margin-bottom: 32px;
+  }
+  .step-card {
+    --reveal: 1;
+    opacity: 1;
+    transform: none;
+    min-height: 0;
+  }
+  .step-numeral {
+    margin-bottom: 24px;
+    font-size: 64px;
   }
   .bio-card {
     grid-template-columns: 1fr;
@@ -1565,5 +1635,92 @@ body {
   .price-callout {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+/* ============ MOBILE NAV (hamburger drawer) ============ */
+@media (max-width: 768px) {
+  .nav-wrap {
+    padding: 0 12px;
+    top: 12px;
+  }
+  .nav-pill {
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    padding: 6px 6px 6px 16px;
+  }
+  .nav-logo-word {
+    font-size: 18px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .nav-pill > .nav-cta {
+    display: none;
+  }
+  .nav-burger {
+    display: inline-flex;
+    position: relative;
+    z-index: 120;
+  }
+  .nav-drawer {
+    display: block;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(320px, 86vw);
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-lg);
+    transform: translateX(100%);
+    transition: transform var(--duration-base) var(--ease-out);
+    z-index: 110;
+    overflow-y: auto;
+  }
+  .nav-drawer.is-open {
+    transform: translateX(0);
+  }
+  .nav-drawer-inner {
+    padding: 88px 28px 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .nav-drawer-link {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--fg);
+    text-decoration: none;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-drawer-link.is-active {
+    color: var(--accent);
+  }
+  .nav-drawer-cta {
+    margin-top: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 22px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    border-radius: 999px;
+    text-decoration: none;
+  }
+  .nav-drawer-scrim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 12, 4, 0.4);
+    border: 0;
+    cursor: pointer;
+    z-index: 105;
   }
 }
