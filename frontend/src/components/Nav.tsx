@@ -4,6 +4,7 @@ import { urlFor } from '@/lib/sanity/image';
 import { navSectionQuery } from '@/lib/sanity/queries';
 import NavScrollEffect from './NavScrollEffect';
 import NavLinks from './NavLinks';
+import NavBurger from './NavBurger';
 
 type NavItem = { label?: string; href?: string };
 type NavData = {
@@ -95,6 +96,8 @@ export default async function Nav() {
         <a className="nav-cta" href={ctaHref}>
           {ctaLabel}
         </a>
+
+        <NavBurger items={items} ctaLabel={ctaLabel} ctaHref={ctaHref} />
       </nav>
     </div>
   );
