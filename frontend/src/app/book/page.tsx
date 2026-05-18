@@ -19,7 +19,7 @@ const DEFAULTS: BookCopy = {
     ctaLabel: 'Begin new patient intake →',
   },
   tabClinic: {
-    label: 'Returning · In-Clinic',
+    label: 'Returning',
     h2: 'Book an in-clinic session',
     sub: "Quick one. Just your email and a short note on what's bringing you in. Your intake's already on file.",
     bullets: [
