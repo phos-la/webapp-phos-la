@@ -1,5 +1,6 @@
 import { client } from '@/lib/sanity/client';
 import { bookPageQuery } from '@/lib/sanity/queries';
+import Nav from '@/components/Nav';
 import BookForm, { type BookCopy } from './BookForm';
 
 export const dynamic = 'force-dynamic';
@@ -69,5 +70,10 @@ export default async function BookPage() {
     footerNote: merge(DEFAULTS.footerNote, data?.footerNote),
   };
 
-  return <BookForm copy={copy} />;
+  return (
+    <>
+      <Nav />
+      <BookForm copy={copy} />
+    </>
+  );
 }
