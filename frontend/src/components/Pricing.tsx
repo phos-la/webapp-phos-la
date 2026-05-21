@@ -176,7 +176,7 @@ export default function Pricing({ data }: { data?: PricingData }) {
               <div className="price-included">
                 <p className="price-included-label">What&apos;s included:</p>
                 <ul>
-                  {tier.features.map((f) => (
+                  {(tier.features ?? []).map((f) => (
                     <li key={f}>
                       <LeafIcon />
                       {f}
