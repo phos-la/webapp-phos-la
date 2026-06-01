@@ -7,7 +7,6 @@ export const heroSectionType = defineType({
   fields: [
     defineField({ name: 'headline', title: 'Headline', type: 'string' }),
     defineField({ name: 'subheading', title: 'Subheading', type: 'text', rows: 3 }),
-    defineField({ name: 'ctaLabel', title: 'CTA Button Label', type: 'string' }),
     defineField({
       name: 'heroImage',
       title: 'Hero Parallax Image',

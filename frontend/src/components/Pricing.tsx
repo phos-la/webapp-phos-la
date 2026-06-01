@@ -6,7 +6,6 @@ export interface PricingTier {
   unit?: string;
   featured?: boolean;
   features: string[];
-  ctaLabel?: string;
 }
 
 export interface PricingCalloutData {
@@ -51,7 +50,6 @@ const DEFAULT_TIERS: PricingTier[] = [
       'Supportive therapies as needed',
       'Post-infusion PA check-in',
     ],
-    ctaLabel: 'Book a consultation',
   },
   {
     name: 'Membership Rate',
@@ -65,7 +63,6 @@ const DEFAULT_TIERS: PricingTier[] = [
       'NAD+, magnesium, Zofran as needed',
       'Integration follow-up',
     ],
-    ctaLabel: 'Ask about membership',
   },
   {
     name: 'At-Home Program',
@@ -80,7 +77,6 @@ const DEFAULT_TIERS: PricingTier[] = [
       '3-refill self-evaluation check-in',
       '6-month re-evaluation visit',
     ],
-    ctaLabel: 'Ask about eligibility',
   },
 ];
 
@@ -192,9 +188,6 @@ export default function Pricing({ data }: { data?: PricingData }) {
                   </span>
                 )}
               </p>
-              <a className="price-cta" href="#consult">
-                {tier.ctaLabel ?? 'Book a consultation'}
-              </a>
             </article>
           ))}
         </div>

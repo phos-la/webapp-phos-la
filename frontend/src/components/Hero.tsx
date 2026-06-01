@@ -5,7 +5,6 @@ import HeroParallaxImage from './HeroParallaxImage';
 export interface HeroData {
   headline?: string;
   subheading?: string;
-  ctaLabel?: string;
   heroImage?: SanityImageSource;
   overlayHeadline?: string;
   overlayBody?: string;
@@ -14,8 +13,7 @@ export interface HeroData {
 const DEFAULTS: Required<HeroData> = {
   headline: 'Your protocol evolves with you.',
   subheading:
-    'IV ketamine therapy in a private Los Angeles practice — a licensed provider evaluates your response before and after every infusion, adjusting your treatment in real time.',
-  ctaLabel: 'Schedule a consultation',
+    'IV ketamine therapy in a private Los Angeles practice, a licensed provider evaluates your response before and after every infusion, adjusting your treatment in real time.',
   heroImage: null as unknown as SanityImageSource,
   overlayHeadline: 'The only LA clinic in the room after every infusion.',
   overlayBody:
@@ -35,13 +33,6 @@ export default function Hero({ data }: { data?: HeroData }) {
         <h1 className="hero-headline">{d.headline}</h1>
 
         <p className="hero-sub">{d.subheading}</p>
-
-        <a className="hero-cta" href="#consult">
-          {d.ctaLabel}
-          <span className="hero-cta-arrow" aria-hidden="true">
-            &rarr;
-          </span>
-        </a>
       </div>
 
       <HeroParallaxImage>
