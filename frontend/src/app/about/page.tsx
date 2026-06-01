@@ -299,7 +299,7 @@ export default async function AboutPage() {
               data-d="1"
               style={
                 locationImg
-                  ? { background: `url(${locationImg}) center top / cover no-repeat` }
+                  ? ({ '--loc-bg': `url(${locationImg})` } as Record<string, string>)
                   : undefined
               }
             >

@@ -419,7 +419,11 @@
   border-color: rgba(237, 232, 220, 0.42);
 }
 .about-loc-photo {
-  background: #0f1e18;
+  background-color: #0f1e18;
+  background-image: var(--loc-bg);
+  background-position: center 20%;
+  background-size: cover;
+  background-repeat: no-repeat;
   border-radius: 24px;
   overflow: hidden;
   display: flex;
@@ -500,6 +504,7 @@
   }
   .about-loc-photo {
     min-height: 420px;
+    background-position: center top;
   }
 }
 @media (max-width: 640px) {
