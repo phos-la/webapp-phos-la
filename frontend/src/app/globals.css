@@ -1392,21 +1392,6 @@ body {
   margin: 0 auto 32px;
   max-width: 460px;
 }
-.glimpses-handle {
-  display: inline-block;
-  padding: 14px 32px;
-  background: var(--cream-200);
-  color: var(--fg);
-  border-radius: 999px;
-  font-family: var(--font-sans);
-  font-size: 14px;
-  font-weight: 500;
-  text-decoration: none;
-  margin-bottom: 56px;
-}
-.glimpses-handle:hover {
-  background: #fff;
-}
 .glimpses-rows {
   display: flex;
   flex-direction: column;
