@@ -133,48 +133,38 @@ select:focus {
   margin-left: 0 !important;
 }
 
-/* Date of Birth: three dropdowns side by side, no wrap. */
-.form-birthdate {
+/* Multi-part fields (DOB, fullname, phone) all use the same DOM shape:
+   <li data-type="control_X"><div class="form-input"><span class="form-sub-label-container">...
+   So we target the form-input row and lay the sub-label spans out as flex columns. */
+li[data-type="control_birthdate"] .form-input,
+li[data-type="control_fullname"] .form-input,
+li[data-type="control_phone"] .form-input {
   display: flex !important;
   flex-wrap: nowrap !important;
   gap: 12px !important;
   width: 100% !important;
+  align-items: flex-start !important;
 }
-.form-birthdate > span {
+li[data-type="control_birthdate"] .form-input > .form-sub-label-container,
+li[data-type="control_fullname"] .form-input > .form-sub-label-container,
+li[data-type="control_phone"] .form-input > .form-sub-label-container {
   flex: 1 1 0 !important;
   min-width: 0 !important;
   display: flex !important;
   flex-direction: column !important;
+  vertical-align: top !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.form-birthdate select {
+li[data-type="control_birthdate"] .form-input select,
+li[data-type="control_fullname"] .form-input input,
+li[data-type="control_phone"] .form-input input {
   width: 100% !important;
+  box-sizing: border-box !important;
 }
-
-/* Fullname: first + last side by side. */
-.form-fullname {
-  display: flex !important;
-  flex-wrap: nowrap !important;
-  gap: 12px !important;
-  width: 100% !important;
-}
-.form-fullname > span {
-  flex: 1 1 0 !important;
-  min-width: 0 !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-.form-fullname input {
-  width: 100% !important;
-}
-
-/* Phone: when split (legacy), let area code + number wrap predictably. */
-.form-phone {
-  width: 100% !important;
-}
-.form-input .form-phone-wrapper {
-  display: flex !important;
-  gap: 12px !important;
-  width: 100% !important;
+/* Hide the literal "-" separator JotForm injects between phone sub-fields. */
+li[data-type="control_phone"] .phone-separate {
+  display: none !important;
 }
 
 .form-required {
@@ -272,18 +262,24 @@ def main():
         r = http('POST', f'/form/{fid}/properties', props)
         print(f'  properties: {r.get("responseCode")}')
 
-        # 2. Phone field: swap to single-input type (control_phone -> control_phone with simple mode).
-        # JotForm's phone widget supports a 'phoneSimple' mode that renders one input.
+        # 2. Phone field: swap from control_phone (split area+number) to control_textbox
+        # with a phone mask, so it renders as ONE input. JotForm's control_phone is
+        # hard-coded to two inputs and cannot be collapsed via property changes.
         if meta['phone_qid']:
             qid = meta['phone_qid']
             r = http('POST', f'/form/{fid}/question/{qid}',
-                     {'question[type]': 'control_phone',
+                     {'question[type]': 'control_textbox',
+                      'question[text]': 'Phone',
+                      'question[name]': 'phone',
+                      'question[required]': 'Yes',
                       'question[inputMask]': '(###) ###-####',
                       'question[inputMaskValue]': '(###) ###-####',
                       'question[masked]': 'Yes',
-                      'question[phoneSimple]': 'Yes',
-                      'question[sublabels]': '{"country":"Country Code","area":"Area Code","phone":"Phone Number","full":"Phone Number"}'})
-            print(f'  phone simple: {r.get("responseCode")}')
+                      'question[validation]': 'None',
+                      'question[size]': '40',
+                      'question[sublabels]': '',
+                      'question[hint]': '(555) 555-5555'})
+            print(f'  phone -> textbox: {r.get("responseCode")}')
 
     print('\nDone. Reload each form to see the new styling.')
 
