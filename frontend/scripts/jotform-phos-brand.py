@@ -121,10 +121,14 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(53,140,122,0.12) !important;
 }
 
-.form-line {
+.form-line:not(.always-hidden) {
   padding: 12px 0 !important;
   display: block !important;
   width: 100% !important;
+}
+.form-line.always-hidden,
+li.always-hidden {
+  display: none !important;
 }
 .form-input,
 .form-input-wide {
@@ -173,7 +177,7 @@ li[data-type="control_phone"] .phone-separate {
 }
 
 .form-buttons-wrapper {
-  text-align: center !important;
+  text-align: left !important;
   padding: 8px 0 0 !important;
   margin: 0 !important;
   display: block !important;
@@ -196,8 +200,7 @@ input.form-submit-button,
   cursor: pointer !important;
   transition: background 0.2s !important;
   width: 100% !important;
-  max-width: 320px !important;
-  margin: 16px auto 0 !important;
+  margin: 16px 0 0 0 !important;
   text-shadow: none !important;
   display: block !important;
   text-transform: none !important;
@@ -226,12 +229,20 @@ input.form-submit-button,
   font-size: 12px !important;
 }
 
-/* HIPAA badge in footer: keep tidy. */
-.form-hipaa-badge {
+/* HIPAA badge in footer: span full width, centered content. */
+.form-hipaa-badge,
+.form-hipaa-badge-wrapper,
+[class*="hipaa-badge"] {
   background: #f4f1ea !important;
   border-radius: 12px !important;
   padding: 16px !important;
-  margin-top: 16px !important;
+  margin: 16px 0 0 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  box-sizing: border-box !important;
 }
 """
 
@@ -262,24 +273,9 @@ def main():
         r = http('POST', f'/form/{fid}/properties', props)
         print(f'  properties: {r.get("responseCode")}')
 
-        # 2. Phone field: swap from control_phone (split area+number) to control_textbox
-        # with a phone mask, so it renders as ONE input. JotForm's control_phone is
-        # hard-coded to two inputs and cannot be collapsed via property changes.
-        if meta['phone_qid']:
-            qid = meta['phone_qid']
-            r = http('POST', f'/form/{fid}/question/{qid}',
-                     {'question[type]': 'control_textbox',
-                      'question[text]': 'Phone',
-                      'question[name]': 'phone',
-                      'question[required]': 'Yes',
-                      'question[inputMask]': '(###) ###-####',
-                      'question[inputMaskValue]': '(###) ###-####',
-                      'question[masked]': 'Yes',
-                      'question[validation]': 'None',
-                      'question[size]': '40',
-                      'question[sublabels]': '',
-                      'question[hint]': '(555) 555-5555'})
-            print(f'  phone -> textbox: {r.get("responseCode")}')
+        # Phone and DOB type-swaps live in jotform-phone-rebuild.py and
+        # jotform-dob-rebuild.py respectively. Those are destructive (delete +
+        # recreate with a new qid), so they run separately and are idempotent.
 
     print('\nDone. Reload each form to see the new styling.')
 
