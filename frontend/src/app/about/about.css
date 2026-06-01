@@ -97,6 +97,7 @@
   position: relative;
   overflow: hidden;
   background: #c4956a;
+  min-height: 560px;
 }
 .about-bio-ph {
   width: 100%;
@@ -468,6 +469,9 @@
   .about-bio-card {
     grid-template-columns: 1fr;
   }
+  .about-bio-portrait {
+    min-height: 480px;
+  }
   .about-bio-ph {
     min-height: 300px;
   }
@@ -495,7 +499,7 @@
     padding: 24px;
   }
   .about-loc-photo {
-    min-height: 280px;
+    min-height: 420px;
   }
 }
 @media (max-width: 640px) {

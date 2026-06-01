@@ -18,7 +18,6 @@ type NavData = {
 } | null;
 
 const DEFAULT_ITEMS: NavItem[] = [
-  { label: 'Practice', href: '/' },
   { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
   { label: 'Field Notes', href: '/blog' },

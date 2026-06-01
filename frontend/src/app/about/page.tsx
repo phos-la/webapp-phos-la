@@ -173,7 +173,7 @@ export default async function AboutPage() {
               className="about-bio-portrait"
               style={
                 christaImg
-                  ? { background: `url(${christaImg}) center 15% / cover no-repeat` }
+                  ? { background: `url(${christaImg}) center top / cover no-repeat` }
                   : undefined
               }
             >
@@ -299,7 +299,7 @@ export default async function AboutPage() {
               data-d="1"
               style={
                 locationImg
-                  ? { background: `url(${locationImg}) center 20% / cover no-repeat` }
+                  ? { background: `url(${locationImg}) center top / cover no-repeat` }
                   : undefined
               }
             >

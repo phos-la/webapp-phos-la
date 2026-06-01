@@ -3,7 +3,6 @@ import { groq } from 'next-sanity';
 export const heroSectionQuery = groq`*[_type == "heroSection"][0] {
   headline,
   subheading,
-  ctaLabel,
   heroImage,
   overlayHeadline,
   overlayBody
@@ -59,8 +58,7 @@ export const pricingSectionQuery = groq`*[_type == "pricingCallout"][0] {
     price,
     unit,
     featured,
-    features,
-    ctaLabel
+    features
   }
 }`;
 

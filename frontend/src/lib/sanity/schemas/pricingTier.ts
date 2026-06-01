@@ -31,7 +31,6 @@ export const pricingTierItemType = defineType({
       type: 'array',
       of: [{ type: 'string' }],
     }),
-    defineField({ name: 'ctaLabel', title: 'CTA Button Label', type: 'string' }),
   ],
   preview: {
     select: { title: 'name', subtitle: 'price' },
