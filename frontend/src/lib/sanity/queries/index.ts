@@ -98,11 +98,8 @@ export const blogSectionQuery = groq`*[_type == "blogSection"][0] {
 }`;
 
 export const glimpsesSectionQuery = groq`*[_type == "glimpsesSection"][0] {
-  label,
   heading,
   subheading,
-  instagramHandle,
-  instagramUrl,
   row1Images,
   row2Images
 }`;

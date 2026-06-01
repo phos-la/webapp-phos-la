@@ -2,19 +2,11 @@ import { defineField, defineType } from 'sanity';
 
 export const glimpsesSectionType = defineType({
   name: 'glimpsesSection',
-  title: 'Glimpses Section (Instagram)',
+  title: 'Glimpses Section',
   type: 'document',
   fields: [
-    defineField({ name: 'label', title: 'Eyebrow Label', type: 'string' }),
     defineField({ name: 'heading', title: 'Heading', type: 'string' }),
     defineField({ name: 'subheading', title: 'Subheading', type: 'text', rows: 2 }),
-    defineField({
-      name: 'instagramHandle',
-      title: 'Instagram Handle',
-      type: 'string',
-      description: 'e.g. "@ketaminehealingla"',
-    }),
-    defineField({ name: 'instagramUrl', title: 'Instagram URL', type: 'url' }),
     defineField({
       name: 'row1Images',
       title: 'Row 1 Images (scrolls left)',

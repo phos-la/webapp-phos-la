@@ -5,11 +5,8 @@ import { urlFor } from '@/lib/sanity/image';
 import type { SanityImageSource } from '@sanity/image-url';
 
 export interface GlimpsesSectionData {
-  label?: string;
   heading?: string;
   subheading?: string;
-  instagramHandle?: string;
-  instagramUrl?: string;
   row1Images?: SanityImageSource[];
   row2Images?: SanityImageSource[];
 }
@@ -39,12 +36,9 @@ const FALLBACK_ROW2 = [
 ];
 
 export default function Glimpses({ data }: { data?: GlimpsesSectionData }) {
-  const label = data?.label ?? 'Instagram';
   const heading = data?.heading ?? 'Glimpses of the Journey';
   const subheading =
     data?.subheading ?? 'Follow for a look into daily life in the forest and the practice.';
-  const instagramHandle = data?.instagramHandle ?? '@Forest.Therapy';
-  const instagramUrl = data?.instagramUrl ?? '#instagram';
 
   const row1Srcs = data?.row1Images?.length
     ? data.row1Images.map((img) => urlFor(img).width(600).quality(80).auto('format').url())
@@ -131,12 +125,8 @@ export default function Glimpses({ data }: { data?: GlimpsesSectionData }) {
 
   return (
     <section className="glimpses" data-screen-label="13 Glimpses">
-      <span className="label-pill">{label}</span>
       <h2 className="glimpses-title">{heading}</h2>
       <p className="glimpses-sub">{subheading}</p>
-      <a className="glimpses-handle" href={instagramUrl}>
-        {instagramHandle}
-      </a>
       <div className="glimpses-rows" id="glimpsesRows" ref={wrapRef}>
         <div className="glimpses-row" data-dir="left" ref={row1Ref}>
           {row1Srcs.map((src, i) => (
