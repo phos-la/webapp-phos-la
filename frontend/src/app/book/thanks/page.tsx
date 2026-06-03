@@ -23,7 +23,7 @@ const DEFAULTS: ThanksCopy = {
       'Katie will review your intake before your first visit. One last step. A deposit holds your appointment slot.',
     eyebrow: 'Hold your appointment',
     deposit: {
-      stripePriceId: 'price_1TeEnuPOpLzZeFDt4dQkyPze',
+      lookupKey: 'initial-consultation',
       label: 'Initial Consultation',
       amount: 100,
       description: 'Applied as a credit toward your first session if you move forward.',
@@ -36,51 +36,51 @@ const DEFAULTS: ThanksCopy = {
     pickerLabel: 'Select your session',
     prices: [
       {
-        stripePriceId: 'price_1TeEnuPOpLzZeFDtjAIaJOP7',
+        lookupKey: 'appointment-deposit',
         label: 'Appointment Deposit',
         amount: 100,
         description: 'Required to schedule your infusion appointment.',
       },
       {
-        stripePriceId: 'price_1TeEnuPOpLzZeFDtwb3SbN3l',
+        lookupKey: 'infusion-60min-1to4',
         label: '60 Min Infusion (sessions 1–4)',
         amount: 700,
       },
       {
-        stripePriceId: 'price_1TeEntPOpLzZeFDtuNsh7kyN',
+        lookupKey: 'booster-60min',
         label: '60 Min Booster Infusion',
         amount: 550,
         description: 'For established patients.',
       },
       {
-        stripePriceId: 'price_1TeEntPOpLzZeFDtwQjcoMlB',
+        lookupKey: 'infusion-90min',
         label: '90 Min Ketamine Infusion',
         amount: 650,
       },
       {
-        stripePriceId: 'price_1TeEntPOpLzZeFDtVcNV5KMk',
+        lookupKey: 'infusion-2hr',
         label: '2-Hour Pain or Mood Infusion',
         amount: 850,
       },
       {
-        stripePriceId: 'price_1TeEntPOpLzZeFDtfhuLJb6N',
+        lookupKey: 'infusion-3hr',
         label: '3-Hour Pain or Mood Infusion',
         amount: 1150,
       },
       {
-        stripePriceId: 'price_1TeEnsPOpLzZeFDtO0EFJMwB',
+        lookupKey: 'infusion-4hr',
         label: '4-Hour Pain or Mood Infusion',
         amount: 1650,
       },
       {
-        stripePriceId: 'price_1TeEnsPOpLzZeFDtKvaItAwa',
+        lookupKey: 'membership-6',
         label: '6-Infusion Membership',
         amount: 2750,
         description:
           'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
       },
       {
-        stripePriceId: 'price_1TeEnsPOpLzZeFDtwoMf2nnh',
+        lookupKey: 'membership-12',
         label: '12-Infusion Membership',
         amount: 5000,
         description:
@@ -95,31 +95,31 @@ const DEFAULTS: ThanksCopy = {
     pickerLabel: 'Select your visit type',
     prices: [
       {
-        stripePriceId: 'price_1TeEnrPOpLzZeFDtvgNzqpkh',
+        lookupKey: 'athome-consult-1',
         label: '1st Video Consultation',
         amount: 250,
         description: 'For new at-home patients. First month prescription filled by pharmacy.',
       },
       {
-        stripePriceId: 'price_1TeEnrPOpLzZeFDtn1FKkd00',
+        lookupKey: 'athome-consult-2',
         label: '2nd Video Consultation',
         amount: 225,
         description: 'Ready for your second month refill.',
       },
       {
-        stripePriceId: 'price_1TeEnrPOpLzZeFDt3UJUvuOW',
+        lookupKey: 'athome-consult-3',
         label: '3rd Video Consultation',
         amount: 200,
         description: 'Includes a 3-month supply dispensed one month at a time.',
       },
       {
-        stripePriceId: 'price_1TeEnrPOpLzZeFDtqebCyLiG',
+        lookupKey: 'athome-followup',
         label: 'Follow-up Video Visit',
         amount: 250,
         description: 'Required every 6 months for a continued prescription.',
       },
       {
-        stripePriceId: 'price_1TeEnqPOpLzZeFDtCRgaM6Fx',
+        lookupKey: 'athome-rx-change',
         label: 'Prescription Changes',
         amount: 200,
         description: 'Dosage adjustment consult before your 6-month follow-up.',
@@ -147,7 +147,7 @@ function str(fallback: string, value: string | undefined | null): string {
 function mergePrice(fallback: Price, value: Partial<Price> | null | undefined): Price {
   if (!value) return fallback;
   return {
-    stripePriceId: str(fallback.stripePriceId, value.stripePriceId),
+    lookupKey: str(fallback.lookupKey, value.lookupKey),
     label: str(fallback.label, value.label),
     amount: typeof value.amount === 'number' ? value.amount : fallback.amount,
     description: value.description ?? fallback.description,
@@ -157,8 +157,8 @@ function mergePrice(fallback: Price, value: Partial<Price> | null | undefined): 
 function mergePriceArray(fallback: Price[], value: Partial<Price>[] | null | undefined): Price[] {
   if (!value || value.length === 0) return fallback;
   return value
-    .map((p) => mergePrice({ stripePriceId: '', label: '', amount: 0 }, p))
-    .filter((p) => p.stripePriceId && p.label);
+    .map((p) => mergePrice({ lookupKey: '', label: '', amount: 0 }, p))
+    .filter((p) => p.lookupKey && p.label);
 }
 
 function mergeFlowNew(

@@ -1,10 +1,5 @@
 import { defineField, defineType } from 'sanity';
 
-/**
- * Reusable price-item shape — one row in a service picker, or a single
- * deposit row. Stripe price IDs live here so editors can swap sandbox/live
- * without a deploy. Amount is whole dollars (display value).
- */
 const priceItemFields = [
   defineField({
     name: 'label',
@@ -26,9 +21,10 @@ const priceItemFields = [
     rows: 2,
   }),
   defineField({
-    name: 'stripePriceId',
-    title: 'Stripe Price ID',
-    description: 'Looks like price_1Txxx... Find it in the Stripe dashboard.',
+    name: 'lookupKey',
+    title: 'Stripe Lookup Key',
+    description:
+      'The lookup_key set on the Stripe price (e.g. "infusion-90min"). Resolves to the live or test price ID at runtime based on the API key in use.',
     type: 'string',
     validation: (Rule) => Rule.required(),
   }),
@@ -40,20 +36,20 @@ const priceItemType = {
   type: 'object',
   fields: priceItemFields,
   preview: {
-    select: { title: 'label', subtitle: 'amount', priceId: 'stripePriceId' },
+    select: { title: 'label', subtitle: 'amount', lookupKey: 'lookupKey' },
     prepare: ({
       title,
       subtitle,
-      priceId,
+      lookupKey,
     }: {
       title?: string;
       subtitle?: number;
-      priceId?: string;
+      lookupKey?: string;
     }) => ({
       title: title ?? 'Untitled price',
       subtitle:
         typeof subtitle === 'number'
-          ? `$${subtitle.toLocaleString()} · ${priceId ?? 'no Stripe ID'}`
+          ? `$${subtitle.toLocaleString()} · ${lookupKey ?? 'no lookup key'}`
           : 'Set an amount',
     }),
   },

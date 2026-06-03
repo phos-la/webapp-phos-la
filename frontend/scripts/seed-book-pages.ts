@@ -72,7 +72,7 @@ async function run() {
         'Katie will review your intake before your first visit. One last step. A deposit holds your appointment slot.',
       eyebrow: 'Hold your appointment',
       deposit: {
-        stripePriceId: 'price_1TUZfLAEmpFZtKZrBUkSXcKA',
+        lookupKey: 'initial-consultation',
         label: 'Initial Consultation',
         amount: 100,
         description: 'Applied as a credit toward your first session if you move forward.',
@@ -86,51 +86,51 @@ async function run() {
       prices: [
         {
           _key: 'r1',
-          stripePriceId: 'price_1TUZfMAEmpFZtKZrHVF413eb',
+          lookupKey: 'appointment-deposit',
           label: 'Appointment Deposit',
           amount: 100,
           description: 'Required to schedule your infusion appointment.',
         },
         {
           _key: 'r2',
-          stripePriceId: 'price_1TUZfMAEmpFZtKZrWTmNc1sn',
+          lookupKey: 'infusion-60min-1to4',
           label: '60 Min Infusion (sessions 1–4)',
           amount: 700,
         },
         {
           _key: 'r3',
-          stripePriceId: 'price_1TUZfMAEmpFZtKZrYyEIRKJI',
+          lookupKey: 'booster-60min',
           label: '60 Min Booster Infusion',
           amount: 550,
           description: 'For established patients.',
         },
         {
           _key: 'r4',
-          stripePriceId: 'price_1TUZfNAEmpFZtKZroakOPLD9',
+          lookupKey: 'infusion-90min',
           label: '90 Min Ketamine Infusion',
           amount: 650,
         },
         {
           _key: 'r5',
-          stripePriceId: 'price_1TUZfNAEmpFZtKZrYVpP4FPr',
+          lookupKey: 'infusion-2hr',
           label: '2-Hour Pain or Mood Infusion',
           amount: 850,
         },
         {
           _key: 'r6',
-          stripePriceId: 'price_1TUZfOAEmpFZtKZrMTAhDFkT',
+          lookupKey: 'infusion-3hr',
           label: '3-Hour Pain or Mood Infusion',
           amount: 1150,
         },
         {
           _key: 'r7',
-          stripePriceId: 'price_1TUZfOAEmpFZtKZrgVEs62v9',
+          lookupKey: 'infusion-4hr',
           label: '4-Hour Pain or Mood Infusion',
           amount: 1650,
         },
         {
           _key: 'r8',
-          stripePriceId: 'price_1TUZfPAEmpFZtKZrQUvOlB2u',
+          lookupKey: 'membership-6',
           label: '6-Infusion Membership',
           amount: 2750,
           description:
@@ -138,7 +138,7 @@ async function run() {
         },
         {
           _key: 'r9',
-          stripePriceId: 'price_1TUZfPAEmpFZtKZrZ76d0VgA',
+          lookupKey: 'membership-12',
           label: '12-Infusion Membership',
           amount: 5000,
           description:
@@ -154,35 +154,35 @@ async function run() {
       prices: [
         {
           _key: 'a1',
-          stripePriceId: 'price_1TUZfPAEmpFZtKZr9c3BFhxk',
+          lookupKey: 'athome-consult-1',
           label: '1st Video Consultation',
           amount: 250,
           description: 'For new at-home patients. First month prescription filled by pharmacy.',
         },
         {
           _key: 'a2',
-          stripePriceId: 'price_1TUZfQAEmpFZtKZrHz035xcy',
+          lookupKey: 'athome-consult-2',
           label: '2nd Video Consultation',
           amount: 225,
           description: 'Ready for your second month refill.',
         },
         {
           _key: 'a3',
-          stripePriceId: 'price_1TUZfQAEmpFZtKZr7U2B0sfN',
+          lookupKey: 'athome-consult-3',
           label: '3rd Video Consultation',
           amount: 200,
           description: 'Includes a 3-month supply dispensed one month at a time.',
         },
         {
           _key: 'a4',
-          stripePriceId: 'price_1TUZfRAEmpFZtKZrDSBgMRqO',
+          lookupKey: 'athome-followup',
           label: 'Follow-up Video Visit',
           amount: 250,
           description: 'Required every 6 months for a continued prescription.',
         },
         {
           _key: 'a5',
-          stripePriceId: 'price_1TUZfRAEmpFZtKZrKPXRcig0',
+          lookupKey: 'athome-rx-change',
           label: 'Prescription Changes',
           amount: 200,
           description: 'Dosage adjustment consult before your 6-month follow-up.',

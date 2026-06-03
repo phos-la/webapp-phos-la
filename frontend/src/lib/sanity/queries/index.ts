@@ -199,21 +199,21 @@ export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
     heading,
     subheading,
     eyebrow,
-    deposit { label, amount, description, stripePriceId }
+    deposit { label, amount, description, lookupKey }
   },
   flowReturning {
     heading,
     subheading,
     eyebrow,
     pickerLabel,
-    prices[] { label, amount, description, stripePriceId }
+    prices[] { label, amount, description, lookupKey }
   },
   flowAthome {
     heading,
     subheading,
     eyebrow,
     pickerLabel,
-    prices[] { label, amount, description, stripePriceId }
+    prices[] { label, amount, description, lookupKey }
   },
   newDepositCtaLabel,
   newDepositLoadingLabel,
