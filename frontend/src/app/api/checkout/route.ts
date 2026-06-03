@@ -13,30 +13,29 @@ function getStripe(): Stripe {
   return stripeClient;
 }
 
-// Allowlist of sandbox price IDs — prevents arbitrary price ID injection.
-// Update this map when connecting the live Stripe account.
+// Allowlist of live Stripe price IDs — prevents arbitrary price ID injection.
 // All current prices are one-time payments.
 const ALLOWED_PRICES: Record<string, string> = {
   // New Patient — In-Clinic
-  price_1TUZfLAEmpFZtKZrBUkSXcKA: 'Initial Consultation',
+  price_1TeEnuPOpLzZeFDt4dQkyPze: 'Initial Consultation',
 
   // Returning Patient — In-Clinic
-  price_1TUZfMAEmpFZtKZrHVF413eb: 'Appointment Deposit',
-  price_1TUZfMAEmpFZtKZrWTmNc1sn: '60 Min Infusion (sessions 1–4)',
-  price_1TUZfMAEmpFZtKZrYyEIRKJI: '60 Min Booster Infusion',
-  price_1TUZfNAEmpFZtKZroakOPLD9: '90 Min Ketamine Infusion',
-  price_1TUZfNAEmpFZtKZrYVpP4FPr: '2-Hour Pain or Mood Infusion',
-  price_1TUZfOAEmpFZtKZrMTAhDFkT: '3-Hour Pain or Mood Infusion',
-  price_1TUZfOAEmpFZtKZrgVEs62v9: '4-Hour Pain or Mood Infusion',
-  price_1TUZfPAEmpFZtKZrQUvOlB2u: '6-Infusion Membership',
-  price_1TUZfPAEmpFZtKZrZ76d0VgA: '12-Infusion Membership',
+  price_1TeEnuPOpLzZeFDtjAIaJOP7: 'Appointment Deposit',
+  price_1TeEnuPOpLzZeFDtwb3SbN3l: '60 Min Infusion (sessions 1–4)',
+  price_1TeEntPOpLzZeFDtuNsh7kyN: '60 Min Booster Infusion',
+  price_1TeEntPOpLzZeFDtwQjcoMlB: '90 Min Ketamine Infusion',
+  price_1TeEntPOpLzZeFDtVcNV5KMk: '2-Hour Pain or Mood Infusion',
+  price_1TeEntPOpLzZeFDtfhuLJb6N: '3-Hour Pain or Mood Infusion',
+  price_1TeEnsPOpLzZeFDtO0EFJMwB: '4-Hour Pain or Mood Infusion',
+  price_1TeEnsPOpLzZeFDtKvaItAwa: '6-Infusion Membership',
+  price_1TeEnsPOpLzZeFDtwoMf2nnh: '12-Infusion Membership',
 
   // At-Home Ketamine
-  price_1TUZfPAEmpFZtKZr9c3BFhxk: '1st Video Consultation',
-  price_1TUZfQAEmpFZtKZrHz035xcy: '2nd Video Consultation',
-  price_1TUZfQAEmpFZtKZr7U2B0sfN: '3rd Video Consultation',
-  price_1TUZfRAEmpFZtKZrDSBgMRqO: 'Follow-up Video Visit',
-  price_1TUZfRAEmpFZtKZrKPXRcig0: 'Prescription Changes',
+  price_1TeEnrPOpLzZeFDtvgNzqpkh: '1st Video Consultation',
+  price_1TeEnrPOpLzZeFDtn1FKkd00: '2nd Video Consultation',
+  price_1TeEnrPOpLzZeFDt3UJUvuOW: '3rd Video Consultation',
+  price_1TeEnrPOpLzZeFDtqebCyLiG: 'Follow-up Video Visit',
+  price_1TeEnqPOpLzZeFDtCRgaM6Fx: 'Prescription Changes',
 };
 
 export async function POST(req: NextRequest) {
@@ -59,6 +58,7 @@ export async function POST(req: NextRequest) {
     const session = await getStripe().checkout.sessions.create({
       mode: 'payment',
       line_items: [{ price: priceId, quantity: 1 }],
+      allow_promotion_codes: true,
       success_url: `${origin}/book/thanks/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/book/thanks`,
     });
