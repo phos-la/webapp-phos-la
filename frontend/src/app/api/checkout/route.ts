@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-// Lazy-init: instantiating Stripe at module load fails during `next build`
-// when STRIPE_SECRET_KEY isn't present in the build environment.
 let stripeClient: Stripe | null = null;
 function getStripe(): Stripe {
   if (!stripeClient) {
@@ -13,51 +11,67 @@ function getStripe(): Stripe {
   return stripeClient;
 }
 
-// Allowlist of live Stripe price IDs — prevents arbitrary price ID injection.
-// All current prices are one-time payments.
-const ALLOWED_PRICES: Record<string, string> = {
-  // New Patient — In-Clinic
-  price_1TeEnuPOpLzZeFDt4dQkyPze: 'Initial Consultation',
-
-  // Returning Patient — In-Clinic
-  price_1TeEnuPOpLzZeFDtjAIaJOP7: 'Appointment Deposit',
-  price_1TeEnuPOpLzZeFDtwb3SbN3l: '60 Min Infusion (sessions 1–4)',
-  price_1TeEntPOpLzZeFDtuNsh7kyN: '60 Min Booster Infusion',
-  price_1TeEntPOpLzZeFDtwQjcoMlB: '90 Min Ketamine Infusion',
-  price_1TeEntPOpLzZeFDtVcNV5KMk: '2-Hour Pain or Mood Infusion',
-  price_1TeEntPOpLzZeFDtfhuLJb6N: '3-Hour Pain or Mood Infusion',
-  price_1TeEnsPOpLzZeFDtO0EFJMwB: '4-Hour Pain or Mood Infusion',
-  price_1TeEnsPOpLzZeFDtKvaItAwa: '6-Infusion Membership',
-  price_1TeEnsPOpLzZeFDtwoMf2nnh: '12-Infusion Membership',
-
+// Lookup-key allowlist. Each key MUST be set on the matching Price object in
+// BOTH the sandbox and live Stripe accounts. At request time we resolve the
+// current price ID for whichever account the server's STRIPE_SECRET_KEY
+// points at, so the same lookup key works in test and live without code or
+// CMS changes.
+const ALLOWED_LOOKUP_KEYS = new Set<string>([
+  // New Patient, In-Clinic
+  'initial-consultation',
+  // Returning Patient, In-Clinic
+  'appointment-deposit',
+  'infusion-60min-1to4',
+  'booster-60min',
+  'infusion-90min',
+  'infusion-2hr',
+  'infusion-3hr',
+  'infusion-4hr',
+  'membership-6',
+  'membership-12',
   // At-Home Ketamine
-  price_1TeEnrPOpLzZeFDtvgNzqpkh: '1st Video Consultation',
-  price_1TeEnrPOpLzZeFDtn1FKkd00: '2nd Video Consultation',
-  price_1TeEnrPOpLzZeFDt3UJUvuOW: '3rd Video Consultation',
-  price_1TeEnrPOpLzZeFDtqebCyLiG: 'Follow-up Video Visit',
-  price_1TeEnqPOpLzZeFDtCRgaM6Fx: 'Prescription Changes',
-};
+  'athome-consult-1',
+  'athome-consult-2',
+  'athome-consult-3',
+  'athome-followup',
+  'athome-rx-change',
+]);
 
 export async function POST(req: NextRequest) {
-  let priceId: string;
+  let lookupKey: string;
 
   try {
     const body = await req.json();
-    priceId = body.priceId;
+    lookupKey = body.lookupKey;
   } catch {
     return NextResponse.json({ error: 'Invalid request body' }, { status: 400 });
   }
 
-  if (!priceId || !(priceId in ALLOWED_PRICES)) {
-    return NextResponse.json({ error: 'Invalid price ID' }, { status: 400 });
+  if (!lookupKey || !ALLOWED_LOOKUP_KEYS.has(lookupKey)) {
+    return NextResponse.json({ error: 'Invalid lookup key' }, { status: 400 });
   }
 
   const origin = req.headers.get('origin') ?? 'https://phos.la';
 
   try {
-    const session = await getStripe().checkout.sessions.create({
+    const stripe = getStripe();
+
+    const prices = await stripe.prices.list({
+      lookup_keys: [lookupKey],
+      active: true,
+      limit: 1,
+    });
+    const price = prices.data[0];
+    if (!price) {
+      return NextResponse.json(
+        { error: `No active price found for lookup key "${lookupKey}"` },
+        { status: 404 },
+      );
+    }
+
+    const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ price: price.id, quantity: 1 }],
       allow_promotion_codes: true,
       success_url: `${origin}/book/thanks/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/book/thanks`,

@@ -22,11 +22,11 @@ function fmt(dollars: number) {
   }).format(dollars);
 }
 
-async function redirectToCheckout(priceId: string): Promise<string | null> {
+async function redirectToCheckout(lookupKey: string): Promise<string | null> {
   const res = await fetch('/api/checkout', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ priceId }),
+    body: JSON.stringify({ lookupKey }),
   });
   if (!res.ok) return null;
   const data = await res.json();
@@ -38,7 +38,7 @@ async function redirectToCheckout(priceId: string): Promise<string | null> {
 type FlowType = 'new' | 'returning' | 'athome';
 
 export type Price = {
-  stripePriceId: string;
+  lookupKey: string;
   label: string;
   amount: number;
   description?: string;
@@ -190,7 +190,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
         ? copy.flowAthome.prices
         : [];
 
-  const initialId = prices[0]?.stripePriceId ?? copy.flowNew.deposit.stripePriceId;
+  const initialId = prices[0]?.lookupKey ?? copy.flowNew.deposit.lookupKey;
   const [selectedId, setSelectedId] = useState<string>(initialId);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -201,14 +201,14 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
 
   // Reset selection if the flow type changes mid-session
   useEffect(() => {
-    setSelectedId(prices[0]?.stripePriceId ?? copy.flowNew.deposit.stripePriceId);
+    setSelectedId(prices[0]?.lookupKey ?? copy.flowNew.deposit.lookupKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flow]);
 
-  const handleCheckout = async (priceId: string) => {
+  const handleCheckout = async (lookupKey: string) => {
     setLoading(true);
     setError(null);
-    const url = await redirectToCheckout(priceId);
+    const url = await redirectToCheckout(lookupKey);
     if (url) {
       window.location.href = url;
     } else {
@@ -348,7 +348,7 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
               )}
 
               <button
-                onClick={() => handleCheckout(copy.flowNew.deposit.stripePriceId)}
+                onClick={() => handleCheckout(copy.flowNew.deposit.lookupKey)}
                 disabled={loading}
                 style={{
                   display: 'block',
@@ -404,10 +404,10 @@ function ThanksInner({ copy }: { copy: ThanksCopy }) {
 
               {prices.map((price) => (
                 <PriceRow
-                  key={price.stripePriceId}
+                  key={price.lookupKey}
                   price={price}
-                  selected={selectedId === price.stripePriceId}
-                  onSelect={() => setSelectedId(price.stripePriceId)}
+                  selected={selectedId === price.lookupKey}
+                  onSelect={() => setSelectedId(price.lookupKey)}
                 />
               ))}
 
