@@ -23,7 +23,7 @@ const DEFAULTS: ThanksCopy = {
       'Katie will review your intake before your first visit. One last step. A deposit holds your appointment slot.',
     eyebrow: 'Hold your appointment',
     deposit: {
-      stripePriceId: 'price_1TUZfLAEmpFZtKZrBUkSXcKA',
+      stripePriceId: 'price_1TeEnuPOpLzZeFDt4dQkyPze',
       label: 'Initial Consultation',
       amount: 100,
       description: 'Applied as a credit toward your first session if you move forward.',
@@ -36,51 +36,51 @@ const DEFAULTS: ThanksCopy = {
     pickerLabel: 'Select your session',
     prices: [
       {
-        stripePriceId: 'price_1TUZfMAEmpFZtKZrHVF413eb',
+        stripePriceId: 'price_1TeEnuPOpLzZeFDtjAIaJOP7',
         label: 'Appointment Deposit',
         amount: 100,
         description: 'Required to schedule your infusion appointment.',
       },
       {
-        stripePriceId: 'price_1TUZfMAEmpFZtKZrWTmNc1sn',
+        stripePriceId: 'price_1TeEnuPOpLzZeFDtwb3SbN3l',
         label: '60 Min Infusion (sessions 1–4)',
         amount: 700,
       },
       {
-        stripePriceId: 'price_1TUZfMAEmpFZtKZrYyEIRKJI',
+        stripePriceId: 'price_1TeEntPOpLzZeFDtuNsh7kyN',
         label: '60 Min Booster Infusion',
         amount: 550,
         description: 'For established patients.',
       },
       {
-        stripePriceId: 'price_1TUZfNAEmpFZtKZroakOPLD9',
+        stripePriceId: 'price_1TeEntPOpLzZeFDtwQjcoMlB',
         label: '90 Min Ketamine Infusion',
         amount: 650,
       },
       {
-        stripePriceId: 'price_1TUZfNAEmpFZtKZrYVpP4FPr',
+        stripePriceId: 'price_1TeEntPOpLzZeFDtVcNV5KMk',
         label: '2-Hour Pain or Mood Infusion',
         amount: 850,
       },
       {
-        stripePriceId: 'price_1TUZfOAEmpFZtKZrMTAhDFkT',
+        stripePriceId: 'price_1TeEntPOpLzZeFDtfhuLJb6N',
         label: '3-Hour Pain or Mood Infusion',
         amount: 1150,
       },
       {
-        stripePriceId: 'price_1TUZfOAEmpFZtKZrgVEs62v9',
+        stripePriceId: 'price_1TeEnsPOpLzZeFDtO0EFJMwB',
         label: '4-Hour Pain or Mood Infusion',
         amount: 1650,
       },
       {
-        stripePriceId: 'price_1TUZfPAEmpFZtKZrQUvOlB2u',
+        stripePriceId: 'price_1TeEnsPOpLzZeFDtKvaItAwa',
         label: '6-Infusion Membership',
         amount: 2750,
         description:
           'For existing patients or transfers with proof of 4 sessions. Non-transferable.',
       },
       {
-        stripePriceId: 'price_1TUZfPAEmpFZtKZrZ76d0VgA',
+        stripePriceId: 'price_1TeEnsPOpLzZeFDtwoMf2nnh',
         label: '12-Infusion Membership',
         amount: 5000,
         description:
@@ -95,31 +95,31 @@ const DEFAULTS: ThanksCopy = {
     pickerLabel: 'Select your visit type',
     prices: [
       {
-        stripePriceId: 'price_1TUZfPAEmpFZtKZr9c3BFhxk',
+        stripePriceId: 'price_1TeEnrPOpLzZeFDtvgNzqpkh',
         label: '1st Video Consultation',
         amount: 250,
         description: 'For new at-home patients. First month prescription filled by pharmacy.',
       },
       {
-        stripePriceId: 'price_1TUZfQAEmpFZtKZrHz035xcy',
+        stripePriceId: 'price_1TeEnrPOpLzZeFDtn1FKkd00',
         label: '2nd Video Consultation',
         amount: 225,
         description: 'Ready for your second month refill.',
       },
       {
-        stripePriceId: 'price_1TUZfQAEmpFZtKZr7U2B0sfN',
+        stripePriceId: 'price_1TeEnrPOpLzZeFDt3UJUvuOW',
         label: '3rd Video Consultation',
         amount: 200,
         description: 'Includes a 3-month supply dispensed one month at a time.',
       },
       {
-        stripePriceId: 'price_1TUZfRAEmpFZtKZrDSBgMRqO',
+        stripePriceId: 'price_1TeEnrPOpLzZeFDtqebCyLiG',
         label: 'Follow-up Video Visit',
         amount: 250,
         description: 'Required every 6 months for a continued prescription.',
       },
       {
-        stripePriceId: 'price_1TUZfRAEmpFZtKZrKPXRcig0',
+        stripePriceId: 'price_1TeEnqPOpLzZeFDtCRgaM6Fx',
         label: 'Prescription Changes',
         amount: 200,
         description: 'Dosage adjustment consult before your 6-month follow-up.',
