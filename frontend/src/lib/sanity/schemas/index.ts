@@ -15,6 +15,7 @@ import { aboutPageType } from './aboutPage';
 import { treatmentType, treatmentsPageType } from './treatment';
 import { bookPageType } from './bookPage';
 import { bookThanksPageType } from './bookThanksPage';
+import { bookSuccessPageType } from './bookSuccessPage';
 import { blogIndexPageType } from './blogIndexPage';
 import { blogPostPageType } from './blogPostPage';
 
@@ -41,6 +42,7 @@ export const schemaTypes = [
   treatmentsPageType,
   bookPageType,
   bookThanksPageType,
+  bookSuccessPageType,
   blogIndexPageType,
   blogPostPageType,
 ];
