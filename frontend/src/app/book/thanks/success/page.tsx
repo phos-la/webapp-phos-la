@@ -1,10 +1,68 @@
 import { Suspense } from 'react';
 import Nav from '@/components/Nav';
 import Stripe from 'stripe';
+import { client } from '@/lib/sanity/client';
+import { bookSuccessPageQuery } from '@/lib/sanity/queries';
 
-// ─── Server component: fetch session details from Stripe ──────────────────────
+export const dynamic = 'force-dynamic';
 
-async function SuccessContent({ sessionId }: { sessionId: string }) {
+type SuccessCopy = {
+  heading: string;
+  body: string;
+  contactCardText: string;
+  contactPhone: string;
+  contactPhoneTel: string;
+  backLinkLabel: string;
+  fallbackHeading: string;
+  fallbackBody: string;
+};
+
+const DEFAULTS: SuccessCopy = {
+  heading: 'Payment confirmed.',
+  body: 'Our support staff will be in touch shortly to confirm your appointment.',
+  contactCardText: 'Questions? Call or text our support staff at {phone}.',
+  contactPhone: '(424) 278-4241',
+  contactPhoneTel: '+14242784241',
+  backLinkLabel: '← Back to phos.la',
+  fallbackHeading: 'Payment received.',
+  fallbackBody: 'Our support staff will be in touch shortly to confirm your appointment.',
+};
+
+async function loadCopy(): Promise<SuccessCopy> {
+  const doc = await client
+    .fetch<Partial<SuccessCopy> | null>(bookSuccessPageQuery)
+    .catch(() => null);
+  return { ...DEFAULTS, ...(doc ?? {}) };
+}
+
+function renderContactCard(copy: SuccessCopy) {
+  const parts = copy.contactCardText.split('{phone}');
+  const link = (
+    <a
+      key="phone"
+      href={`tel:${copy.contactPhoneTel}`}
+      style={{ color: 'var(--brand-teal)', textDecoration: 'none', fontWeight: 600 }}
+    >
+      {copy.contactPhone}
+    </a>
+  );
+  if (parts.length === 1) {
+    return (
+      <>
+        {copy.contactCardText} {link}
+      </>
+    );
+  }
+  return (
+    <>
+      {parts[0]}
+      {link}
+      {parts.slice(1).join('{phone}')}
+    </>
+  );
+}
+
+async function SuccessContent({ sessionId, copy }: { sessionId: string; copy: SuccessCopy }) {
   let amountTotal: number | null = null;
   let customerEmail: string | null = null;
 
@@ -43,7 +101,6 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
           padding: '120px 24px 80px',
         }}
       >
-        {/* Checkmark */}
         <div
           style={{
             width: 64,
@@ -70,7 +127,6 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
           </svg>
         </div>
 
-        {/* Heading */}
         <div style={{ textAlign: 'center', maxWidth: 480, marginBottom: 40 }}>
           <h1
             style={{
@@ -82,7 +138,7 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
               marginBottom: 16,
             }}
           >
-            Payment confirmed.
+            {copy.heading}
           </h1>
           <p
             style={{
@@ -94,13 +150,12 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
           >
             {formattedAmount && `${formattedAmount} received. `}
             {customerEmail
-              ? `A receipt has been sent to ${customerEmail}.`
-              : 'Check your email for a receipt.'}{' '}
-            Katie will be in touch shortly to confirm your appointment.
+              ? `A receipt has been sent to ${customerEmail}. `
+              : 'Check your email for a receipt. '}
+            {copy.body}
           </p>
         </div>
 
-        {/* Detail card */}
         <div
           style={{
             background: '#fff',
@@ -120,18 +175,10 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
               lineHeight: 1.7,
             }}
           >
-            Questions? Call or text Katie at{' '}
-            <a
-              href="tel:+14242784241"
-              style={{ color: 'var(--brand-teal)', textDecoration: 'none', fontWeight: 600 }}
-            >
-              (424) 278-4241
-            </a>
-            .
+            {renderContactCard(copy)}
           </p>
         </div>
 
-        {/* Back link */}
         <a
           href="/"
           style={{
@@ -142,14 +189,12 @@ async function SuccessContent({ sessionId }: { sessionId: string }) {
             marginTop: 32,
           }}
         >
-          ← Back to phos.la
+          {copy.backLinkLabel}
         </a>
       </main>
     </>
   );
 }
-
-// ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default async function SuccessPage({
   searchParams,
@@ -157,6 +202,7 @@ export default async function SuccessPage({
   searchParams: Promise<{ session_id?: string }>;
 }) {
   const { session_id } = await searchParams;
+  const copy = await loadCopy();
 
   if (!session_id) {
     return (
@@ -181,10 +227,10 @@ export default async function SuccessPage({
               marginBottom: 16,
             }}
           >
-            Payment received.
+            {copy.fallbackHeading}
           </h1>
           <p style={{ fontFamily: 'var(--font-sans)', fontSize: 15, color: 'var(--fg-muted)' }}>
-            Katie will be in touch shortly to confirm your appointment.
+            {copy.fallbackBody}
           </p>
           <a
             href="/"
@@ -196,7 +242,7 @@ export default async function SuccessPage({
               textDecoration: 'none',
             }}
           >
-            ← Back to phos.la
+            {copy.backLinkLabel}
           </a>
         </main>
       </>
@@ -205,7 +251,7 @@ export default async function SuccessPage({
 
   return (
     <Suspense>
-      <SuccessContent sessionId={session_id} />
+      <SuccessContent sessionId={session_id} copy={copy} />
     </Suspense>
   );
 }

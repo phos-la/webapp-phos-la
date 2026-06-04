@@ -166,6 +166,14 @@ export const structure: StructureResolver = (S) =>
                     .schemaType('bookThanksPage')
                     .documentId('bookThanksPage-singleton'),
                 ),
+              S.listItem()
+                .title('Success (post-payment)')
+                .child(
+                  S.document()
+                    .title('Success Page')
+                    .schemaType('bookSuccessPage')
+                    .documentId('bookSuccessPage-singleton'),
+                ),
             ]),
         ),
       S.divider(),
