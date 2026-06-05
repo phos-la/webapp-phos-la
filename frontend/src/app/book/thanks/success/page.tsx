@@ -65,6 +65,7 @@ function renderContactCard(copy: SuccessCopy) {
 async function SuccessContent({ sessionId, copy }: { sessionId: string; copy: SuccessCopy }) {
   let amountTotal: number | null = null;
   let customerEmail: string | null = null;
+  let lineItemLabel: string | null = null;
 
   try {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -73,6 +74,9 @@ async function SuccessContent({ sessionId, copy }: { sessionId: string; copy: Su
     });
     amountTotal = session.amount_total;
     customerEmail = session.customer_details?.email ?? null;
+    // Pull the first line item's description (product name) so existing
+    // patients can see what they actually paid for after checkout.
+    lineItemLabel = session.line_items?.data?.[0]?.description ?? null;
   } catch {
     // If retrieval fails, show a generic success message
   }
@@ -148,7 +152,13 @@ async function SuccessContent({ sessionId, copy }: { sessionId: string; copy: Su
               lineHeight: 1.7,
             }}
           >
-            {formattedAmount && `${formattedAmount} received. `}
+            {formattedAmount && lineItemLabel
+              ? `${formattedAmount} received for ${lineItemLabel}. `
+              : formattedAmount
+                ? `${formattedAmount} received. `
+                : lineItemLabel
+                  ? `Payment received for ${lineItemLabel}. `
+                  : ''}
             {customerEmail
               ? `A receipt has been sent to ${customerEmail}. `
               : 'Check your email for a receipt. '}
