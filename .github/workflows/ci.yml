@@ -38,3 +38,7 @@ jobs:
         working-directory: frontend
         run: bun run knip
 
+      - name: Check sitemap coverage
+        working-directory: frontend
+        run: bun run check:sitemap
+
