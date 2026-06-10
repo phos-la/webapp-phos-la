@@ -12,6 +12,7 @@
     "lint:fix": "oxlint -c oxlint.json --tsconfig tsconfig.json --fix",
     "knip": "knip",
     "typecheck": "tsgo --noEmit",
+    "check:sitemap": "bun run scripts/check-sitemap-coverage.ts",
     "seed": "SANITY_API_TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2-) bun run scripts/seed-sanity.ts",
     "seed:images": "SANITY_API_TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2-) bun run scripts/seed-sanity-images.ts"
   },
