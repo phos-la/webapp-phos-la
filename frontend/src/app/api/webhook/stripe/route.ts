@@ -22,7 +22,7 @@ function getStripe(): Stripe {
 }
 
 function formatAmount(amount: number | null, currency: string | null): string {
-  if (amount == null) return 'unknown amount';
+  if (amount === null) return 'unknown amount';
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: (currency || 'usd').toUpperCase(),
