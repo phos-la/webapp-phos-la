@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { client } from '@/lib/sanity/client';
-import { urlFor } from '@/lib/sanity/image';
+import { resolveBlogImage } from '@/lib/blogFallbackImage';
 import { allBlogSlugsQuery, blogPostBySlugQuery, blogPostPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -143,9 +143,7 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
   if (!post) notFound();
   const layout = mergeLayout(layoutRaw);
 
-  const heroImg = post.image
-    ? urlFor(post.image).width(2400).quality(80).auto('format').url()
-    : null;
+  const heroImg = resolveBlogImage(post.image, post.slug, 2400);
 
   const dateLabel = formatDate(post.publishDate);
   const readLabel = post.readMinutes ? `${post.readMinutes} ${layout.readMinutesSuffix}` : '';
@@ -176,24 +174,8 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
           <figure
             className="hero-image hero-image--simple"
             aria-label={post.imageAlt ?? post.title}
-            style={heroImg ? { background: `url(${heroImg}) center/cover no-repeat` } : undefined}
-          >
-            {!heroImg && (
-              <div className="hero-image--placeholder">
-                <svg width="56" height="56" viewBox="0 0 200 200" fill="none" aria-hidden="true">
-                  <circle cx="100" cy="100" r="90" stroke="currentColor" strokeWidth="2.5" />
-                  <path
-                    d="M60 130 Q 80 100 100 110 Q 120 120 140 90"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                    fill="none"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span>{post.title}</span>
-              </div>
-            )}
-          </figure>
+            style={{ background: `url(${heroImg}) center/cover no-repeat` }}
+          />
         </HeroParallaxImage>
 
         {/* BODY */}
