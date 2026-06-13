@@ -6,6 +6,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
+import PageHero from '@/components/PageHero';
 import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
 import './blog.css';
@@ -121,16 +122,7 @@ export default async function BlogIndexPage() {
       <Nav />
       <main>
         {/* HERO TITLE */}
-        <section className="blog-hero">
-          <div className="blog-hero-copy">
-            <h1 className="hero-h1" data-reveal data-d="1">
-              {heroHeadline}
-            </h1>
-            <p className="hero-sub" data-reveal data-d="2">
-              {heroSubheading}
-            </p>
-          </div>
-        </section>
+        <PageHero title={heroHeadline} subheading={heroSubheading} />
 
         {/* HERO PARALLAX IMAGE */}
         <HeroParallaxImage>

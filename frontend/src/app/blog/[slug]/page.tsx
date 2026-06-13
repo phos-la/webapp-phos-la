@@ -6,6 +6,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
+import PageHero from '@/components/PageHero';
 import { BlogPortableText } from '@/components/BlogPortableText';
 import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
@@ -154,25 +155,16 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
       <Nav />
       <main>
         {/* HERO TITLE */}
-        <section className="blog-hero">
-          <div className="blog-hero-copy">
-            <h1 className="hero-h1" data-reveal data-d="1">
-              {post.title}
-            </h1>
-            {post.body && (
-              <p className="blogpost-lede" data-reveal data-d="2">
-                {post.body}
-              </p>
-            )}
-            {(post.author || dateLabel || readLabel) && (
-              <div className="blogpost-meta-row" data-reveal data-d="3">
-                {post.author && <span>{post.author}</span>}
-                {dateLabel && <span>{dateLabel}</span>}
-                {readLabel && <span>{readLabel}</span>}
-              </div>
-            )}
-          </div>
-        </section>
+        <PageHero title={post.title}>
+          {post.body && <p className="blogpost-lede">{post.body}</p>}
+          {(post.author || dateLabel || readLabel) && (
+            <div className="blogpost-meta-row">
+              {post.author && <span>{post.author}</span>}
+              {dateLabel && <span>{dateLabel}</span>}
+              {readLabel && <span>{readLabel}</span>}
+            </div>
+          )}
+        </PageHero>
 
         {/* HERO IMAGE — parallax to full bleed */}
         <HeroParallaxImage>

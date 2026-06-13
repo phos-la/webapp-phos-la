@@ -25,7 +25,10 @@ export default async function PricingPage() {
     <>
       <Nav />
       <main>
-        <Pricing data={{ callout: pricingData ?? undefined, tiers: pricingData?.tiers ?? [] }} />
+        <Pricing
+          asPage
+          data={{ callout: pricingData ?? undefined, tiers: pricingData?.tiers ?? [] }}
+        />
       </main>
       <Footer />
     </>

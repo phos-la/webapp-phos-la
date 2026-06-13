@@ -1,3 +1,5 @@
+import PageHero from '@/components/PageHero';
+
 export interface PricingTier {
   _id?: string;
   name: string;
@@ -90,123 +92,149 @@ const DEFAULT_CALLOUT: PricingCalloutData = {
   calloutPhone: '(424) 278-4241',
 };
 
-export default function Pricing({ data }: { data?: PricingData }) {
+export default function Pricing({
+  data,
+  asPage = false,
+}: {
+  data?: PricingData;
+  asPage?: boolean;
+}) {
   const tiers = data?.tiers?.length ? data.tiers : DEFAULT_TIERS;
   const callout = { ...DEFAULT_CALLOUT, ...data?.callout };
 
   return (
-    <section className="section" data-screen-label="09 Pricing" id="pricing">
-      <div className="section-inner">
-        <div className="section-head">
-          <h2 className="section-title">{callout.heading}</h2>
-          <p className="section-sub">{callout.subheading}</p>
-        </div>
+    <>
+      {/* On the standalone /pricing route the title is the page hero, shared
+          with every other inner page. On the homepage this is a mid-page
+          section, so it keeps its own .section-head instead. */}
+      {asPage && (
+        <PageHero
+          title={callout.heading ?? 'Transparent pricing'}
+          subheading={callout.subheading}
+        />
+      )}
+      <section
+        className={`section${asPage ? ' section--headless' : ''}`}
+        data-screen-label="09 Pricing"
+        id="pricing"
+      >
+        <div className="section-inner">
+          {!asPage && (
+            <div className="section-head">
+              <h2 className="section-title">{callout.heading}</h2>
+              <p className="section-sub">{callout.subheading}</p>
+            </div>
+          )}
 
-        <div className="pricing-grid">
-          {tiers.map((tier) => (
-            <article
-              key={tier._id ?? tier.name}
-              className={`price-card${tier.featured ? ' is-featured' : ''}`}
-            >
-              {tier.featured && (
-                <svg
-                  className="price-card-leaves"
-                  viewBox="0 0 110 50"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <path
-                    d="M55 42 C 55 28, 60 18, 70 14"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M70 14 C 76 8, 88 6, 96 8 C 92 18, 80 22, 70 18"
-                    fill="#9ab27a"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M55 42 C 55 30, 50 22, 38 18"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M38 18 C 30 14, 18 14, 12 18 C 18 26, 32 28, 40 22"
-                    fill="#9ab27a"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M55 42 C 56 32, 60 26, 66 24"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M66 24 C 72 22, 80 24, 84 28 C 78 32, 70 32, 64 28"
-                    fill="#a8c089"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                  <path
-                    d="M55 42 C 54 32, 50 28, 44 26"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                  />
-                  <path
-                    d="M44 26 C 38 24, 30 26, 26 30 C 32 34, 40 34, 46 30"
-                    fill="#a8c089"
-                    stroke="currentColor"
-                    strokeWidth="1"
-                  />
-                </svg>
-              )}
-              {tier.featured && <span className="price-badge">Best value</span>}
-              <h3 className="price-name">{tier.name}</h3>
-              <p className="price-desc">{tier.description}</p>
-              <div className="price-included">
-                <p className="price-included-label">What&apos;s included:</p>
-                <ul>
-                  {(tier.features ?? []).map((f) => (
-                    <li key={f}>
-                      <LeafIcon />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div className="price-foot">
-                <p className="price-amount">
-                  {tier.price}
-                  {tier.unit && <span className="price-unit">{tier.unit}</span>}
-                </p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <div className="price-callout">
-          <div className="price-callout-text">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M5 5 C 5 4, 6 3, 7 3 L 9 3 C 10 3, 11 4, 11 5 L 11 8 C 11 9, 10 10, 9 10 L 8 10 C 9 14, 12 17, 16 18 L 16 17 C 16 16, 17 15, 18 15 L 21 15 C 22 15, 23 16, 23 17 L 23 19 C 23 20, 22 21, 21 21 C 12 21, 5 14, 5 5 Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span>{callout.calloutText}</span>
+          <div className="pricing-grid">
+            {tiers.map((tier) => (
+              <article
+                key={tier._id ?? tier.name}
+                className={`price-card${tier.featured ? ' is-featured' : ''}`}
+              >
+                {tier.featured && (
+                  <svg
+                    className="price-card-leaves"
+                    viewBox="0 0 110 50"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M55 42 C 55 28, 60 18, 70 14"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M70 14 C 76 8, 88 6, 96 8 C 92 18, 80 22, 70 18"
+                      fill="#9ab27a"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M55 42 C 55 30, 50 22, 38 18"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M38 18 C 30 14, 18 14, 12 18 C 18 26, 32 28, 40 22"
+                      fill="#9ab27a"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M55 42 C 56 32, 60 26, 66 24"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M66 24 C 72 22, 80 24, 84 28 C 78 32, 70 32, 64 28"
+                      fill="#a8c089"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    />
+                    <path
+                      d="M55 42 C 54 32, 50 28, 44 26"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                    <path
+                      d="M44 26 C 38 24, 30 26, 26 30 C 32 34, 40 34, 46 30"
+                      fill="#a8c089"
+                      stroke="currentColor"
+                      strokeWidth="1"
+                    />
+                  </svg>
+                )}
+                {tier.featured && <span className="price-badge">Best value</span>}
+                <h3 className="price-name">{tier.name}</h3>
+                <p className="price-desc">{tier.description}</p>
+                <div className="price-included">
+                  <p className="price-included-label">What&apos;s included:</p>
+                  <ul>
+                    {(tier.features ?? []).map((f) => (
+                      <li key={f}>
+                        <LeafIcon />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="price-foot">
+                  <p className="price-amount">
+                    {tier.price}
+                    {tier.unit && <span className="price-unit">{tier.unit}</span>}
+                  </p>
+                </div>
+              </article>
+            ))}
           </div>
-          <a className="price-callout-cta" href={`tel:${callout.calloutPhone?.replace(/\D/g, '')}`}>
-            {callout.calloutPhone}
-          </a>
+
+          <div className="price-callout">
+            <div className="price-callout-text">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M5 5 C 5 4, 6 3, 7 3 L 9 3 C 10 3, 11 4, 11 5 L 11 8 C 11 9, 10 10, 9 10 L 8 10 C 9 14, 12 17, 16 18 L 16 17 C 16 16, 17 15, 18 15 L 21 15 C 22 15, 23 16, 23 17 L 23 19 C 23 20, 22 21, 21 21 C 12 21, 5 14, 5 5 Z"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span>{callout.calloutText}</span>
+            </div>
+            <a
+              className="price-callout-cta"
+              href={`tel:${callout.calloutPhone?.replace(/\D/g, '')}`}
+            >
+              {callout.calloutPhone}
+            </a>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

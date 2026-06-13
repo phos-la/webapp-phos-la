@@ -3,47 +3,10 @@
    Shared visual rules. Mirrors about.css / treatments.css conventions.
    ========================================================================= */
 
-/* ── HERO ────────────────────────────────────────────── */
-.blog-hero {
-  padding: 148px 40px 0;
-  background: var(--bg);
-}
-.blog-hero-copy {
-  max-width: 1240px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.blog-hero-eyebrow {
-  font-family: var(--font-sans);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--brand-teal);
-  margin: 0;
-}
-.blog-hero .hero-h1 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: var(--page-title);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  margin: 26px 0 0;
-}
-.blog-hero .hero-sub {
-  font-size: 17px;
-  line-height: 1.68;
-  color: var(--fg-muted);
-  max-width: 760px;
-  margin: 20px 0 0;
-  text-wrap: pretty;
-}
+/* Hero is the shared <PageHero> (.page-hero in globals.css). Only the
+   post-specific standfirst lives here, scoped to the shared hero. */
 /* Standfirst on a post: the excerpt the author wrote, shown under the title. */
-.blog-hero .blogpost-lede {
+.page-hero .blogpost-lede {
   font-size: 20px;
   line-height: 1.6;
   color: var(--fg-muted);
@@ -294,7 +257,7 @@
   /* Side gutter matches the page-standard 40px used by the hero copy, the
      hero image before it expands (100vw - 80px), and the content sections,
      so the article body lines up with everything else rather than sitting in
-     a tighter 24px gutter. Drops to 24px on mobile, in step with .blog-hero. */
+     a tighter 24px gutter. Drops to 24px on mobile, in step with .page-hero. */
   padding: 24px 40px 96px;
   background: var(--bg);
 }
@@ -394,9 +357,6 @@
 }
 
 @media (max-width: 640px) {
-  .blog-hero {
-    padding: 120px 24px 0;
-  }
   .blog-grid-list {
     grid-template-columns: 1fr;
     gap: 16px;

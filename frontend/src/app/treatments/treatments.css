@@ -1,31 +1,4 @@
-/* ── Hero ── */
-.services-hero {
-  padding: 148px 40px 0;
-  background: var(--bg);
-  text-align: center;
-}
-.services-hero-inner {
-  max-width: 1240px;
-  margin: 0 auto;
-}
-.services-hero-title {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: var(--page-title);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  margin: 26px 0 0;
-}
-.services-hero-sub {
-  font-family: var(--font-sans);
-  font-size: 17px;
-  line-height: 1.65;
-  color: var(--fg-muted);
-  max-width: 520px;
-  margin: 22px auto 0;
-  text-wrap: pretty;
-}
+/* Hero is the shared <PageHero> (.page-hero in globals.css). */
 
 /* ── Intro ── */
 .services-intro {
@@ -302,9 +275,6 @@
   }
 }
 @media (max-width: 680px) {
-  .services-hero {
-    padding: 120px 24px 0;
-  }
   .services-intro {
     padding: 64px 24px 60px;
   }

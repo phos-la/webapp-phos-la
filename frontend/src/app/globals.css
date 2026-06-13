@@ -131,7 +131,7 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   /* The main H1 at the top of a page. One value, used by every page hero so
      titles match across pricing, treatments, about, field notes hub + post. */
-  --page-title: clamp(49px, 7.2vw, 83px);
+  --page-title: clamp(40px, 5vw, 64px);
   /* Mid-page section headings (homepage section heads). One tier down from the
      page title; do not use this for a page's main H1. */
   --section-title: clamp(40px, 5vw, 64px);
@@ -396,7 +396,7 @@ body {
 .hero-headline {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(56px, 9vw, 104px);
+  font-size: var(--page-title);
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--fg);
@@ -578,6 +578,11 @@ body {
   padding: 120px 40px;
   background: var(--bg);
 }
+/* When the section's title is hoisted into the page hero (e.g. /pricing), the
+   hero already supplies the top offset, so the grid drops its own top padding. */
+.section--headless {
+  padding-top: 48px;
+}
 .section-inner {
   max-width: 1240px;
   margin: 0 auto;
@@ -616,6 +621,46 @@ body {
   color: var(--fg-muted);
   margin: 20px auto 0;
   max-width: 560px;
+}
+
+/* ============ PAGE HERO (shared by every inner page) ============ */
+/* Treatments, About, Pricing, Field Notes hub + post all render <PageHero>,
+   so these rules are the single source of truth for hero title size, weight,
+   top offset, and centering. Do not reintroduce per-page hero classes. */
+.page-hero {
+  padding: 148px 40px 0;
+  background: var(--bg);
+}
+.page-hero-copy {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.page-hero-title {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: var(--page-title);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  margin: 26px 0 0;
+}
+.page-hero-sub {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.68;
+  color: var(--fg-muted);
+  max-width: 600px;
+  margin: 20px 0 0;
+  text-wrap: pretty;
+}
+@media (max-width: 640px) {
+  .page-hero {
+    padding: 120px 24px 0;
+  }
 }
 
 /* ============ THREE CARDS ============ */
