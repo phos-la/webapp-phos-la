@@ -129,9 +129,12 @@
   /* Typography */
   --font-serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* Uniform page / section heading scale used across every page (pricing,
-     treatments, about, field notes hub + post, homepage section heads). */
-  --page-title: clamp(32px, 3.4vw, 44px);
+  /* The main H1 at the top of a page. One value, used by every page hero so
+     titles match across pricing, treatments, about, field notes hub + post. */
+  --page-title: clamp(54px, 8vw, 92px);
+  /* Mid-page section headings (homepage section heads). One tier down from the
+     page title; do not use this for a page's main H1. */
+  --section-title: clamp(40px, 5vw, 64px);
 
   /* Shadows */
   --shadow-xs: 0 1px 2px rgba(48, 36, 22, 0.04);
@@ -600,7 +603,7 @@ body {
 .section-title {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: var(--page-title);
+  font-size: var(--section-title);
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--fg);
