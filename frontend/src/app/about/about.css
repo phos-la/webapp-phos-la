@@ -14,8 +14,8 @@
 .about-hero .hero-h1 {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(54px, 8vw, 92px);
-  line-height: 1.01;
+  font-size: var(--page-title);
+  line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--fg);
   margin: 26px 0 0;

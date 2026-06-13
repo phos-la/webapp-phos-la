@@ -157,9 +157,6 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
         {/* HERO TITLE */}
         <section className="blog-hero">
           <div className="blog-hero-copy">
-            <p className="blog-hero-eyebrow" data-reveal>
-              {layout.eyebrowLabel}
-            </p>
             <h1 className="hero-h1" data-reveal data-d="1">
               {post.title}
             </h1>
