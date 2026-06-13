@@ -1,5 +1,6 @@
 import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
+import { resolveBlogImage } from '@/lib/blogFallbackImage';
 import { allBlogPostsQuery, blogIndexPageQuery } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
@@ -65,24 +66,11 @@ const DEFAULTS = {
     'Notes from the clinic on ketamine treatment, integration, and the science behind it.',
 };
 
-const FALLBACK_IMAGES = [
-  'https://images.unsplash.com/photo-1448375240586-882707db888b?w=900&q=80&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1545389336-cf090694435e?w=900&q=80&auto=format&fit=crop',
-  'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=900&q=80&auto=format&fit=crop',
-];
-
 function formatDate(d?: string): string {
   if (!d) return '';
   const date = new Date(d);
   if (Number.isNaN(date.getTime())) return '';
   return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function cardImage(post: PostCard, fallbackIdx: number): string {
-  if (post.image) {
-    return urlFor(post.image).width(900).quality(80).auto('format').url();
-  }
-  return FALLBACK_IMAGES[fallbackIdx % FALLBACK_IMAGES.length] ?? FALLBACK_IMAGES[0]!;
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -176,7 +164,11 @@ export default async function BlogIndexPage() {
             <article className="blog-featured" data-reveal>
               <div className="blog-featured-photo">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={cardImage(featured, 0)} alt={featured.imageAlt ?? ''} loading="eager" />
+                <img
+                  src={resolveBlogImage(featured.image, featured.slug, 1200)}
+                  alt={featured.imageAlt ?? ''}
+                  loading="eager"
+                />
               </div>
               <div className="blog-featured-text">
                 <p className="blog-featured-eyebrow">{featuredEyebrow}</p>
@@ -221,11 +213,15 @@ export default async function BlogIndexPage() {
               </div>
             ) : (
               <div className="blog-grid-list">
-                {gridPosts.map((post, i) => (
+                {gridPosts.map((post) => (
                   <a key={post._id} href={`/blog/${post.slug}`} className="blog-card" data-reveal>
                     <div className="blog-card-photo">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={cardImage(post, i + 1)} alt={post.imageAlt ?? ''} loading="lazy" />
+                      <img
+                        src={resolveBlogImage(post.image, post.slug, 900)}
+                        alt={post.imageAlt ?? ''}
+                        loading="lazy"
+                      />
                     </div>
                     <div className="blog-card-body">
                       {(post.author || post.publishDate) && (
