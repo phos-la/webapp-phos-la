@@ -6,9 +6,10 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
-import { Markdown } from '@/components/Markdown';
+import { BlogPortableText } from '@/components/BlogPortableText';
 import type { Metadata } from 'next';
 import type { SanityImageSource } from '@sanity/image-url';
+import type { PortableTextBlock } from '@portabletext/types';
 import '../blog.css';
 
 export const dynamic = 'force-dynamic';
@@ -20,7 +21,7 @@ type BlogPostFull = {
   image?: SanityImageSource;
   imageAlt?: string;
   body?: string;
-  fullBody?: string;
+  fullBody?: PortableTextBlock[];
   author?: string;
   publishDate?: string;
   readMinutes?: number;
@@ -160,13 +161,8 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
             <h1 className="hero-h1" data-reveal data-d="1">
               {post.title}
             </h1>
-            {post.body && (
-              <p className="hero-sub" data-reveal data-d="2">
-                {post.body}
-              </p>
-            )}
             {(post.author || dateLabel || readLabel) && (
-              <div className="blogpost-meta-row" data-reveal data-d="3">
+              <div className="blogpost-meta-row" data-reveal data-d="2">
                 {post.author && <span>{post.author}</span>}
                 {dateLabel && <span>{dateLabel}</span>}
                 {readLabel && <span>{readLabel}</span>}
@@ -203,8 +199,8 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
         {/* BODY */}
         <section className="blogpost-body-wrap">
           <div className="blogpost-body">
-            {post.fullBody ? (
-              <Markdown content={post.fullBody} />
+            {post.fullBody && post.fullBody.length > 0 ? (
+              <BlogPortableText value={post.fullBody} />
             ) : (
               <PlaceholderBody
                 template={layout.placeholderBody}
