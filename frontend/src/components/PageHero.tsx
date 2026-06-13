@@ -18,14 +18,8 @@ export default function PageHero({
   return (
     <section className="page-hero" data-screen-label="01 Hero">
       <div className="page-hero-copy">
-        <h1 className="page-hero-title" data-reveal data-d="1">
-          {title}
-        </h1>
-        {subheading && (
-          <p className="page-hero-sub" data-reveal data-d="2">
-            {subheading}
-          </p>
-        )}
+        <h1 className="page-hero-title">{title}</h1>
+        {subheading && <p className="page-hero-sub">{subheading}</p>}
         {children}
       </div>
     </section>
