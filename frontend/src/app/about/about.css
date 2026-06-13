@@ -1,33 +1,4 @@
-/* ── HERO ────────────────────────────────────────────── */
-.about-hero {
-  padding: 148px 40px 0;
-  background: var(--bg);
-}
-.about-hero-copy {
-  max-width: 1240px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-.about-hero .hero-h1 {
-  font-family: var(--font-serif);
-  font-weight: 500;
-  font-size: var(--page-title);
-  line-height: 1.1;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  margin: 26px 0 0;
-}
-.about-hero .hero-sub {
-  font-size: 17px;
-  line-height: 1.68;
-  color: var(--fg-muted);
-  max-width: 560px;
-  margin: 20px 0 0;
-  text-wrap: pretty;
-}
+/* Hero is the shared <PageHero> (.page-hero in globals.css). */
 
 /* ── BIO BLOCK — Dr. Christa Riley ──────────────────── */
 .about-bio-wrap {
@@ -508,9 +479,6 @@
   }
 }
 @media (max-width: 640px) {
-  .about-hero {
-    padding: 120px 24px 0;
-  }
   .about-bio-wrap {
     padding: 12px;
   }

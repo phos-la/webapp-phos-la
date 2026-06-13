@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
+import PageHero from '@/components/PageHero';
 import './about.css';
 
 export const dynamic = 'force-dynamic';
@@ -105,16 +106,7 @@ export default async function AboutPage() {
 
       <main>
         {/* HERO */}
-        <section className="about-hero" data-screen-label="01 Hero">
-          <div className="about-hero-copy">
-            <h1 className="hero-h1" data-reveal>
-              {d.heroHeadline}
-            </h1>
-            <p className="hero-sub" data-reveal data-d="1">
-              {d.heroSubheading}
-            </p>
-          </div>
-        </section>
+        <PageHero title={d.heroHeadline} subheading={d.heroSubheading} />
 
         <HeroParallaxImage>
           <figure

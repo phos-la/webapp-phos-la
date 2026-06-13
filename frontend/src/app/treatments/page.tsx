@@ -5,6 +5,7 @@ import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import RevealOnScroll from '@/components/RevealOnScroll';
 import HeroParallaxImage from '@/components/HeroParallaxImage';
+import PageHero from '@/components/PageHero';
 import { Markdown } from '@/components/Markdown';
 import './treatments.css';
 
@@ -197,12 +198,7 @@ export default async function TreatmentsPage() {
 
       <main>
         {/* HERO */}
-        <section className="services-hero" data-screen-label="01 Hero">
-          <div className="services-hero-inner">
-            <h1 className="services-hero-title">{d.heroTitle}</h1>
-            <p className="services-hero-sub">{d.heroSub}</p>
-          </div>
-        </section>
+        <PageHero title={d.heroTitle} subheading={d.heroSub} />
 
         <HeroParallaxImage>
           <figure
