@@ -38,7 +38,7 @@ export default function BenefitPills({ data }: { data?: ConditionsSectionData })
           fontFamily: 'var(--font-sans)',
           fontSize: 12,
           color: 'var(--fg-subtle)',
-          marginTop: 28,
+          margin: '28px auto 0',
           maxWidth: 560,
           lineHeight: 1.6,
           textAlign: 'center',

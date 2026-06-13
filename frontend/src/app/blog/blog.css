@@ -28,8 +28,8 @@
 .blog-hero .hero-h1 {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(54px, 8vw, 92px);
-  line-height: 1.01;
+  font-size: var(--page-title);
+  line-height: 1.1;
   letter-spacing: -0.03em;
   color: var(--fg);
   margin: 26px 0 0;
@@ -38,7 +38,7 @@
   font-size: 17px;
   line-height: 1.68;
   color: var(--fg-muted);
-  max-width: 560px;
+  max-width: 760px;
   margin: 20px 0 0;
   text-wrap: pretty;
 }
@@ -282,11 +282,15 @@
 }
 
 .blogpost-body-wrap {
-  padding: 24px 24px 96px;
+  /* Side gutter matches the page-standard 40px used by the hero copy, the
+     hero image before it expands (100vw - 80px), and the content sections,
+     so the article body lines up with everything else rather than sitting in
+     a tighter 24px gutter. Drops to 24px on mobile, in step with .blog-hero. */
+  padding: 24px 40px 96px;
   background: var(--bg);
 }
 .blogpost-body {
-  max-width: 680px;
+  max-width: 1240px;
   margin: 0 auto;
 }
 .blogpost-body p {
@@ -340,7 +344,7 @@
 }
 
 .blogpost-back {
-  max-width: 680px;
+  max-width: 1240px;
   margin: 24px auto 0;
 }
 .blogpost-back a {
@@ -398,5 +402,9 @@
   .blogpost-body ol {
     font-size: 16px;
     line-height: 1.72;
+  }
+  .blogpost-body-wrap {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }

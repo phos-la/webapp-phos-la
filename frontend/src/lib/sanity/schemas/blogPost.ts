@@ -64,10 +64,48 @@ export const blogPostType = defineType({
     defineField({
       name: 'fullBody',
       title: 'Full Body',
-      description: 'Markdown. Supports paragraphs, headings, links, lists, blockquotes.',
-      type: 'text',
-      rows: 20,
+      description:
+        'The article. Use the rich text editor for headings, bold, italic, links, lists, and quotes.',
+      type: 'array',
       group: 'post',
+      of: [
+        {
+          type: 'block',
+          styles: [
+            { title: 'Normal', value: 'normal' },
+            { title: 'H2', value: 'h2' },
+            { title: 'H3', value: 'h3' },
+            { title: 'H4', value: 'h4' },
+            { title: 'Quote', value: 'blockquote' },
+          ],
+          marks: {
+            decorators: [
+              { title: 'Bold', value: 'strong' },
+              { title: 'Italic', value: 'em' },
+              { title: 'Code', value: 'code' },
+            ],
+            annotations: [
+              {
+                title: 'Link',
+                name: 'link',
+                type: 'object',
+                fields: [
+                  defineField({ name: 'href', title: 'URL', type: 'url' }),
+                  defineField({ name: 'blank', title: 'Open in new tab', type: 'boolean' }),
+                ],
+              },
+            ],
+          },
+        },
+        {
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({ name: 'alt', title: 'Alt Text', type: 'string' }),
+            defineField({ name: 'caption', title: 'Caption', type: 'string' }),
+          ],
+        },
+      ],
     }),
     defineField({
       name: 'metaTitle',

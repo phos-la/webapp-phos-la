@@ -6,12 +6,9 @@ import {
   providerSectionQuery,
   processSectionQuery,
   clinicSectionQuery,
-  pricingSectionQuery,
   testimonialsSectionQuery,
-  faqSectionQuery,
   blogSectionQuery,
   glimpsesSectionQuery,
-  footerSectionQuery,
 } from '@/lib/sanity/queries';
 import Nav from '@/components/Nav';
 import Hero from '@/components/Hero';
@@ -20,20 +17,18 @@ import BenefitPills from '@/components/BenefitPills';
 import ProviderCard from '@/components/ProviderCard';
 import ProcessSteps from '@/components/ProcessSteps';
 import TheSpace from '@/components/TheSpace';
-import Pricing from '@/components/Pricing';
 import Testimonials from '@/components/Testimonials';
-import FAQ from '@/components/FAQ';
 import BlogGrid from '@/components/BlogGrid';
 import Glimpses from '@/components/Glimpses';
 import Footer from '@/components/Footer';
 
-// Fallback in case the Sanity webhook ever fails to fire; publish events
-// normally invalidate the 'sanity' tag instantly via /api/revalidate.
+// Sanity content is read live on every request (no Next.js data cache), so
+// edits in Studio show up immediately with no stale window.
 export const dynamic = 'force-dynamic';
 
 const sanityFetch = (query: string) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  client.fetch<any>(query, {}, { next: { tags: ['sanity'], revalidate: 300 } });
+  client.fetch<any>(query, {}, { cache: 'no-store' });
 
 export default async function Page() {
   const [
@@ -43,12 +38,9 @@ export default async function Page() {
     providerData,
     processData,
     clinicData,
-    pricingData,
     testimonialsData,
-    faqData,
     blogData,
     glimpsesData,
-    footerData,
   ] = await Promise.all([
     sanityFetch(heroSectionQuery),
     sanityFetch(servicesSectionQuery),
@@ -56,14 +48,13 @@ export default async function Page() {
     sanityFetch(providerSectionQuery),
     sanityFetch(processSectionQuery),
     sanityFetch(clinicSectionQuery),
-    sanityFetch(pricingSectionQuery),
     sanityFetch(testimonialsSectionQuery),
-    sanityFetch(faqSectionQuery),
     sanityFetch(blogSectionQuery),
     sanityFetch(glimpsesSectionQuery),
-    sanityFetch(footerSectionQuery),
   ]);
 
+  // Pricing lives entirely on its own /pricing page; the homepage no longer
+  // surfaces a pricing section or hint band.
   return (
     <>
       <Nav />
@@ -74,14 +65,7 @@ export default async function Page() {
         <ProviderCard data={providerData} />
         <ProcessSteps data={processData} />
         <TheSpace data={clinicData} />
-        <Pricing
-          data={{
-            callout: pricingData,
-            tiers: pricingData?.tiers ?? [],
-          }}
-        />
         <Testimonials data={{ ...testimonialsData, items: testimonialsData?.items ?? [] }} />
-        <FAQ data={{ ...faqData, items: faqData?.items ?? [] }} />
         <BlogGrid
           data={{
             ...blogData,
@@ -90,7 +74,7 @@ export default async function Page() {
         />
         <Glimpses data={glimpsesData} />
       </main>
-      <Footer data={footerData} />
+      <Footer />
     </>
   );
 }
