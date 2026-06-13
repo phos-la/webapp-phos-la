@@ -180,11 +180,8 @@ const ArrowRight = () => (
 
 export default async function TreatmentsPage() {
   const raw =
-    (await client.fetch<ServicesPageData | null>(
-      treatmentsPageQuery,
-      {},
-      { cache: 'no-store' },
-    )) ?? {};
+    (await client.fetch<ServicesPageData | null>(treatmentsPageQuery, {}, { cache: 'no-store' })) ??
+    {};
   const d = { ...DEFAULTS, ...raw };
   // Filter out null dereferences (deleted / unpublished treatment refs) before
   // deciding whether to fall back to DEFAULTS.

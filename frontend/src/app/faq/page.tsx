@@ -16,11 +16,7 @@ export const metadata: Metadata = {
 
 export default async function FaqPage() {
   const faqData = await client
-    .fetch<FaqSectionData | null>(
-      faqSectionQuery,
-      {},
-      { cache: 'no-store' },
-    )
+    .fetch<FaqSectionData | null>(faqSectionQuery, {}, { cache: 'no-store' })
     .catch(() => null);
 
   return (

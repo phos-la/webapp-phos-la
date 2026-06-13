@@ -84,11 +84,7 @@ function imageUrl(image: unknown, width: number): string | null {
 
 export default async function AboutPage() {
   const raw =
-    (await client.fetch<AboutData | null>(
-      aboutPageQuery,
-      {},
-      { cache: 'no-store' },
-    )) ?? {};
+    (await client.fetch<AboutData | null>(aboutPageQuery, {}, { cache: 'no-store' })) ?? {};
   const d = { ...DEFAULTS, ...raw };
   type TeamMember = NonNullable<AboutData['teamMembers']>[number];
   const team: TeamMember[] = raw.teamMembers?.length ? raw.teamMembers : DEFAULTS.teamMembers;

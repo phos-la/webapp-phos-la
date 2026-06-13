@@ -60,11 +60,7 @@ const PhosLogoMark = ({ size = 72 }: { size?: number }) => (
 // DEFAULTS email. Now all pages read the same Sanity-managed footer.
 export default async function Footer() {
   const data = await client
-    .fetch<FooterSectionData | null>(
-      footerSectionQuery,
-      {},
-      { cache: 'no-store' },
-    )
+    .fetch<FooterSectionData | null>(footerSectionQuery, {}, { cache: 'no-store' })
     .catch(() => null);
   const d = { ...DEFAULTS, ...data };
   const logoUrl = data?.logo

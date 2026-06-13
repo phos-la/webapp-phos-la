@@ -40,15 +40,6 @@ export default function Hero({ data }: { data?: HeroData }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={heroImageSrc} alt="" loading="lazy" />
           <div className="hero-image-overlay">
-            <svg className="hero-image-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M12 21 C 7 18, 6 12, 11 4 C 16 8, 17 15, 12 21 Z"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
             <h2 className="hero-image-headline">{d.overlayHeadline}</h2>
             <p className="hero-image-body">{d.overlayBody}</p>
           </div>

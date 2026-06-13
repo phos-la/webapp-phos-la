@@ -98,7 +98,6 @@ export default function Pricing({ data }: { data?: PricingData }) {
     <section className="section" data-screen-label="09 Pricing" id="pricing">
       <div className="section-inner">
         <div className="section-head">
-          <span className="label-pill">{callout.label}</span>
           <h2 className="section-title">{callout.heading}</h2>
           <p className="section-sub">{callout.subheading}</p>
         </div>

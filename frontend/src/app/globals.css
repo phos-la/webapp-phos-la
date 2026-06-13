@@ -549,29 +549,22 @@ body {
   transition: opacity 80ms linear;
   pointer-events: none;
 }
-.hero-image-mark {
-  display: block;
-  width: 26px;
-  height: 26px;
-  margin-bottom: 20px;
-  opacity: 0.92;
-}
 .hero-image-headline {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: 36px;
+  font-size: clamp(34px, 3vw, 46px);
   line-height: 1.15;
   letter-spacing: -0.01em;
   color: #fff;
-  margin: 0 0 18px;
+  margin: 0 0 20px;
 }
 .hero-image-body {
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.92);
+  font-size: 19px;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.94);
   margin: 0;
-  max-width: 420px;
+  max-width: 460px;
 }
 
 /* ============ SHARED SECTION SCAFFOLDING ============ */
@@ -617,6 +610,10 @@ body {
   color: var(--fg-muted);
   margin: 20px auto 0;
   max-width: 560px;
+}
+/* Pricing page heading runs smaller than the homepage section titles. */
+#pricing .section-title {
+  font-size: clamp(32px, 3.4vw, 44px);
 }
 
 /* ============ THREE CARDS ============ */
@@ -1571,9 +1568,6 @@ body {
     opacity: 1;
     max-width: 100%;
     padding: 32px 24px;
-  }
-  .hero-image-mark {
-    margin: 0 auto 18px;
   }
   .hero-image-headline {
     max-width: 22ch;
