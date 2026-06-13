@@ -396,7 +396,7 @@ body {
 .hero-headline {
   font-family: var(--font-serif);
   font-weight: 500;
-  font-size: clamp(56px, 9vw, 104px);
+  font-size: var(--page-title);
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--fg);
