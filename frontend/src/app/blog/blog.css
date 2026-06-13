@@ -42,6 +42,15 @@
   margin: 20px 0 0;
   text-wrap: pretty;
 }
+/* Standfirst on a post: the excerpt the author wrote, shown under the title. */
+.blog-hero .blogpost-lede {
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--fg-muted);
+  max-width: 680px;
+  margin: 22px 0 0;
+  text-wrap: pretty;
+}
 
 /* ── FEATURED POST ───────────────────────────────────── */
 .blog-featured-wrap {
