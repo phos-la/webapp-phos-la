@@ -95,7 +95,7 @@ export default function Pricing({ data }: { data?: PricingData }) {
   const callout = { ...DEFAULT_CALLOUT, ...data?.callout };
 
   return (
-    <section className="section" data-screen-label="09 Pricing" id="treatments">
+    <section className="section" data-screen-label="09 Pricing" id="pricing">
       <div className="section-inner">
         <div className="section-head">
           <span className="label-pill">{callout.label}</span>

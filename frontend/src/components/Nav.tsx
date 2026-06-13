@@ -17,9 +17,16 @@ type NavData = {
   ctaHref?: string;
 } | null;
 
+// Target nav IA for the close-out. NOTE: Sanity's navSection already has its
+// own items array, and that wins over this fallback (see `items` below). To
+// surface Pricing + FAQ in the live nav, the navSection.items list must be
+// updated in Studio to match this order; this fallback only applies when
+// Sanity returns no items.
 const DEFAULT_ITEMS: NavItem[] = [
   { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'FAQ', href: '/faq' },
   { label: 'Field Notes', href: '/blog' },
 ];
 

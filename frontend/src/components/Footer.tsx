@@ -1,5 +1,7 @@
 import Image from 'next/image';
+import { client } from '@/lib/sanity/client';
 import { urlFor } from '@/lib/sanity/image';
+import { footerSectionQuery } from '@/lib/sanity/queries';
 
 export interface FooterSectionData {
   logo?: unknown;
@@ -17,7 +19,7 @@ const DEFAULTS: Omit<Required<FooterSectionData>, 'logo' | 'logoAlt'> = {
   businessName: 'Phos Wellness',
   address: '1762 Westwood Blvd, Ste 320, Los Angeles, CA 90024',
   phone: '(424) 278-4241',
-  email: 'support@ketaminehealing.com',
+  email: 'support@foss.la',
   instagramUrl: 'https://www.instagram.com/ketaminehealingla',
   facebookUrl: 'https://www.facebook.com/ketaminehealingla',
   disclaimer:
@@ -51,7 +53,19 @@ const PhosLogoMark = ({ size = 72 }: { size?: number }) => (
   </svg>
 );
 
-export default function Footer({ data }: { data?: FooterSectionData }) {
+// Self-fetching, like Nav. Every page renders <Footer /> with no props; the
+// component pulls footerSection from Sanity itself. This is the fix for the
+// recurring "footer email is wrong on subpages" bug: previously only the
+// homepage passed footer data, so every other page fell back to the hardcoded
+// DEFAULTS email. Now all pages read the same Sanity-managed footer.
+export default async function Footer() {
+  const data = await client
+    .fetch<FooterSectionData | null>(
+      footerSectionQuery,
+      {},
+      { next: { tags: ['sanity'], revalidate: 300 } },
+    )
+    .catch(() => null);
   const d = { ...DEFAULTS, ...data };
   const logoUrl = data?.logo
     ? urlFor(data.logo as never)

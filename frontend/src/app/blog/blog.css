@@ -282,7 +282,11 @@
 }
 
 .blogpost-body-wrap {
-  padding: 24px 24px 96px;
+  /* Side gutter matches the page-standard 40px used by the hero copy, the
+     hero image before it expands (100vw - 80px), and the content sections,
+     so the article body lines up with everything else rather than sitting in
+     a tighter 24px gutter. Drops to 24px on mobile, in step with .blog-hero. */
+  padding: 24px 40px 96px;
   background: var(--bg);
 }
 .blogpost-body {
@@ -398,5 +402,9 @@
   .blogpost-body ol {
     font-size: 16px;
     line-height: 1.72;
+  }
+  .blogpost-body-wrap {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }

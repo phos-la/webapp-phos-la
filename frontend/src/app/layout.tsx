@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Inter } from 'next/font/google';
+import UserWayWidget from '@/components/UserWayWidget';
 import './globals.css';
 
 const cormorant = localFont({
@@ -54,7 +55,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        {children}
+        <UserWayWidget />
+      </body>
     </html>
   );
 }
