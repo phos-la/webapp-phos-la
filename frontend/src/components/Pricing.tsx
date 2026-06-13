@@ -184,9 +184,6 @@ export default function Pricing({ data }: { data?: PricingData }) {
                   {tier.price}
                   {tier.unit && <span className="price-unit">{tier.unit}</span>}
                 </p>
-                <a className={`price-cta${tier.featured ? ' is-featured' : ''}`} href="/book">
-                  Book a consultation
-                </a>
               </div>
             </article>
           ))}
