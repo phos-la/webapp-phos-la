@@ -131,7 +131,7 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   /* The main H1 at the top of a page. One value, used by every page hero so
      titles match across pricing, treatments, about, field notes hub + post. */
-  --page-title: clamp(54px, 8vw, 92px);
+  --page-title: clamp(49px, 7.2vw, 83px);
   /* Mid-page section headings (homepage section heads). One tier down from the
      page title; do not use this for a page's main H1. */
   --section-title: clamp(40px, 5vw, 64px);

@@ -159,8 +159,13 @@ export default async function BlogSlugPage({ params }: { params: Promise<{ slug:
             <h1 className="hero-h1" data-reveal data-d="1">
               {post.title}
             </h1>
+            {post.body && (
+              <p className="blogpost-lede" data-reveal data-d="2">
+                {post.body}
+              </p>
+            )}
             {(post.author || dateLabel || readLabel) && (
-              <div className="blogpost-meta-row" data-reveal data-d="2">
+              <div className="blogpost-meta-row" data-reveal data-d="3">
                 {post.author && <span>{post.author}</span>}
                 {dateLabel && <span>{dateLabel}</span>}
                 {readLabel && <span>{readLabel}</span>}
