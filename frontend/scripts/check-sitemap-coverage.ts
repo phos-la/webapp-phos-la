@@ -23,6 +23,7 @@ const SITEMAP_PATH = resolve(APP_DIR, 'sitemap.ts');
 const EXCLUDED_ROUTES = new Set<string>([
   '/book/thanks', // post-submit landing, noindex
   '/book/thanks/success', // post-payment landing, noindex
+  '/faq', // page kept reachable by URL but intentionally unlinked (not in nav or sitemap)
 ]);
 
 const EXCLUDED_ROUTE_PREFIXES = ['/studio', '/api/'];

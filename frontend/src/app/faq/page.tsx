@@ -19,7 +19,7 @@ export default async function FaqPage() {
     .fetch<FaqSectionData | null>(
       faqSectionQuery,
       {},
-      { next: { tags: ['sanity'], revalidate: 300 } },
+      { cache: 'no-store' },
     )
     .catch(() => null);
 

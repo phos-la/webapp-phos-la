@@ -180,14 +180,15 @@ export default function Pricing({ data }: { data?: PricingData }) {
                   ))}
                 </ul>
               </div>
-              <p className="price-amount">
-                {tier.price}
-                {tier.unit && (
-                  <span style={{ fontSize: 16, fontWeight: 400, color: 'var(--fg-muted)' }}>
-                    {tier.unit}
-                  </span>
-                )}
-              </p>
+              <div className="price-foot">
+                <p className="price-amount">
+                  {tier.price}
+                  {tier.unit && <span className="price-unit">{tier.unit}</span>}
+                </p>
+                <a className={`price-cta${tier.featured ? ' is-featured' : ''}`} href="/book">
+                  Book a consultation
+                </a>
+              </div>
             </article>
           ))}
         </div>

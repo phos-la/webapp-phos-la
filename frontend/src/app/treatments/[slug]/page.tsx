@@ -342,7 +342,7 @@ async function getResolved(slug: string): Promise<SlugContent | null> {
   const sanity = await client.fetch<SanityService | null>(
     treatmentBySlugQuery,
     { slug },
-    { next: { tags: ['sanity'], revalidate: 300 } },
+    { cache: 'no-store' },
   );
   const fallback = DEFAULT_SLUGS[slug];
   if (!sanity && !fallback) return null;

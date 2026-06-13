@@ -87,7 +87,7 @@ export default async function AboutPage() {
     (await client.fetch<AboutData | null>(
       aboutPageQuery,
       {},
-      { next: { tags: ['sanity'], revalidate: 300 } },
+      { cache: 'no-store' },
     )) ?? {};
   const d = { ...DEFAULTS, ...raw };
   type TeamMember = NonNullable<AboutData['teamMembers']>[number];

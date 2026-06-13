@@ -18,15 +18,13 @@ type NavData = {
 } | null;
 
 // Target nav IA for the close-out. NOTE: Sanity's navSection already has its
-// own items array, and that wins over this fallback (see `items` below). To
-// surface Pricing + FAQ in the live nav, the navSection.items list must be
-// updated in Studio to match this order; this fallback only applies when
-// Sanity returns no items.
+// own items array, and that wins over this fallback (see `items` below). The
+// live navSection.items list must match this order; this fallback only applies
+// when Sanity returns no items. FAQ is intentionally not linked in the nav.
 const DEFAULT_ITEMS: NavItem[] = [
   { label: 'Treatments', href: '/treatments' },
   { label: 'About', href: '/about' },
   { label: 'Pricing', href: '/pricing' },
-  { label: 'FAQ', href: '/faq' },
   { label: 'Field Notes', href: '/blog' },
 ];
 
@@ -59,7 +57,7 @@ const LogoMark = () => (
 
 export default async function Nav() {
   const data = await client
-    .fetch<NavData>(navSectionQuery, {}, { next: { tags: ['sanity'], revalidate: 300 } })
+    .fetch<NavData>(navSectionQuery, {}, { cache: 'no-store' })
     .catch(() => null);
   const brandTitle = data?.brandTitle ?? 'PHOS';
   const brandSubtitle = data?.brandSubtitle ?? 'Wellness';
@@ -68,8 +66,8 @@ export default async function Nav() {
   const ctaHref = data?.ctaHref ?? '/book';
   const logoUrl = data?.logo
     ? urlFor(data.logo as never)
-        .width(120)
-        .height(120)
+        .width(140)
+        .height(140)
         .url()
     : null;
   const logoAlt = data?.logoAlt ?? `${brandTitle} ${brandSubtitle}`;
@@ -83,8 +81,8 @@ export default async function Nav() {
             <Image
               src={logoUrl}
               alt={logoAlt}
-              width={60}
-              height={60}
+              width={108}
+              height={108}
               className="nav-logo-mark"
               priority
             />

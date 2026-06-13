@@ -183,7 +183,7 @@ export default async function TreatmentsPage() {
     (await client.fetch<ServicesPageData | null>(
       treatmentsPageQuery,
       {},
-      { next: { tags: ['sanity'], revalidate: 300 } },
+      { cache: 'no-store' },
     )) ?? {};
   const d = { ...DEFAULTS, ...raw };
   // Filter out null dereferences (deleted / unpublished treatment refs) before

@@ -18,7 +18,7 @@ type PricingDoc = (PricingCalloutData & { tiers?: PricingTier[] }) | null;
 
 export default async function PricingPage() {
   const pricingData = await client
-    .fetch<PricingDoc>(pricingSectionQuery, {}, { next: { tags: ['sanity'], revalidate: 300 } })
+    .fetch<PricingDoc>(pricingSectionQuery, {}, { cache: 'no-store' })
     .catch(() => null);
 
   return (

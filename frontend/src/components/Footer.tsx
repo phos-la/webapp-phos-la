@@ -63,7 +63,7 @@ export default async function Footer() {
     .fetch<FooterSectionData | null>(
       footerSectionQuery,
       {},
-      { next: { tags: ['sanity'], revalidate: 300 } },
+      { cache: 'no-store' },
     )
     .catch(() => null);
   const d = { ...DEFAULTS, ...data };
