@@ -13,9 +13,9 @@ export function getResend(): Resend {
 }
 
 // Where clinic-facing notifications and contact-form submissions are delivered.
-export const CLINIC_INBOX = process.env.CLINIC_NOTIFY_EMAIL || 'support@foss.la';
+export const CLINIC_INBOX = process.env.CLINIC_NOTIFY_EMAIL || 'support@phos.la';
 
 // Verified Resend sending identity. Must be a domain verified in the Resend
-// dashboard (e.g. notifications@foss.la). Falls back to Resend's shared
+// dashboard (e.g. notifications@phos.la). Falls back to Resend's shared
 // onboarding sender so local/dev sends still work before DNS is verified.
 export const FROM_ADDRESS = process.env.RESEND_FROM_EMAIL || 'Phos <onboarding@resend.dev>';

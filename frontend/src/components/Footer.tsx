@@ -19,7 +19,7 @@ const DEFAULTS: Omit<Required<FooterSectionData>, 'logo' | 'logoAlt'> = {
   businessName: 'Phos Wellness',
   address: '1762 Westwood Blvd, Ste 320, Los Angeles, CA 90024',
   phone: '(424) 278-4241',
-  email: 'support@foss.la',
+  email: 'support@phos.la',
   instagramUrl: 'https://www.instagram.com/ketaminehealingla',
   facebookUrl: 'https://www.facebook.com/ketaminehealingla',
   disclaimer:
