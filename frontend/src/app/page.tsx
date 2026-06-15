@@ -7,6 +7,7 @@ import {
   processSectionQuery,
   clinicSectionQuery,
   testimonialsSectionQuery,
+  faqSectionQuery,
   blogSectionQuery,
   glimpsesSectionQuery,
 } from '@/lib/sanity/queries';
@@ -18,6 +19,7 @@ import ProviderCard from '@/components/ProviderCard';
 import ProcessSteps from '@/components/ProcessSteps';
 import TheSpace from '@/components/TheSpace';
 import Testimonials from '@/components/Testimonials';
+import FAQ from '@/components/FAQ';
 import BlogGrid from '@/components/BlogGrid';
 import Glimpses from '@/components/Glimpses';
 import Footer from '@/components/Footer';
@@ -39,6 +41,7 @@ export default async function Page() {
     processData,
     clinicData,
     testimonialsData,
+    faqData,
     blogData,
     glimpsesData,
   ] = await Promise.all([
@@ -49,6 +52,7 @@ export default async function Page() {
     sanityFetch(processSectionQuery),
     sanityFetch(clinicSectionQuery),
     sanityFetch(testimonialsSectionQuery),
+    sanityFetch(faqSectionQuery),
     sanityFetch(blogSectionQuery),
     sanityFetch(glimpsesSectionQuery),
   ]);
@@ -66,6 +70,7 @@ export default async function Page() {
         <ProcessSteps data={processData} />
         <TheSpace data={clinicData} />
         <Testimonials data={{ ...testimonialsData, items: testimonialsData?.items ?? [] }} />
+        <FAQ data={{ ...faqData, items: faqData?.items ?? [] }} />
         <BlogGrid
           data={{
             ...blogData,
