@@ -1,0 +1,12 @@
+/* Contact page: on mobile, center the "Visit the clinic" location block so it
+   matches the centered hero/intro above it. Desktop keeps the left-aligned
+   two-column layout (details beside the map). */
+@media (max-width: 768px) {
+  .contact-location-details {
+    align-items: center;
+    text-align: center;
+  }
+  .contact-location-details address {
+    text-align: center;
+  }
+}

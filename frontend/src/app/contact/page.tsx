@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import { client } from '@/lib/sanity/client';
 import { contactPageQuery } from '@/lib/sanity/queries';
 import ContactForm from './ContactForm';
+import './contact.css';
 
 export const dynamic = 'force-dynamic';
 
