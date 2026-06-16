@@ -214,14 +214,6 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-.services-cta-address {
-  margin-top: 28px;
-  font-family: var(--font-sans);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--fg-subtle);
-}
-
 /* ── Shared btns (Services + Slug) ── */
 .phos-btn-primary {
   display: inline-flex;

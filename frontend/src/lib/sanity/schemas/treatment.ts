@@ -364,12 +364,6 @@ export const treatmentsPageType = defineType({
       initialValue: '/pricing',
       group: 'cta',
     }),
-    defineField({
-      name: 'ctaAddress',
-      title: 'CTA Address Line',
-      type: 'string',
-      group: 'cta',
-    }),
   ],
   preview: {
     select: { title: 'heroTitle' },
