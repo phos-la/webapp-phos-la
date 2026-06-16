@@ -1,5 +1,6 @@
 import path from 'node:path';
 import type { NextConfig } from 'next';
+import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -19,6 +20,26 @@ const nextConfig: NextConfig = {
   },
   turbopack: {
     root: path.join(__dirname),
+  },
+  // PostHog's ingest endpoints use trailing-slash API paths; don't redirect them.
+  skipTrailingSlashRedirect: true,
+  // Reverse-proxy PostHog through this origin so analytics survive ad blockers
+  // and the strict CSP (connect-src 'self') without listing PostHog hosts.
+  async rewrites() {
+    return [
+      {
+        source: '/ingest/static/:path*',
+        destination: 'https://us-assets.i.posthog.com/static/:path*',
+      },
+      {
+        source: '/ingest/:path*',
+        destination: 'https://us.i.posthog.com/:path*',
+      },
+      {
+        source: '/ingest/flags',
+        destination: 'https://us.i.posthog.com/flags',
+      },
+    ];
   },
   async headers() {
     return [
@@ -41,7 +62,7 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: https: blob:",
               "font-src 'self' https://fonts.gstatic.com data:",
               "connect-src 'self' https://cdn.sanity.io https://*.api.sanity.io https://api.stripe.com",
-              'frame-src https://js.stripe.com https://hooks.stripe.com',
+              'frame-src https://js.stripe.com https://hooks.stripe.com https://www.google.com',
               "frame-ancestors 'self'",
               "base-uri 'self'",
               "form-action 'self'",
@@ -53,4 +74,15 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// Sentry build-time config. Source-map upload runs only when SENTRY_AUTH_TOKEN
+// is valid (currently it needs a fresh token from David). tunnelRoute keeps
+// browser-to-Sentry traffic same-origin so it passes the CSP connect-src 'self'.
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG || 'phos-hl',
+  project: process.env.SENTRY_PROJECT || 'javascript-nextjs',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  widenClientFileUpload: true,
+  tunnelRoute: '/monitoring',
+  silent: !process.env.CI,
+  disableLogger: true,
+});
