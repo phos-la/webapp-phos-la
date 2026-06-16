@@ -18,6 +18,7 @@ import { bookThanksPageType } from './bookThanksPage';
 import { bookSuccessPageType } from './bookSuccessPage';
 import { blogIndexPageType } from './blogIndexPage';
 import { blogPostPageType } from './blogPostPage';
+import { contactPageType } from './contactPage';
 
 export const schemaTypes = [
   pricingTierItemType,
@@ -45,4 +46,5 @@ export const schemaTypes = [
   bookSuccessPageType,
   blogIndexPageType,
   blogPostPageType,
+  contactPageType,
 ];

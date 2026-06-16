@@ -143,6 +143,14 @@ export const structure: StructureResolver = (S) =>
             .documentId('treatmentsPage-singleton'),
         ),
       S.listItem().title('Treatments').child(S.documentTypeList('treatment').title('Treatments')),
+      S.listItem()
+        .title('Contact Page')
+        .child(
+          S.document()
+            .title('Contact Page')
+            .schemaType('contactPage')
+            .documentId('contactPage-singleton'),
+        ),
       S.divider(),
       S.listItem()
         .title('Book Page')

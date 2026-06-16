@@ -1,7 +1,11 @@
 import type { Metadata } from 'next';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { client } from '@/lib/sanity/client';
+import { contactPageQuery } from '@/lib/sanity/queries';
 import ContactForm from './ContactForm';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Contact | Phos',
@@ -10,7 +14,23 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contact' },
 };
 
-export default function ContactPage() {
+// Page title and intro are Sanity-editable (contactPage singleton). The form,
+// address, phone, and map below stay hard-coded.
+const DEFAULTS = {
+  heading: "Have a question? We're here.",
+  intro:
+    'Send us a note and our team will get back to you, usually within one business day. Prefer to talk? Call or text (424) 278-4241.',
+};
+
+type ContactPageData = { heading?: string; intro?: string } | null;
+
+export default async function ContactPage() {
+  const data = await client
+    .fetch<ContactPageData>(contactPageQuery, {}, { cache: 'no-store' })
+    .catch(() => null);
+  const heading = data?.heading || DEFAULTS.heading;
+  const intro = data?.intro || DEFAULTS.intro;
+
   return (
     <>
       <Nav />
@@ -26,19 +46,6 @@ export default function ContactPage() {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: 40, maxWidth: 560 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--brand-teal)',
-              marginBottom: 16,
-            }}
-          >
-            Contact
-          </p>
           <h1
             style={{
               fontFamily: 'var(--font-serif)',
@@ -49,7 +56,7 @@ export default function ContactPage() {
               marginBottom: 16,
             }}
           >
-            Have a question? We&apos;re here.
+            {heading}
           </h1>
           <p
             style={{
@@ -59,8 +66,7 @@ export default function ContactPage() {
               lineHeight: 1.6,
             }}
           >
-            Send us a note and our team will get back to you, usually within one business day.
-            Prefer to talk? Call or text (424) 278-4241.
+            {intro}
           </p>
         </div>
         <ContactForm />
@@ -85,19 +91,6 @@ export default function ContactPage() {
               justifyContent: 'center',
             }}
           >
-            <p
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: '0.2em',
-                textTransform: 'uppercase',
-                color: 'var(--brand-teal)',
-                marginBottom: 14,
-              }}
-            >
-              Visit the clinic
-            </p>
             <h2
               style={{
                 fontFamily: 'var(--font-serif)',
