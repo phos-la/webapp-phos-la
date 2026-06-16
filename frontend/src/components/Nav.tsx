@@ -26,7 +26,16 @@ const DEFAULT_ITEMS: NavItem[] = [
   { label: 'About', href: '/about' },
   { label: 'Pricing', href: '/pricing' },
   { label: 'Field Notes', href: '/blog' },
+  { label: 'Contact', href: '/contact' },
 ];
+
+// Guarantees a Contact link in the nav even when Sanity's navSection.items
+// (which wins over DEFAULT_ITEMS) doesn't include one yet.
+function withContact(items: NavItem[]): NavItem[] {
+  return items.some((it) => it.href === '/contact')
+    ? items
+    : [...items, { label: 'Contact', href: '/contact' }];
+}
 
 const LogoMark = () => (
   <svg className="nav-logo-mark" viewBox="0 0 200 200" fill="none" aria-hidden="true">
@@ -61,7 +70,7 @@ export default async function Nav() {
     .catch(() => null);
   const brandTitle = data?.brandTitle ?? 'PHOS';
   const brandSubtitle = data?.brandSubtitle ?? 'Wellness';
-  const items = data?.items?.length ? data.items : DEFAULT_ITEMS;
+  const items = withContact(data?.items?.length ? data.items : DEFAULT_ITEMS);
   const ctaLabel = data?.ctaLabel ?? 'Book a consultation';
   const ctaHref = data?.ctaHref ?? '/book';
   const logoUrl = data?.logo

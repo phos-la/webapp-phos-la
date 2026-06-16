@@ -223,6 +223,11 @@ export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
   backLinkLabel
 }`;
 
+export const contactPageQuery = groq`*[_type == "contactPage"][0] {
+  heading,
+  intro
+}`;
+
 export const bookSuccessPageQuery = groq`*[_type == "bookSuccessPage"][0] {
   heading,
   body,

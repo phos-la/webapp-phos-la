@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
+import { client } from '@/lib/sanity/client';
+import { contactPageQuery } from '@/lib/sanity/queries';
 import ContactForm from './ContactForm';
+import './contact.css';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Contact | Phos',
@@ -10,7 +15,23 @@ export const metadata: Metadata = {
   alternates: { canonical: '/contact' },
 };
 
-export default function ContactPage() {
+// Page title and intro are Sanity-editable (contactPage singleton). The form,
+// address, phone, and map below stay hard-coded.
+const DEFAULTS = {
+  heading: "Have a question? We're here.",
+  intro:
+    'Send us a note and our team will get back to you, usually within one business day. Prefer to talk? Call or text (424) 278-4241.',
+};
+
+type ContactPageData = { heading?: string; intro?: string } | null;
+
+export default async function ContactPage() {
+  const data = await client
+    .fetch<ContactPageData>(contactPageQuery, {}, { cache: 'no-store' })
+    .catch(() => null);
+  const heading = data?.heading || DEFAULTS.heading;
+  const intro = data?.intro || DEFAULTS.intro;
+
   return (
     <>
       <Nav />
@@ -26,19 +47,6 @@ export default function ContactPage() {
         }}
       >
         <div style={{ textAlign: 'center', marginBottom: 40, maxWidth: 560 }}>
-          <p
-            style={{
-              fontFamily: 'var(--font-sans)',
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: '0.2em',
-              textTransform: 'uppercase',
-              color: 'var(--brand-teal)',
-              marginBottom: 16,
-            }}
-          >
-            Contact
-          </p>
           <h1
             style={{
               fontFamily: 'var(--font-serif)',
@@ -49,7 +57,7 @@ export default function ContactPage() {
               marginBottom: 16,
             }}
           >
-            Have a question? We&apos;re here.
+            {heading}
           </h1>
           <p
             style={{
@@ -59,11 +67,98 @@ export default function ContactPage() {
               lineHeight: 1.6,
             }}
           >
-            Send us a note and our team will get back to you, usually within one business day.
-            Prefer to talk? Call or text (424) 278-4241.
+            {intro}
           </p>
         </div>
         <ContactForm />
+
+        <section
+          style={{
+            width: '100%',
+            maxWidth: 1000,
+            marginTop: 72,
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 32,
+            alignItems: 'stretch',
+          }}
+        >
+          <div
+            className="contact-location-details"
+            style={{
+              flex: '1 1 300px',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <h2
+              style={{
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+                fontWeight: 400,
+                color: 'var(--brand-navy)',
+                lineHeight: 1.25,
+                marginBottom: 18,
+              }}
+            >
+              Westwood, Los Angeles
+            </h2>
+            <address
+              style={{
+                fontFamily: 'var(--font-sans)',
+                fontSize: 15,
+                fontStyle: 'normal',
+                color: 'var(--fg-muted)',
+                lineHeight: 1.7,
+              }}
+            >
+              1762 Westwood Blvd, Ste 320
+              <br />
+              Los Angeles, CA 90024
+              <br />
+              <br />
+              <a
+                href="tel:+14242784241"
+                style={{ color: 'var(--brand-navy)', textDecoration: 'none' }}
+              >
+                (424) 278-4241
+              </a>{' '}
+              (call or text)
+              <br />
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=1762+Westwood+Blvd+Ste+320+Los+Angeles+CA+90024"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: 'var(--brand-teal)', textDecoration: 'none', fontWeight: 600 }}
+              >
+                Get directions
+              </a>
+            </address>
+          </div>
+
+          <div
+            style={{
+              flex: '1 1 380px',
+              borderRadius: 20,
+              overflow: 'hidden',
+              height: 380,
+              boxShadow: 'var(--shadow-md)',
+              border: '1px solid var(--border)',
+            }}
+          >
+            <iframe
+              title="Phos clinic location, 1762 Westwood Blvd, Ste 320, Los Angeles"
+              src="https://www.google.com/maps?q=1762%20Westwood%20Blvd%20Ste%20320%20Los%20Angeles%20CA%2090024&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0, display: 'block' }}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </div>
+        </section>
       </main>
       <Footer />
     </>
