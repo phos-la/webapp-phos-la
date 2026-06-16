@@ -57,6 +57,7 @@ export const pricingSectionQuery = groq`*[_type == "pricingCallout"][0] {
     description,
     price,
     unit,
+    priceTiers[] { label, amount },
     featured,
     features
   }
