@@ -22,6 +22,30 @@ if (sentryDsn) {
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     enableLogs: true,
+    // Drop errors that never come from our own code. These are browser
+    // extensions, antivirus/network-appliance script injection, and ancient
+    // crawler engines hitting the page. They pollute the reliability report
+    // with noise like "Object [object Object] has no method 'updateFrom'"
+    // (an old-engine phrasing, modern V8 says "is not a function").
+    ignoreErrors: [
+      /updateFrom/,
+      /has no method/,
+      // Benign browser quirks Sentry itself recommends filtering.
+      'ResizeObserver loop limit exceeded',
+      'ResizeObserver loop completed with undelivered notifications',
+      'Non-Error promise rejection captured',
+    ],
+    denyUrls: [
+      // Errors whose stack originates in an extension or injected script,
+      // not from phos.la itself.
+      /extensions\//i,
+      /^chrome:\/\//i,
+      /^chrome-extension:\/\//i,
+      /^moz-extension:\/\//i,
+      /^safari-(web-)?extension:\/\//i,
+      // The "sentry/scripts/views.js" phantom path the noise event reported.
+      /\/sentry\/scripts\//i,
+    ],
   });
 }
 
