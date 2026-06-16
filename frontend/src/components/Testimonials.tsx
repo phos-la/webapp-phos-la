@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 
 export interface TestimonialItem {
   _id?: string;
@@ -56,6 +57,11 @@ export default function Testimonials({ data }: { data?: TestimonialsSectionData 
   const indexRef = useRef(1);
   const busyRef = useRef(false);
 
+  const [active, setActive] = useState<TestimonialItem | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
   useEffect(() => {
     const track = trackRef.current;
     const prev = prevRef.current;
@@ -64,6 +70,26 @@ export default function Testimonials({ data }: { data?: TestimonialsSectionData 
 
     const originals = Array.from(track.children) as HTMLElement[];
     if (!originals.length) return;
+
+    // Hide the "Read more" button on cards whose quote isn't actually clamped.
+    // Runs before cloning so the clones inherit the resolved state.
+    for (const card of originals) {
+      const quote = card.querySelector('.testimonial-quote') as HTMLElement | null;
+      const readmore = card.querySelector('.testimonial-readmore') as HTMLElement | null;
+      if (quote && readmore && quote.scrollHeight - quote.clientHeight <= 2) {
+        readmore.classList.add('is-hidden');
+      }
+    }
+
+    // Open the modal from any card, clones included, via event delegation.
+    const onTrackClick = (e: Event) => {
+      const btn = (e.target as HTMLElement).closest('.testimonial-readmore') as HTMLElement | null;
+      if (!btn) return;
+      const idx = Number(btn.dataset.index);
+      const item = testimonials[idx];
+      if (item) setActive(item);
+    };
+    track.addEventListener('click', onTrackClick);
 
     const firstClone = originals[0].cloneNode(true) as HTMLElement;
     const lastClone = originals[originals.length - 1].cloneNode(true) as HTMLElement;
@@ -119,9 +145,25 @@ export default function Testimonials({ data }: { data?: TestimonialsSectionData 
 
     return () => {
       track.removeEventListener('transitionend', onTransitionEnd);
+      track.removeEventListener('click', onTrackClick);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [testimonials]);
+
+  // Close the modal on Escape, lock body scroll while open.
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActive(null);
+    };
+    document.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [active]);
 
   return (
     <section className="section" data-screen-label="10 Testimonials">
@@ -136,9 +178,17 @@ export default function Testimonials({ data }: { data?: TestimonialsSectionData 
       <div className="testimonial-frame">
         <div className="testimonial-rail">
           <div className="testimonial-track" id="testimonialTrack" ref={trackRef}>
-            {testimonials.map((t) => (
+            {testimonials.map((t, i) => (
               <article className="testimonial-card" key={t._id ?? t.name}>
                 <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                <button
+                  className="testimonial-readmore"
+                  data-index={i}
+                  type="button"
+                  aria-label={`Read the full testimonial from ${t.name}`}
+                >
+                  Read more
+                </button>
                 <p className="testimonial-name">{t.name}</p>
               </article>
             ))}
@@ -180,6 +230,44 @@ export default function Testimonials({ data }: { data?: TestimonialsSectionData 
           </svg>
         </button>
       </div>
+
+      {mounted &&
+        active &&
+        createPortal(
+          <div className="testimonial-modal-overlay">
+            <button
+              className="testimonial-modal-backdrop"
+              type="button"
+              aria-label="Close testimonial"
+              onClick={() => setActive(null)}
+            />
+            <div
+              className="testimonial-modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label={`Testimonial from ${active.name}`}
+            >
+              <button
+                className="testimonial-modal-close"
+                type="button"
+                aria-label="Close testimonial"
+                onClick={() => setActive(null)}
+              >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M6 6 L18 18 M18 6 L6 18"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </button>
+              <p className="testimonial-modal-quote">&ldquo;{active.quote}&rdquo;</p>
+              <p className="testimonial-modal-name">{active.name}</p>
+            </div>
+          </div>,
+          document.body,
+        )}
     </section>
   );
 }
