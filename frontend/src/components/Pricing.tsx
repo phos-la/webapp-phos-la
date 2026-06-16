@@ -1,11 +1,17 @@
 import PageHero from '@/components/PageHero';
 
+export interface PriceTierRow {
+  label: string;
+  amount: string;
+}
+
 export interface PricingTier {
   _id?: string;
   name: string;
   description: string;
   price: string;
   unit?: string;
+  priceTiers?: PriceTierRow[];
   featured?: boolean;
   features: string[];
 }
@@ -204,10 +210,21 @@ export default function Pricing({
                   </ul>
                 </div>
                 <div className="price-foot">
-                  <p className="price-amount">
-                    {tier.price}
-                    {tier.unit && <span className="price-unit">{tier.unit}</span>}
-                  </p>
+                  {tier.priceTiers?.length ? (
+                    <ul className="price-tiers">
+                      {tier.priceTiers.map((row) => (
+                        <li key={row.label} className="price-tier-row">
+                          <span className="price-tier-label">{row.label}</span>
+                          <span className="price-tier-amount">{row.amount}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="price-amount">
+                      {tier.price}
+                      {tier.unit && <span className="price-unit">{tier.unit}</span>}
+                    </p>
+                  )}
                 </div>
               </article>
             ))}

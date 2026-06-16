@@ -24,6 +24,33 @@ export const pricingTierItemType = defineType({
       type: 'string',
       description: 'e.g. "/session" or "/mo"',
     }),
+    defineField({
+      name: 'priceTiers',
+      title: 'Multiple Prices',
+      description:
+        'Use this when one card has several prices (e.g. by duration), instead of the single Price Display above. Each row shows a label and an amount. When set, this replaces the single price.',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'label',
+              title: 'Label',
+              type: 'string',
+              description: 'e.g. "2-hour infusion"',
+            }),
+            defineField({
+              name: 'amount',
+              title: 'Amount',
+              type: 'string',
+              description: 'e.g. "$850"',
+            }),
+          ],
+          preview: { select: { title: 'label', subtitle: 'amount' } },
+        },
+      ],
+    }),
     defineField({ name: 'featured', title: 'Featured (Best Value)', type: 'boolean' }),
     defineField({
       name: 'features',

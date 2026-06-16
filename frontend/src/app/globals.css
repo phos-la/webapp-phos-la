@@ -1078,6 +1078,7 @@ body {
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 18px 20px;
+  margin-top: auto;
   margin-bottom: 28px;
 }
 .price-card.is-featured .price-included {
@@ -1113,9 +1114,35 @@ body {
   color: var(--cream-400);
 }
 .price-foot {
-  margin-top: auto;
   padding-top: 22px;
   border-top: 1px solid var(--border);
+}
+.price-tiers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.price-tier-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.price-tier-label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  color: var(--fg-muted);
+}
+.price-tier-amount {
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--fg);
 }
 .price-amount {
   font-family: var(--font-serif);
