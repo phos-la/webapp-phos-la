@@ -1,42 +1,76 @@
-// Client-side instrumentation. Runs after the document loads, before React hydration.
-// Sets up PostHog (product analytics) and Sentry (error monitoring) for the browser.
+// Client-side instrumentation that Next.js loads once per browser session.
+// Sentry and PostHog both live here because Next.js only picks up a single
+// `instrumentation-client.ts` (the one under `src/` when a `src/` dir exists).
+//
+// IMPORTANT: only `init` + `captureRouterTransitionStart` are imported
+// statically. Importing the full `@sentry/nextjs` namespace (or calling
+// `replayIntegration()` inside the synchronous `init`) pulls Sentry's heavy
+// client module into Turbopack's eager graph, which throws "module factory is
+// not available" at module evaluation and aborts client hydration entirely.
+// When that happens the page goes inert and forms fall back to native
+// full-page submits. The Replay integration is added lazily after idle instead.
+import { init, captureRouterTransitionStart } from '@sentry/nextjs';
 
-import posthog from 'posthog-js';
-import * as Sentry from '@sentry/nextjs';
-
-// PostHog. Events are proxied through /ingest (same origin) so they survive ad
-// blockers and the strict Content-Security-Policy without extra connect-src hosts.
-// The ui_host points at the real dashboard so links in the toolbar resolve.
-const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
-if (posthogKey) {
-  try {
-    posthog.init(posthogKey, {
-      api_host: '/ingest',
-      ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com',
-      defaults: '2025-05-24',
-      capture_pageview: true,
-      capture_pageleave: true,
-      person_profiles: 'identified_only',
-    });
-  } catch {
-    // Never let analytics setup break the page.
-  }
-}
-
-// Sentry. DSN is read from env; when unset (e.g. before David provides it) the
-// SDK initializes inert and sends nothing, so this is safe to ship now.
 const sentryDsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 if (sentryDsn) {
-  Sentry.init({
+  init({
     dsn: sentryDsn,
     sendDefaultPii: true,
     tracesSampleRate: process.env.NODE_ENV === 'development' ? 1.0 : 0.1,
+    // Replay sampling is read at init time even though the integration itself
+    // is added lazily below.
     replaysSessionSampleRate: 0.1,
     replaysOnErrorSampleRate: 1.0,
     enableLogs: true,
-    integrations: [Sentry.replayIntegration()],
   });
 }
 
 // Sentry's client-side navigation instrumentation for the App Router.
-export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
+export const onRouterTransitionStart = captureRouterTransitionStart;
+
+function whenIdle(cb: () => void) {
+  if (typeof window === 'undefined') return;
+  const ric = (
+    window as Window & {
+      requestIdleCallback?: (cb: IdleRequestCallback, opts?: IdleRequestOptions) => number;
+    }
+  ).requestIdleCallback;
+  if (typeof ric === 'function') {
+    ric(cb, { timeout: 4000 });
+  } else {
+    window.setTimeout(cb, 0);
+  }
+}
+
+// Add the heavier Replay integration (~80KB plus DOM handlers) after the
+// browser is idle so it never competes with initial paint or blocks
+// hydration. Replay masks all text and inputs by default, which suits a
+// clinical site.
+if (sentryDsn) {
+  whenIdle(() => {
+    void import('@sentry/nextjs').then(({ replayIntegration, getClient }) => {
+      const client = getClient();
+      if (!client) return;
+      client.addIntegration(replayIntegration());
+    });
+  });
+}
+
+// PostHog. Events are proxied through /ingest (same origin) so they survive ad
+// blockers and the strict CSP without extra connect-src hosts. Loaded lazily so
+// the posthog-js chunk is split out of the main bundle.
+const posthogKey = process.env.NEXT_PUBLIC_POSTHOG_KEY;
+if (posthogKey && typeof window !== 'undefined') {
+  whenIdle(() => {
+    void import('posthog-js').then(({ default: posthog }) => {
+      posthog.init(posthogKey, {
+        api_host: '/ingest',
+        ui_host: process.env.NEXT_PUBLIC_POSTHOG_HOST || 'https://us.posthog.com',
+        defaults: '2025-05-24',
+        capture_pageview: true,
+        capture_pageleave: true,
+        person_profiles: 'identified_only',
+      });
+    });
+  });
+}

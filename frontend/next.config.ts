@@ -62,6 +62,9 @@ const nextConfig: NextConfig = {
               "img-src 'self' data: https: blob:",
               "font-src 'self' https://fonts.gstatic.com data:",
               "connect-src 'self' https://cdn.sanity.io https://*.api.sanity.io https://api.stripe.com",
+              // Sentry Session Replay spawns its compression worker from a blob: URL.
+              // Without worker-src it falls back to script-src (no blob:) and is blocked.
+              "worker-src 'self' blob:",
               'frame-src https://js.stripe.com https://hooks.stripe.com https://www.google.com',
               "frame-ancestors 'self'",
               "base-uri 'self'",
@@ -85,4 +88,6 @@ export default withSentryConfig(nextConfig, {
   tunnelRoute: '/monitoring',
   silent: !process.env.CI,
   disableLogger: true,
+  // Annotate React components in stack traces with their file/line.
+  reactComponentAnnotation: { enabled: true },
 });
