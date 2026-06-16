@@ -1765,3 +1765,12 @@ body {
     z-index: 105;
   }
 }
+
+/* Contact page: center the location block on mobile so it matches the
+   centered hero/intro above it. Desktop keeps the left-aligned two-column. */
+@media (max-width: 768px) {
+  .contact-location-details {
+    align-items: center;
+    text-align: center;
+  }
+}

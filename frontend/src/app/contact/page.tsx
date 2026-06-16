@@ -77,6 +77,7 @@ export default function ContactPage() {
           }}
         >
           <div
+            className="contact-location-details"
             style={{
               flex: '1 1 300px',
               display: 'flex',

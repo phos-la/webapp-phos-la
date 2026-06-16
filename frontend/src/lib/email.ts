@@ -13,7 +13,12 @@ export function getResend(): Resend {
 }
 
 // Where clinic-facing notifications and contact-form submissions are delivered.
-export const CLINIC_INBOX = process.env.CLINIC_NOTIFY_EMAIL || 'support@phos.la';
+// Comma-separated env value supports multiple recipients; defaults to both
+// clinic inboxes. Resend's `to` field accepts a string array directly.
+export const CLINIC_INBOX = (process.env.CLINIC_NOTIFY_EMAIL || 'support@phos.la,service@phos.la')
+  .split(',')
+  .map((addr) => addr.trim())
+  .filter(Boolean);
 
 // Verified Resend sending identity. Must be a domain verified in the Resend
 // dashboard (e.g. notifications@phos.la). Falls back to Resend's shared
