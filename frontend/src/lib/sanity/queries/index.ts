@@ -179,8 +179,7 @@ export const treatmentsPageQuery = groq`*[_type == "treatmentsPage"][0] {
   ctaPrimaryLabel,
   ctaPrimaryHref,
   ctaSecondaryLabel,
-  ctaSecondaryHref,
-  ctaAddress
+  ctaSecondaryHref
 }`;
 
 export const bookPageQuery = groq`*[_type == "bookPage"][0] {

@@ -1027,9 +1027,21 @@ body {
   border-width: 1.5px;
   box-shadow: var(--shadow-md);
 }
-@media (min-width: 961px) {
-  .price-card.is-featured {
-    transform: translateY(-12px);
+@media (hover: hover) {
+  .price-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-lg);
+  }
+}
+.price-card:focus-within {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .price-card,
+  .price-card:hover,
+  .price-card:focus-within {
+    transform: none;
   }
 }
 .price-card-leaves {

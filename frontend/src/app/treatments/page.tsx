@@ -69,7 +69,6 @@ const DEFAULTS = {
   ctaPrimaryHref: '/book',
   ctaSecondaryLabel: 'See pricing',
   ctaSecondaryHref: '/pricing',
-  ctaAddress: '1762 Westwood Blvd, Ste 320, Los Angeles, CA 90024.',
 };
 
 type ServiceCard = {
@@ -297,7 +296,6 @@ export default async function TreatmentsPage() {
                 {d.ctaSecondaryLabel}
               </a>
             </div>
-            <p className="services-cta-address">{d.ctaAddress}</p>
           </div>
         </section>
       </main>

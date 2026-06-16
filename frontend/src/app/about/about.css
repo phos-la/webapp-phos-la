@@ -356,6 +356,8 @@
 .about-loc-btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 220px;
   padding: 14px 30px;
   background: var(--accent);
   color: #fff;
@@ -373,6 +375,8 @@
 .about-loc-btn-secondary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 220px;
   padding: 13px 30px;
   background: transparent;
   color: #ede8dc;
