@@ -17,6 +17,7 @@
     "seed:images": "SANITY_API_TOKEN=$(grep SANITY_API_TOKEN .env.local | cut -d= -f2-) bun run scripts/seed-sanity-images.ts"
   },
   "dependencies": {
+    "@apideck/agent-analytics": "^0.9.0",
     "@portabletext/react": "^3.1.0",
     "@portabletext/types": "^4.0.2",
     "@sanity/client": "^7.22.0",
