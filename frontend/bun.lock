@@ -5,6 +5,7 @@
     "": {
       "name": "phos-frontend",
       "dependencies": {
+        "@apideck/agent-analytics": "^0.9.0",
         "@portabletext/react": "^3.1.0",
         "@portabletext/types": "^4.0.2",
         "@sanity/client": "^7.22.0",
@@ -53,6 +54,8 @@
     "@algorithm.ts/lcs": ["@algorithm.ts/lcs@4.0.6", "", {}, "sha512-uu6TgA77++klfI1kM3q9LotWsTrzOzsnot8CmICzdNSG7GWxKvVb+IMMUVILrTbUKoLVfv2Js33PqfXnvkusag=="],
 
     "@alloc/quick-lru": ["@alloc/quick-lru@5.2.0", "", {}, "sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw=="],
+
+    "@apideck/agent-analytics": ["@apideck/agent-analytics@0.9.0", "", {}, "sha512-Fn7lY5xiVhpxHx6cwl2qtNRmn5hdFuuLBTExkJ4Upy9cQ2+EBbw4Kta6Nd9cAJQXf9SdOOKcxiLkyCCYWwn+fQ=="],
 
     "@architect/asap": ["@architect/asap@7.0.10", "", { "dependencies": { "@aws-lite/client": "~0.21.1", "@aws-lite/s3": "^0.1.21" } }, "sha512-oJjYDranGTCkp21bziF/fIxJfLTucitqg/ar5mmLPHyroNG3XF3SUIMvuNd1GNIe4oy40wvGEXvTToKYvUeOLA=="],
 
