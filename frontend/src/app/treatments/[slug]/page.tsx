@@ -624,10 +624,7 @@ export default async function TreatmentSlugPage({ params }: { params: Promise<{ 
             Our PA reviews every intake personally. Most patients hear back within one business day.
           </p>
           <div className="slug-cta-buttons reveal">
-            <a className="slug-cta-btn-primary" href="/book">
-              Book a consultation
-            </a>
-            <a className="slug-cta-btn-secondary" href={data.qualifyLinkHref}>
+            <a className="slug-cta-btn-primary" href={data.qualifyLinkHref}>
               {data.qualifyLinkLabel} first
             </a>
           </div>

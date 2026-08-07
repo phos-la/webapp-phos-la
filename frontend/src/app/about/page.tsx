@@ -273,10 +273,7 @@ export default async function AboutPage() {
                 {d.locationBody}
               </p>
               <div className="about-loc-btns">
-                <a className="about-loc-btn-primary" href={d.locationPrimaryCtaHref}>
-                  {d.locationPrimaryCtaLabel}
-                </a>
-                <a className="about-loc-btn-secondary" href={d.locationSecondaryCtaHref}>
+                <a className="about-loc-btn-primary" href={d.locationSecondaryCtaHref}>
                   {d.locationSecondaryCtaLabel}
                 </a>
               </div>

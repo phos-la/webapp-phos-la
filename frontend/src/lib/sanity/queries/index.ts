@@ -182,61 +182,9 @@ export const treatmentsPageQuery = groq`*[_type == "treatmentsPage"][0] {
   ctaSecondaryHref
 }`;
 
-export const bookPageQuery = groq`*[_type == "bookPage"][0] {
-  eyebrow,
-  headlineDefault,
-  headlineReturning,
-  subheadingDefault,
-  subheadingReturning,
-  tabNew { label, h2, sub, bullets, ctaLabel },
-  tabClinic { label, h2, sub, bullets, ctaLabel },
-  tabAthome { label, h2, sub, bullets, ctaLabel },
-  footerNote
-}`;
-
-export const bookThanksPageQuery = groq`*[_type == "bookThanksPage"][0] {
-  flowNew {
-    heading,
-    subheading,
-    eyebrow,
-    deposit { label, amount, description, lookupKey }
-  },
-  flowReturning {
-    heading,
-    subheading,
-    eyebrow,
-    pickerLabel,
-    prices[] { label, amount, description, lookupKey }
-  },
-  flowAthome {
-    heading,
-    subheading,
-    eyebrow,
-    pickerLabel,
-    prices[] { label, amount, description, lookupKey }
-  },
-  newDepositCtaLabel,
-  newDepositLoadingLabel,
-  otherCtaLabel,
-  secureNote,
-  errorMessage,
-  backLinkLabel
-}`;
-
 export const contactPageQuery = groq`*[_type == "contactPage"][0] {
   heading,
   intro
-}`;
-
-export const bookSuccessPageQuery = groq`*[_type == "bookSuccessPage"][0] {
-  heading,
-  body,
-  contactCardText,
-  contactPhone,
-  contactPhoneTel,
-  backLinkLabel,
-  fallbackHeading,
-  fallbackBody
 }`;
 
 export const blogIndexPageQuery = groq`*[_type == "blogIndexPage"][0] {

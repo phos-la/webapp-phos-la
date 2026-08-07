@@ -13,9 +13,6 @@ import { footerSectionType } from './footerSection';
 import { navSectionType } from './navSection';
 import { aboutPageType } from './aboutPage';
 import { treatmentType, treatmentsPageType } from './treatment';
-import { bookPageType } from './bookPage';
-import { bookThanksPageType } from './bookThanksPage';
-import { bookSuccessPageType } from './bookSuccessPage';
 import { blogIndexPageType } from './blogIndexPage';
 import { blogPostPageType } from './blogPostPage';
 import { contactPageType } from './contactPage';
@@ -41,9 +38,6 @@ export const schemaTypes = [
   aboutPageType,
   treatmentType,
   treatmentsPageType,
-  bookPageType,
-  bookThanksPageType,
-  bookSuccessPageType,
   blogIndexPageType,
   blogPostPageType,
   contactPageType,

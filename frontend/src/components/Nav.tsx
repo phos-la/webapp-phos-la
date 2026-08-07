@@ -71,8 +71,6 @@ export default async function Nav() {
   const brandTitle = data?.brandTitle ?? 'PHOS';
   const brandSubtitle = data?.brandSubtitle ?? 'Wellness';
   const items = withContact(data?.items?.length ? data.items : DEFAULT_ITEMS);
-  const ctaLabel = data?.ctaLabel ?? 'Book a consultation';
-  const ctaHref = data?.ctaHref ?? '/book';
   const logoUrl = data?.logo
     ? urlFor(data.logo as never)
         .width(140)
@@ -106,11 +104,7 @@ export default async function Nav() {
 
         <NavLinks items={items} />
 
-        <a className="nav-cta" href={ctaHref}>
-          {ctaLabel}
-        </a>
-
-        <NavBurger items={items} ctaLabel={ctaLabel} ctaHref={ctaHref} />
+        <NavBurger items={items} />
       </nav>
     </div>
   );
