@@ -289,10 +289,7 @@ export default async function TreatmentsPage() {
           <div className="services-cta-card">
             <p className="services-cta-text">{d.ctaText}</p>
             <div className="services-cta-buttons">
-              <a className="phos-btn-primary" href={d.ctaPrimaryHref}>
-                {d.ctaPrimaryLabel}
-              </a>
-              <a className="phos-btn-secondary" href={d.ctaSecondaryHref}>
+              <a className="phos-btn-primary" href={d.ctaSecondaryHref}>
                 {d.ctaSecondaryLabel}
               </a>
             </div>

@@ -153,39 +153,6 @@ export const structure: StructureResolver = (S) =>
         ),
       S.divider(),
       S.listItem()
-        .title('Book Page')
-        .child(
-          S.list()
-            .title('Book Page')
-            .items([
-              S.listItem()
-                .title('Booking — Tabs + Copy')
-                .child(
-                  S.document()
-                    .title('Book Page')
-                    .schemaType('bookPage')
-                    .documentId('bookPage-singleton'),
-                ),
-              S.listItem()
-                .title('Thanks')
-                .child(
-                  S.document()
-                    .title('Thanks Page')
-                    .schemaType('bookThanksPage')
-                    .documentId('bookThanksPage-singleton'),
-                ),
-              S.listItem()
-                .title('Success (post-payment)')
-                .child(
-                  S.document()
-                    .title('Success Page')
-                    .schemaType('bookSuccessPage')
-                    .documentId('bookSuccessPage-singleton'),
-                ),
-            ]),
-        ),
-      S.divider(),
-      S.listItem()
         .title('Field Notes (Blog)')
         .child(
           S.list()

@@ -5,15 +5,7 @@ import { usePathname } from 'next/navigation';
 
 type NavItem = { label?: string; href?: string };
 
-export default function NavBurger({
-  items,
-  ctaLabel,
-  ctaHref,
-}: {
-  items: NavItem[];
-  ctaLabel: string;
-  ctaHref: string;
-}) {
+export default function NavBurger({ items }: { items: NavItem[] }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() ?? '/';
 
@@ -72,9 +64,6 @@ export default function NavBurger({
               {item.label}
             </a>
           ))}
-          <a className="nav-drawer-cta" href={ctaHref}>
-            {ctaLabel}
-          </a>
         </div>
       </div>
       {open && (
